@@ -7,7 +7,7 @@ interface Props {
 
 const ResponsiveSidebar: React.FC<Props> = ({  children }) => {
     return (
-        <div className={`w-64 h-screen flex flex-col`}  >
+        <div className={`w-64 gap-3 p-5 h-screen flex flex-col bg-gray-900`}  >
             {children}
         </div>
     )

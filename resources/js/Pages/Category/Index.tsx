@@ -6,21 +6,32 @@ import React from 'react'
 import DataTable, { LaravelPagination } from './Partial/DataTable'
 import { categoryColumns } from '@/types/columns'
 
+const breadcrumbs = [
+    { name: 'Categories', href: '/categories' },
+]
+
 const Index = () => {
     const { categories } = usePage<
         PageProps<{ categories: LaravelPagination<Category> }>
     >().props
+
     return (
         <div>
-            <DashboardLayout header={<h1>Categories</h1>} >
-                <div className='flex flex-col  items-center w-full'>
+            <DashboardLayout
+                header={
+                    <div className="flex justify-between items-center">
+                        <h1 className="text-2xl font-semibold">Categories</h1>
+                        <Link href="/categories/create">
+                            <Button type="button" process={false} className="text-white">
+                                + Add Category
+                            </Button>
+                        </Link>
+                    </div>
+                }
 
-                    {/* Button Navigate */}
-                    <Link href={'/categories/create'}>
-                        <Button type='button' process={false} className='text-white'>
-                            + Add Category
-                        </Button>
-                    </Link>
+                breadcrumbs={breadcrumbs}>
+
+                <div className='flex flex-col  items-center w-full'>
 
                     {/* Table */}
                     <DataTable<Category>

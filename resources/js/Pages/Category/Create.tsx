@@ -9,6 +9,11 @@ interface Props {
     categories: { id: number; name: string }[]
 }
 
+const breadcrumbs = [
+    { name: 'Categories', href: '/categories' },
+    { name: 'Create', href: '/categories/create' }
+]
+
 const Create: React.FC<Props> = ({ categories }) => {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
@@ -22,7 +27,7 @@ const Create: React.FC<Props> = ({ categories }) => {
     }
 
     return (
-        <DashboardLayout header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Create Category</h2>}>
+        <DashboardLayout header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Create Category</h2>} breadcrumbs={breadcrumbs}>
             <form onSubmit={submit} className="space-y-6 max-w-xl">
                 <div>
                     <Label forInput="name" value="Name" />

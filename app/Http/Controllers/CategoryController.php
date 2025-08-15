@@ -21,11 +21,14 @@ class CategoryController extends Controller
             });
         }
 
-        $categories =  $query->paginate(10);
+        $categories = $query->paginate(10);
 
         return Inertia::render('Category/Index', [
             'categories' => $categories,
-            'filters' => $request->only('search')
+            'filters' => $request->only('search'),
+            'breadcrumbs' => [
+                ['name' => 'Categories']
+            ]
         ]);
     }
 
@@ -34,7 +37,11 @@ class CategoryController extends Controller
         $this->authorize('view categories');
 
         return inertia::render('Category/Show', [
-            'category' => $category
+            'category' => $category,
+            'breadcrumbs' => [
+                ['name' => 'Categories', 'href' => route('categories.index')],
+                ['name' => $category->name],
+            ]
         ]);
     }
 
