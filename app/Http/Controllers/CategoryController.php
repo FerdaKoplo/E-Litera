@@ -8,14 +8,24 @@ use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
-    public function categoryIndex()
+    public function categoryIndex(Request $request)
     {
         $this->authorize('view categories');
 
-        $categories = Category::with('parent')->get();
+        $query = Category::with('parent');
 
-        return Inertia::render('Categories/Index', [
-            'categories' => $categories
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', "%{$request->search}%")
+                    ->orWhere('type', 'like', "%{$request->search}%");
+            });
+        }
+
+        $categories =  $query->paginate(10);
+
+        return Inertia::render('Category/Index', [
+            'categories' => $categories,
+            'filters' => $request->only('search')
         ]);
     }
 
@@ -23,7 +33,7 @@ class CategoryController extends Controller
     {
         $this->authorize('view categories');
 
-        return inertia::render('Categories/Show', [
+        return inertia::render('Category/Show', [
             'category' => $category
         ]);
     }
@@ -33,7 +43,7 @@ class CategoryController extends Controller
         $this->authorize('create categories');
         $categories = Category::all();
 
-        return Inertia::render('Categories/Create', [
+        return Inertia::render('Category/Create', [
             'categories' => $categories
         ]);
     }
@@ -59,7 +69,7 @@ class CategoryController extends Controller
         $this->authorize('edit categories');
 
         $categories = Category::where('id', '!=', $category->id)->get();
-        return Inertia::render('Categories/Edit', [
+        return Inertia::render('Category/Edit', [
             'category' => $category,
             'categories' => $categories
         ]);

@@ -14,7 +14,7 @@ class ArticleController extends Controller
     {
         $this->authorize('view articles');
 
-        $articles = Article::with('images')->get();
+        $articles = Article::with('images')->paginate(10);
 
         return Inertia::render('Article/Index', [
             'articles' => $articles
