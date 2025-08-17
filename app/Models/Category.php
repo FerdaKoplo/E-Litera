@@ -14,7 +14,7 @@ class Category extends Model
     protected $fillable = [
         'name',
         'type',
-        'parent_category_id'
+        'parent_category_id',
     ];
 
 

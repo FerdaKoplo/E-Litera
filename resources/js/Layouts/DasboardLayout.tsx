@@ -5,9 +5,10 @@ import { PageProps } from '@/types'
 import { usePage } from '@inertiajs/react'
 import { ChevronRightIcon, SlashIcon } from 'lucide-react'
 import React, { useEffect } from 'react'
-import { FaFolder } from 'react-icons/fa6'
+import { BiSolidBookReader } from 'react-icons/bi'
+import { FaFolder, FaHandHolding } from 'react-icons/fa6'
 import { IoMdAnalytics } from 'react-icons/io'
-import { MdLibraryBooks } from 'react-icons/md'
+import { MdArticle, MdFeedback, MdLibraryBooks, MdPersonAdd } from 'react-icons/md'
 
 interface Props {
     header: React.ReactNode
@@ -57,21 +58,51 @@ const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => 
                         </div>
                     </SidebarItem>
 
-                    {auth.user.role === 'super-admin' && (
-                        <SidebarItem href="/publications" active={route().current('publications.index')}>
-                            <div className='flex items-center gap-5'>
-                                <MdLibraryBooks size={20} />
-                                <span>Publications</span>
-                            </div>
-                        </SidebarItem>
-                    )}
-
                     <SidebarItem href="/categories" active={route().current('categories.index')}>
                         <div className='flex items-center gap-5'>
                             <FaFolder size={20} />
                             <span>Category</span>
                         </div>
                     </SidebarItem>
+
+                    <SidebarItem href="/publications" active={route().current('publications.index')}>
+                        <div className='flex items-center gap-5'>
+                            <MdLibraryBooks size={20} />
+                            <span>Publications</span>
+                        </div>
+                    </SidebarItem>
+
+                    <SidebarItem href="/loans" active={route().current('loans.index')}>
+                        <div className='flex items-center gap-5 '>
+                            <BiSolidBookReader size={20} />
+                            <span>Loan</span>
+                        </div>
+                    </SidebarItem>
+
+                    <SidebarItem href="/articles" active={route().current('articles.index')}>
+                        <div className='flex items-center gap-5'>
+                            <MdArticle size={20} />
+                            <span>Article</span>
+                        </div>
+                    </SidebarItem>
+
+                    <SidebarItem href="/feedbacks" active={route().current('feedbacks.index')}>
+                        <div className='flex items-center gap-5'>
+                            <MdFeedback size={20} />
+                            <span>Feedback</span>
+                        </div>
+                    </SidebarItem>
+
+                    {auth.user.role === 'super-admin' && (
+
+                        <SidebarItem href="/librarians" active={route().current('librarians.index')}>
+                            <div className='flex items-center gap-5'>
+                                <MdPersonAdd size={20} />
+                                <span>Librarian</span>
+                            </div>
+                        </SidebarItem>
+                    )}
+
                 </ResponsiveSidebar>
 
                 {/* Content area */}

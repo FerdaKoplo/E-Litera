@@ -50,11 +50,11 @@ Route::middleware('auth')->group(function () {
 
     // publications
     Route::get('/publications', [PublicationController::class, 'publicationIndex'])->name('publications.index');
-    Route::get('/publications/{publication}', [PublicationController::class, 'publicationShow'])->name('publications.show');
     Route::get('/publications/create', [PublicationController::class, 'publicationCreate'])->name('publications.create');
+    Route::get('/publications/{publication}', [PublicationController::class, 'publicationShow'])->name('publications.show');
     Route::post('/publications', [PublicationController::class, 'storePublication'])->name('publications.store');
     Route::get('/publications/{publication}/edit', [PublicationController::class, 'editPublication'])->name('publications.edit');
-    Route::put('/publications/{publication}', [PublicationController::class, 'updatePublication'])->name('publications.update');
+    Route::patch('/publications/{publication}', [PublicationController::class, 'updatePublication'])->name('publications.update');
     Route::delete('/publications/{publication}', [PublicationController::class, 'deletePublication'])->name('publications.destroy');
 
     // location

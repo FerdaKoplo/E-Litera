@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('location_id')->nullable()->constrained()->onDelete('set null');
             $table->unsignedBigInteger('download_count')->default(0);
+            $table->string('pdf_url')->nullable();
+            $table->string('image_url')->nullable();
             $table->timestamps();
         });
     }

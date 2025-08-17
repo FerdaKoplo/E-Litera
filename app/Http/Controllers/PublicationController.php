@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Location;
 use App\Models\Publication;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -57,10 +59,12 @@ class PublicationController extends Controller
     {
         $this->authorize('create publications');
 
-        $publications = Publication::all();
+        $categories = Category::select('id', 'name')->get();
+        $locations = Location::select('id', 'name')->get();
 
         return Inertia::render('Publications/Create', [
-            'publications' => $publications
+            'categories' => $categories,
+            'locations' => $locations,
         ]);
     }
 
@@ -72,8 +76,20 @@ class PublicationController extends Controller
             'author' => 'nullable|string|max:255',
             'type' => 'required|in:ebook,physical,journal',
             'category_id' => 'required|exists:categories,id',
-            'location_id' => 'nullable|exists:locations,id'
+            'location_id' => 'nullable|exists:locations,id',
+            'pdf_url' => 'nullable|file|mimes:pdf|max:20480',
+            'image_url' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
+
+        if ($request->hasFile('pdf_url')) {
+            $pdfPath = $request->file('pdf_url')->store('public/publications');
+            $validateData['pdf_url'] = str_replace('public/', 'storage/', $pdfPath);
+        }
+
+        if ($request->hasFile('image_url')) {
+            $imagePath = $request->file('image_url')->store('public/publications');
+            $validateData['image_url'] = str_replace('public/', 'storage/', $imagePath);
+        }
 
         Publication::create($validateData);
 
@@ -83,11 +99,27 @@ class PublicationController extends Controller
 
     public function editPublication(Publication $publication)
     {
-        $this->authorize('edit categories');
+        $this->authorize('edit publications');
+        $categories = Category::select('id', 'name')->get();
+        $locations = Location::select('id', 'name')->get();
 
         $publications = Publication::where('id', '!=', $publication->id)->get();
-        return Inertia::render('Publication/Edit', [
-            'publication' => $publication,
+        $publication->load('category', 'location');
+
+        return Inertia::render('Publications/Edit', [
+            'publication' => [
+                'id' => $publication->id,
+                'title' => $publication->title,
+                'author' => $publication->author,
+                'type' => $publication->type,
+                'category_id' => $publication->category_id,
+                'location_id' => $publication->location_id ?? "",
+                'download_count' => (string) $publication->download_count,
+                'pdf_url' => $publication->pdf_url,
+                'image_url' => $publication->image_url,
+            ],
+            'categories' => $categories,
+            'locations' => $locations,
             'publications' => $publications
         ]);
     }
@@ -97,18 +129,33 @@ class PublicationController extends Controller
         if (!$publication) {
             return Inertia::render('Errors/NotFound', [
                 'message' => 'Publication not found.'
-            ])->toResponse(request())
-                ->setStatusCode(404);
+            ])->toResponse($request)->setStatusCode(404);
         }
 
+        $request->merge([
+            'category_id' => $request->category_id !== '' ? $request->category_id : null,
+            'location_id' => $request->location_id !== '' ? $request->location_id : null,
+        ]);
 
         $validateData = $request->validate([
             'title' => 'required|string|max:255',
             'author' => 'nullable|string|max:255',
             'type' => 'required|in:ebook,physical,journal',
-            'category_id' => 'required|exists:categories,id',
-            'location_id' => 'nullable|exists:locations,id'
+            'category_id' => 'required|integer|exists:categories,id',
+            'location_id' => 'nullable|integer|exists:locations,id',
+            'pdf_url' => 'nullable|file|mimes:pdf|max:20480',
+            'image_url' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
+
+        if ($request->hasFile('pdf_url')) {
+            $pdfPath = $request->file('pdf_url')->store('public/publications');
+            $validateData['pdf_url'] = str_replace('public/', 'storage/', $pdfPath);
+        }
+
+        if ($request->hasFile('image_url')) {
+            $imagePath = $request->file('image_url')->store('public/publications');
+            $validateData['image_url'] = str_replace('public/', 'storage/', $imagePath);
+        }
 
         $publication->update($validateData);
 

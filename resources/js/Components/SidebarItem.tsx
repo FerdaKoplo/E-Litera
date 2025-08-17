@@ -16,7 +16,7 @@ const SidebarItem: React.FC<Props> = ({ children, href, active }) => {
                 px-3 py-3 text-sm rounded-lg
                 ${active
                     ? 'bg-gradient-to-r from-violet-500 to-fuchsia-400 font-medium text-white'
-                    : 'text-white hover:bg-violet-500 hover:text-white transition-all'}
+                    : 'text-white hover:bg-fuchsia-400 hover:text-white transition-all'}
                 max-w-2xl
             `}
         >

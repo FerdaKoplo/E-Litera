@@ -17,7 +17,14 @@ class Publication extends Model
         'type',
         'category_id',
         'location_id',
-        'download_count'
+        'download_count',
+        'pdf_url',
+        'image_url'
+    ];
+
+    protected $casts = [
+        'category_id' => 'integer',
+        'location_id' => 'integer',
     ];
 
 

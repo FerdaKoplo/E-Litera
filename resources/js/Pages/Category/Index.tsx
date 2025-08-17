@@ -4,7 +4,7 @@ import { PageProps } from '@/types'
 import { Link, usePage } from '@inertiajs/react'
 import React from 'react'
 import DataTable, { LaravelPagination } from './Partial/DataTable'
-import { categoryColumns } from '@/types/columns'
+import { categoryColumns } from '@/Pages/Constant/columns'
 
 const breadcrumbs = [
     { name: 'Categories', href: '/categories' },

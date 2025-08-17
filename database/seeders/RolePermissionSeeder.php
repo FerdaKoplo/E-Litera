@@ -26,8 +26,15 @@ class RolePermissionSeeder extends Seeder
         $deleteCategories = Permission::create(['name' => 'delete categories']);
         $viewCategories = Permission::create(['name' => 'view categories']);
 
+        // Create Publications
+        $createPublications = Permission::create(['name' => 'create publications']);
+        $editPublications = Permission::create(['name' => 'edit publications']);
+        $deletePublications = Permission::create(['name' => 'delete publications']);
+        $viewPublications = Permission::create(['name' => 'view publications']);
+
         // Assign permissions to roles
         $librarianRole->givePermissionTo([$createCategories, $editCategories, $viewCategories]);
+        $librarianRole->givePermissionTo([$createPublications, $editPublications, $viewPublications]);
         $superAdminRole->givePermissionTo(Permission::all());
     }
 }

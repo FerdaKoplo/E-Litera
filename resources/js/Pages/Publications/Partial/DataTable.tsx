@@ -21,6 +21,7 @@ import {
 export interface Column<T> {
     header: string
     accessor: (row: T, index?: number) => React.ReactNode
+    align?: "left" | "center" | "right"
 }
 
 export interface LaravelPagination<T> {
@@ -43,13 +44,13 @@ const DataTable = <T,>({
     const links = !Array.isArray(data) ? data.links : undefined
 
     return (
-        <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm w-full">
+        <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
             {/* Table */}
-            <Table className="text-sm">
+            <Table className="min-w-full text-sm">
                 <TableHeader>
                     <TableRow>
                         {columns.map((col, i) => (
-                            <TableHead className="bg-gray-800 text-white text-xs font-semibold" key={i}>{col.header}</TableHead>
+                            <TableHead className="bg-gray-800 text-white text-xs font-semibold " key={i}>{col.header}</TableHead>
                         ))}
 
                     </TableRow>
@@ -59,7 +60,7 @@ const DataTable = <T,>({
                         rows.map((row, rowIndex) => (
                             <TableRow key={rowIndex} className="group">
                                 {columns.map((col, colIndex) => (
-                                    <TableCell key={colIndex} className="transition-colors group-hover:bg-gray-100 bg-background">
+                                    <TableCell key={colIndex} className={`transition-colors group-hover:bg-gray-100 bg-background`}>
                                         {col.accessor(row)}
                                     </TableCell>
                                 ))}
