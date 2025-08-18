@@ -14,7 +14,7 @@ class LocationController extends Controller
 
         $locations = Location::all();
 
-        return Inertia::render('Locations/Index', [
+        return Inertia::render('Dashboard/Locations/Index', [
             'locations' => $locations
         ]);
     }
@@ -23,7 +23,7 @@ class LocationController extends Controller
     {
         $this->authorize('view locations');
 
-        return Inertia::render('Locations/Show', [
+        return Inertia::render('Dashboard/Locations/Show', [
             'location' => $location
         ]);
     }
@@ -32,7 +32,7 @@ class LocationController extends Controller
     {
         $this->authorize('create locations');
 
-        return Inertia::render('Locations/Create');
+        return Inertia::render('Dashboard/Locations/Create');
     }
 
     public function storeLocation(Request $request)
@@ -53,7 +53,7 @@ class LocationController extends Controller
     {
         $this->authorize('edit locations');
 
-        return Inertia::render('Locations/Edit', [
+        return Inertia::render('Dashboard/Locations/Edit', [
             'location' => $location
         ]);
     }

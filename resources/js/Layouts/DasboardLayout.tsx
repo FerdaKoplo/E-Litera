@@ -8,6 +8,7 @@ import React, { useEffect } from 'react'
 import { BiSolidBookReader } from 'react-icons/bi'
 import { FaFolder, FaHandHolding } from 'react-icons/fa6'
 import { IoMdAnalytics } from 'react-icons/io'
+import { RiBookShelfFill } from "react-icons/ri";
 import { MdArticle, MdFeedback, MdLibraryBooks, MdPersonAdd } from 'react-icons/md'
 
 interface Props {
@@ -62,6 +63,13 @@ const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => 
                         <div className='flex items-center gap-5'>
                             <FaFolder size={20} />
                             <span>Category</span>
+                        </div>
+                    </SidebarItem>
+
+                    <SidebarItem href="/locations" active={route().current('locations.index')}>
+                        <div className='flex items-center gap-5'>
+                            <RiBookShelfFill  size={20} />
+                            <span>Location</span>
                         </div>
                     </SidebarItem>
 

@@ -32,7 +32,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Dashboard/Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -51,17 +51,17 @@ Route::middleware('auth')->group(function () {
     // publications
     Route::get('/publications', [PublicationController::class, 'publicationIndex'])->name('publications.index');
     Route::get('/publications/create', [PublicationController::class, 'publicationCreate'])->name('publications.create');
-    Route::get('/publications/{publication}', [PublicationController::class, 'publicationShow'])->name('publications.show');
     Route::post('/publications', [PublicationController::class, 'storePublication'])->name('publications.store');
+    Route::get('/publications/{publication}', [PublicationController::class, 'publicationShow'])->name('publications.show');
     Route::get('/publications/{publication}/edit', [PublicationController::class, 'editPublication'])->name('publications.edit');
     Route::patch('/publications/{publication}', [PublicationController::class, 'updatePublication'])->name('publications.update');
     Route::delete('/publications/{publication}', [PublicationController::class, 'deletePublication'])->name('publications.destroy');
 
     // location
     Route::get('/locations', [LocationController::class, 'locationIndex'])->name('locations.index');
-    Route::get('/locations/{location}', [LocationController::class, 'locationShow'])->name('locations.show');
     Route::get('/locations/create', [LocationController::class, 'createLocation'])->name('locations.create');
     Route::post('/locations', [LocationController::class, 'storeLocation'])->name('locations.store');
+    Route::get('/locations/{location}', [LocationController::class, 'locationShow'])->name('locations.show');
     Route::get('/locations/{location}/edit', [LocationController::class, 'editLocation'])->name('locations.edit');
     Route::put('/locations/{location}', [LocationController::class, 'updateLocation'])->name('locations.update');
     Route::delete('/locations/{location}', [LocationController::class, 'deleteLocation'])->name('locations.destroy');
@@ -75,18 +75,20 @@ Route::middleware('auth')->group(function () {
 
     // feedback
     Route::get('/feedback', [FeedbackController::class, 'feedbackIndex'])->name('feedback.index');
-    Route::get('/feedback/{feedback}', [FeedbackController::class, 'feedbackShow'])->name('feedback.show');
     Route::get('/publications/{publication}/feedback/create', [FeedbackController::class, 'feedbackCreate'])->name('feedback.create');
     Route::post('/feedback', [FeedbackController::class, 'storeFeedback'])->name('feedback.store');
+    Route::get('/feedback/{feedback}', [FeedbackController::class, 'feedbackShow'])->name('feedback.show');
     Route::get('/feedback/{feedback}/edit', [FeedbackController::class, 'feedbackEdit'])->name('feedback.edit');
     Route::put('/feedback/{feedback}', [FeedbackController::class, 'updateFeedback'])->name('feedback.update');
     Route::delete('/feedback/{feedback}', [FeedbackController::class, 'deleteFeedback'])->name('feedback.destroy');
 
     // Article
     Route::get('/articles', [ArticleController::class, 'articleIndex'])->name('articles.index');
-    Route::get('/articles/{article}', [ArticleController::class, 'articleShow'])->name('articles.show');
     Route::get('/articles/create', [ArticleController::class, 'createArticle'])->name('articles.create');
+    Route::post('/articles/image/upload', [ArticleController::class, 'uploadImage'])->name('articles.image.upload');
     Route::post('/articles', [ArticleController::class, 'storeArticle'])->name('articles.store');
+
+    Route::get('/articles/{article}', [ArticleController::class, 'articleShow'])->name('articles.show');
     Route::get('/articles/{article}/edit', [ArticleController::class, 'editArticle'])->name('articles.edit');
     Route::put('/articles/{article}', [ArticleController::class, 'updateArticle'])->name('articles.update');
     Route::delete('/articles/{article}', [ArticleController::class, 'deleteArticle'])->name('articles.destroy');

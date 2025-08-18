@@ -32,7 +32,7 @@ class PublicationController extends Controller
         // Pagination
         $publications = $query->paginate(10);
 
-        return Inertia::render('Publications/Index', [
+        return Inertia::render('Dashboard/Publications/Index', [
             'publications' => $publications,
             'filters' => $request->only(['category_id', 'search']),
         ]);
@@ -50,7 +50,7 @@ class PublicationController extends Controller
                 ->setStatusCode(404);
         }
 
-        return Inertia::render('Publications/Show', [
+        return Inertia::render('Dashboard/Publications/Show', [
             'publication' => $publication->load('category', 'location'),
         ]);
     }
@@ -62,7 +62,7 @@ class PublicationController extends Controller
         $categories = Category::select('id', 'name')->get();
         $locations = Location::select('id', 'name')->get();
 
-        return Inertia::render('Publications/Create', [
+        return Inertia::render('Dashboard/Publications/Create', [
             'categories' => $categories,
             'locations' => $locations,
         ]);
@@ -106,7 +106,7 @@ class PublicationController extends Controller
         $publications = Publication::where('id', '!=', $publication->id)->get();
         $publication->load('category', 'location');
 
-        return Inertia::render('Publications/Edit', [
+        return Inertia::render('Dashboard/Publications/Edit', [
             'publication' => [
                 'id' => $publication->id,
                 'title' => $publication->title,

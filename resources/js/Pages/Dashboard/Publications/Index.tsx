@@ -3,7 +3,7 @@ import DashboardLayout from '@/Layouts/DasboardLayout'
 import { Link, usePage } from '@inertiajs/react'
 import { PageProps } from '@/types'
 import DataTable, { LaravelPagination } from './Partial/DataTable'
-import { publicationsColumns } from '../Constant/columns'
+import { publicationsColumns } from '@/Constant/columns'
 
 
 const breadcrumbs = [
@@ -19,7 +19,7 @@ const Index = () => {
         <DashboardLayout header={<div className="flex justify-between items-center">
             <h1 className="text-2xl font-semibold">Publications</h1>
             <Link href="/publications/create">
-                <Button type="button" process={false} className="text-white">
+                <Button type="button" process={false} className="text-white rounded-lg">
                     + Add Publications
                 </Button>
             </Link>

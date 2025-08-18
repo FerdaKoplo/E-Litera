@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ArticleButton = () => {
+const Edit = () => {
   return (
     <div>
 
@@ -8,4 +8,4 @@ const ArticleButton = () => {
   )
 }
 
-export default ArticleButton
+export default Edit

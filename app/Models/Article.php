@@ -15,6 +15,11 @@ class Article extends Model
         'user_id',
         'title_article',
         'article_text_content',
+        'images'
+    ];
+
+    protected $casts = [
+        'images' => 'array',
     ];
 
 
@@ -23,8 +28,6 @@ class Article extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function images(): HasMany
-    {
-        return $this->hasMany(ArticleImage::class);
-    }
+
+
 }

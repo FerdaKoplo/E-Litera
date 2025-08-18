@@ -23,7 +23,7 @@ class CategoryController extends Controller
 
         $categories = $query->paginate(10);
 
-        return Inertia::render('Category/Index', [
+        return Inertia::render('Dashboard/Category/Index', [
             'categories' => $categories,
             'filters' => $request->only('search'),
             'breadcrumbs' => [
@@ -36,7 +36,7 @@ class CategoryController extends Controller
     {
         $this->authorize('view categories');
 
-        return inertia::render('Category/Show', [
+        return inertia::render('Dashboard/Category/Show', [
             'category' => $category,
             'breadcrumbs' => [
                 ['name' => 'Categories', 'href' => route('categories.index')],
@@ -50,7 +50,7 @@ class CategoryController extends Controller
         $this->authorize('create categories');
         $categories = Category::all();
 
-        return Inertia::render('Category/Create', [
+        return Inertia::render('Dashboard/Category/Create', [
             'categories' => $categories
         ]);
     }
@@ -76,7 +76,7 @@ class CategoryController extends Controller
         $this->authorize('edit categories');
 
         $categories = Category::where('id', '!=', $category->id)->get();
-        return Inertia::render('Category/Edit', [
+        return Inertia::render('Dashboard/Category/Edit', [
             'category' => $category,
             'categories' => $categories
         ]);

@@ -14,17 +14,23 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
-         // Create roles
+        // Create roles
         $visitorRole = Role::create(['name' => 'visitor']);
         $memberRole = Role::create(['name' => 'member']);
         $librarianRole = Role::create(['name' => 'librarian']);
         $superAdminRole = Role::create(['name' => 'super-admin']);
 
-        // Create permissions
+        // Create Category
         $createCategories = Permission::create(['name' => 'create categories']);
         $editCategories = Permission::create(['name' => 'edit categories']);
         $deleteCategories = Permission::create(['name' => 'delete categories']);
         $viewCategories = Permission::create(['name' => 'view categories']);
+
+        // Create Location
+        $createLocations = Permission::create(['name' => 'create locations']);
+        $editLocations = Permission::create(['name' => 'edit locations']);
+        $deleteLocations = Permission::create(['name' => 'delete locations']);
+        $viewLocations = Permission::create(['name' => 'view locations']);
 
         // Create Publications
         $createPublications = Permission::create(['name' => 'create publications']);
@@ -32,9 +38,33 @@ class RolePermissionSeeder extends Seeder
         $deletePublications = Permission::create(['name' => 'delete publications']);
         $viewPublications = Permission::create(['name' => 'view publications']);
 
+        // Create Articles
+        $createArticles = Permission::create(['name' => 'create articles']);
+        $editArticles = Permission::create(['name' => 'edit articles']);
+        $deleteArticles = Permission::create(['name' => 'delete articles']);
+        $viewArticles = Permission::create(['name' => 'view articles']);
+
+        $permissionsLibrarian = [
+            $createCategories,
+            $editCategories,
+            $viewCategories,
+
+            $createPublications,
+            $editPublications,
+            $viewPublications,
+
+            $createArticles,
+            $editArticles,
+            $viewArticles,
+
+            $createLocations,
+            $editLocations,
+            $viewLocations
+        ];
+
         // Assign permissions to roles
-        $librarianRole->givePermissionTo([$createCategories, $editCategories, $viewCategories]);
-        $librarianRole->givePermissionTo([$createPublications, $editPublications, $viewPublications]);
+        $librarianRole->givePermissionTo($permissionsLibrarian);
+        $memberRole->givePermissionTo($viewPublications, $viewArticles);
         $superAdminRole->givePermissionTo(Permission::all());
     }
 }

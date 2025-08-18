@@ -14,9 +14,9 @@ class ArticleController extends Controller
     {
         $this->authorize('view articles');
 
-        $articles = Article::with('images')->paginate(10);
+        $articles = Article::paginate(10);
 
-        return Inertia::render('Article/Index', [
+        return Inertia::render('Dashboard/Article/Index', [
             'articles' => $articles
         ]);
     }
@@ -25,25 +25,25 @@ class ArticleController extends Controller
     {
         $this->authorize('view articles');
 
-          return Inertia::render('Article/Show', [
-            'article' => $article->load('images')
+        return Inertia::render('Dashboard/Article/Show', [
+            'article' => $article
         ]);
     }
 
     public function createArticle()
     {
         $this->authorize('create articles');
-        return Inertia::render('Article/Create');
+
+        return Inertia::render('Dashboard/Article/Create');
     }
 
     public function storeArticle(Request $request)
     {
-        $this->authorize('create articles');
-
         $validated = $request->validate([
             'title_article' => 'required|string|max:255',
             'article_text_content' => 'required|string',
-            'images.*' => 'nullable|image|max:2048',
+            'images' => 'nullable|array',
+            'images.*' => 'file|image|max:2048'
         ]);
 
         $article = Article::create([
@@ -52,25 +52,23 @@ class ArticleController extends Controller
             'article_text_content' => $validated['article_text_content'],
         ]);
 
-        if($request->hasFile('images')) {
+        if ($request->hasFile('images')) {
+            $urls = [];
             foreach ($request->file('images') as $image) {
-                $path = $image->store('article_images', 'public');
-                ArticleImage::create([
-                    'article_id' => $article->id,
-                    'article_image_content_path' => $path,
-                ]);
+                $urls[] = $image->store('article_images', 'public');
             }
+            $article->images = $urls;
+            $article->save();
         }
 
-        return redirect()->route('articles.index')
-                         ->with('success', 'Article created successfully.');
+        return redirect()->route('articles.index')->with('success', 'Article created successfully.');
     }
 
     public function editArticle(Article $article)
     {
-         $this->authorize('edit articles');
+        $this->authorize('edit articles');
 
-        return Inertia::render('Article/Edit', [
+        return Inertia::render('Dashboard/Article/Edit', [
             'article' => $article->load('images')
         ]);
     }
@@ -82,7 +80,6 @@ class ArticleController extends Controller
         $validated = $request->validate([
             'title_article' => 'required|string|max:255',
             'article_text_content' => 'required|string',
-            'images.*' => 'nullable|image|max:2048',
         ]);
 
         $article->update([
@@ -90,18 +87,31 @@ class ArticleController extends Controller
             'article_text_content' => $validated['article_text_content'],
         ]);
 
-        if($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('article_images', 'public');
-                ArticleImage::create([
-                    'article_id' => $article->id,
-                    'article_image_content_path' => $path,
-                ]);
-            }
-        }
+        // if ($request->hasFile('images')) {
+        //     foreach ($request->file('images') as $image) {
+        //         $path = $image->store('article_images', 'public');
+        //         ArticleImage::create([
+        //             'article_id' => $article->id,
+        //             'article_image_content_path' => $path,
+        //         ]);
+        //     }
+        // }
 
         return redirect()->route('articles.show', $article->id)
-                         ->with('success', 'Article updated successfully.');
+            ->with('success', 'Article updated successfully.');
+    }
+
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|max:2048',
+        ]);
+
+        $path = $request->file('image')->store('article_images', 'public');
+
+        return response()->json([
+            'url' => asset('storage/' . $path),
+        ]);
     }
 
     public function deleteArticle(Article $article)
@@ -112,6 +122,6 @@ class ArticleController extends Controller
         $article->delete();
 
         return redirect()->route('articles.index')
-                         ->with('success', 'Article deleted successfully.');
+            ->with('success', 'Article deleted successfully.');
     }
 }

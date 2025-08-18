@@ -4,7 +4,7 @@ import { PageProps } from '@/types'
 import { Link, usePage } from '@inertiajs/react'
 import React from 'react'
 import DataTable, { LaravelPagination } from './Partial/DataTable'
-import { categoryColumns } from '@/Pages/Constant/columns'
+import { categoryColumns } from '@/Constant/columns'
 
 const breadcrumbs = [
     { name: 'Categories', href: '/categories' },
@@ -22,7 +22,7 @@ const Index = () => {
                     <div className="flex justify-between items-center">
                         <h1 className="text-2xl font-semibold">Categories</h1>
                         <Link href="/categories/create">
-                            <Button type="button" process={false} className="text-white">
+                            <Button type="button" process={false} className="text-white rounded-lg">
                                 + Add Category
                             </Button>
                         </Link>

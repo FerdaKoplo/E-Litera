@@ -10,7 +10,7 @@ export const categoryActions = (row: Category) => [
             Inertia.delete(`/categories/${id}`, { preserveScroll: true });
         }
     },
-];
+]
 
 
 export const publicationsActions = (row: Publications) => [
@@ -23,4 +23,16 @@ export const publicationsActions = (row: Publications) => [
             Inertia.delete(`/publications/${id}`, { preserveScroll: true });
         },
     },
-];
+]
+
+export const articleActions = (row: Article) => [
+    { label: "View", href: `/articles/${row.id}` },
+    { label: "Edit", href: `/articles/${row.id}/edit` },
+    {
+        label: "Delete",
+        confirmMessage: "Are you sure you want to delete this article?",
+        onClick: (id: number | string) => {
+            Inertia.delete(`/articles/${id}`, { preserveScroll: true });
+        },
+    },
+]

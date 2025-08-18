@@ -1,5 +1,5 @@
-import RowActions from "@/Pages/Category/Partial/RowAction";
-import { categoryActions, publicationsActions } from "./action";
+import RowActions from "@/Pages/Dashboard/Category/Partial/RowAction";
+import { articleActions, categoryActions, publicationsActions, } from "./action";
 import { getTypeColor } from "@/helper/color";
 
 export const categoryColumns = [
@@ -82,3 +82,23 @@ export const publicationsColumns = [
         ),
     },
 ];
+
+export const articleColumns = [
+    { header: "#", accessor: (_: Article, index?: number) => (index ?? 0) + 1 },
+    { header: "Title", accessor: (row: Article) => row.title_article },
+    // {
+    //     header: "Content",
+    //     accessor: (row: Article) => (
+    //         <div
+    //             className="line-clamp-2 max-w-xs text-gray-700"
+    //             dangerouslySetInnerHTML={{ __html: row.article_content }}
+    //         />
+    //     ),
+    // },
+    {
+        header: "Actions",
+        accessor: (row: Article) => (
+            <RowActions rowId={row.id} actions={articleActions(row)} />
+        ),
+    },
+]
