@@ -16,7 +16,7 @@ const Eyes = () => {
             const x = ((e.clientX - left) / width - 0.5) * 2;
             const y = ((e.clientY - top) / height - 0.5) * 2;
             setPosition({ x, y });
-        }, 50),
+        },50),
         []
     )
 
