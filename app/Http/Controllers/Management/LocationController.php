@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Management;
 
+use App\Http\Controllers\Controller;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class LocationController extends Controller
 {
-    public function locationIndex()
+        public function locationIndex()
     {
         $this->authorize('view locations');
 
@@ -81,5 +82,4 @@ class LocationController extends Controller
         return redirect()->route('locations.index')
             ->with('success', 'Location deleted successfully.');
     }
-
 }

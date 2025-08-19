@@ -1,5 +1,5 @@
 import RowActions from "@/Pages/Dashboard/Category/Partial/RowAction";
-import { articleActions, categoryActions, publicationsActions, } from "./action";
+import { articleActions, categoryActions, locationActions, publicationsActions, } from "./action";
 import { getTypeColor } from "@/helper/color";
 
 export const categoryColumns = [
@@ -17,6 +17,15 @@ export const categoryColumns = [
     {
         header: "Actions",
         accessor: (row: Category) => <RowActions rowId={row.id} actions={categoryActions(row)} />,
+    },
+];
+
+export const locationColumns = [
+    { header: "#", accessor: (_: Location, index?: number) => (index ?? 0) + 1 },
+    { header: "Bookshelf Location Name", accessor: (row: Location) => row.name },
+    {
+        header: "Actions",
+        accessor: (row: Location) => <RowActions rowId={row.id} actions={locationActions(row)} />,
     },
 ];
 

@@ -12,6 +12,18 @@ export const categoryActions = (row: Category) => [
     },
 ]
 
+export const locationActions = (row: Location) => [
+    { label: "View", href: "/locations/:id" },
+    { label: "Edit", href: "/locations/:id/edit" },
+    {
+        label: "Delete",
+        confirmMessage: "Are you sure?",
+        onClick: (id: number | string) => {
+            Inertia.delete(`/locations/${id}`, { preserveScroll: true });
+        }
+    },
+]
+
 
 export const publicationsActions = (row: Publications) => [
     { label: "View", href: `/publications/${row.id}` },

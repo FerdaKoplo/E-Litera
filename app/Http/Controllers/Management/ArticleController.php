@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Management;
 
+use App\Http\Controllers\Controller;
 use App\Models\Article;
-use App\Models\ArticleImage;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ArticleController extends Controller
 {
-
     public function articleIndex()
     {
         $this->authorize('view articles');

@@ -16,6 +16,10 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+    public function index() {
+        return Inertia::render('Member/Profile/Index');
+    }
+
     public function edit(Request $request): Response
     {
         return Inertia::render('Dashboard/Profile/Edit', [

@@ -38,6 +38,13 @@ class RolePermissionSeeder extends Seeder
         $deletePublications = Permission::create(['name' => 'delete publications']);
         $viewPublications = Permission::create(['name' => 'view publications']);
 
+        // Create Loans
+        $createLoans = Permission::create(['name' => 'create loans']);
+        $editLoans = Permission::create(['name' => 'edit loans']);
+        $deleteLoans = Permission::create(['name' => 'delete loans']);
+        $viewLoans = Permission::create(['name' => 'view loans']);
+
+
         // Create Articles
         $createArticles = Permission::create(['name' => 'create articles']);
         $editArticles = Permission::create(['name' => 'edit articles']);
@@ -62,9 +69,15 @@ class RolePermissionSeeder extends Seeder
             $viewLocations
         ];
 
+        $permissionsMember = [
+            $viewPublications,
+            $viewArticles,
+
+        ];
+
         // Assign permissions to roles
         $librarianRole->givePermissionTo($permissionsLibrarian);
-        $memberRole->givePermissionTo($viewPublications, $viewArticles);
+        $memberRole->givePermissionTo($permissionsMember);
         $superAdminRole->givePermissionTo(Permission::all());
     }
 }

@@ -5,33 +5,41 @@ import VisitorLayout from '@/Layouts/VisitorLayout'
 import { Link, useForm } from '@inertiajs/react'
 import React, { useEffect } from 'react'
 
-const Login = () => {
-
+const Register = () => {
     const { data, setData, post, processing, errors, reset } = useForm({
-        email: '',
-        password: '',
-        remember: ''
-    })
+            name : '',
+            email: '',
+            password: '',
+            password_confirmation: '',
+        })
 
-    useEffect(() => {
-        return () => {
-            reset('password')
+        useEffect(() => {
+            return () => {
+                reset('password', 'password_confirmation')
+            }
+        }, [])
+
+        const submit = (e: React.SyntheticEvent) => {
+            e.preventDefault()
+            post(route('register'), {
+                onSuccess : (success) => console.log(success),
+                onError : (err) => console.log(err)
+            })
         }
-    }, [])
-
-    // const onHandleChange = (event: React.ChangeEvent<HTMLInputElement>) => [
-    //     setData(event.target.name as "email" | "password" | "remember",
-    //         event.target.type === 'checkbox' ? event.target.checked + '' : event.target.value)
-    // ]
-
-    const submit = (e: React.SyntheticEvent) => {
-        e.preventDefault()
-        post(route('login'))
-    }
-
     return (
         <VisitorLayout>
             <form onSubmit={submit} className='flex flex-col gap-10 '>
+                <div>
+                    <Label forInput={'name'} value={'Username'} />
+                    <Input
+                        isFocused={false}
+                        className='w-full'
+                        name='name'
+                        value={data.name}
+                        onChange={e => setData('name', e.target.value)}
+                    />
+                </div>
+
                 <div>
                     <Label forInput={'email'} value={'Email'} />
                     <Input
@@ -53,11 +61,21 @@ const Login = () => {
                     />
                 </div>
 
+                <div>
+                    <Label forInput={'password_confirmation'} value={'Confirm Password'} />
+                    <Input isFocused={false}
+                        className='w-full'
+                        name='password_confirmation'
+                        value={data.password_confirmation}
+                        onChange={e => setData('password_confirmation', e.target.value)}
+                    />
+                </div>
+
                 <div className='flex justify-between'>
-                    <Link href={'/register'}>
-                        Don't have account?
+                    <Link href={'/login'}>
+                        Have account?
                     </Link>
-                    <Link href={'/forgot-password'}>
+                    <Link href={''}>
                         Forgot Password?
                     </Link>
                 </div>
@@ -70,4 +88,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default Register

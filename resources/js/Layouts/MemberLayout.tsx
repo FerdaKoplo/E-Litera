@@ -6,8 +6,9 @@ import { useForm, usePage } from '@inertiajs/react'
 import { ChevronRightIcon, SlashIcon } from 'lucide-react'
 import React, { useEffect } from 'react'
 import { BiSolidBookReader } from 'react-icons/bi'
-import { FaFolder, FaHandHolding } from 'react-icons/fa6'
+import { FaFolder, FaHandHolding, FaUser } from 'react-icons/fa6'
 import { IoMdAnalytics } from 'react-icons/io'
+import { FaHome } from "react-icons/fa";
 import { RiBookShelfFill } from "react-icons/ri";
 import { MdArticle, MdFeedback, MdLibraryBooks, MdPersonAdd } from 'react-icons/md'
 import Button from '@/Components/Button'
@@ -18,7 +19,7 @@ interface Props {
     breadcrumbs?: { name: string; href?: string }[]
 }
 
-const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => {
+const MemberLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => {
     const { auth } = usePage<PageProps>().props
     const { post } = useForm()
 
@@ -58,64 +59,27 @@ const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => 
             )}
             <div className="flex">
                 <ResponsiveSidebar>
-                    <SidebarItem href="/dashboard" active={route().current('dashboard')}>
+                     <SidebarItem href="/member/home" active={route().current('home')}>
+                        <div className='flex items-center gap-5'>
+                            <FaHome size={20}/>
+                            <span>Home</span>
+                        </div>
+                    </SidebarItem>
+
+                    <SidebarItem href="/member/dashboard" active={route().current('dashboard')}>
                         <div className='flex items-center gap-5'>
                             <IoMdAnalytics size={20} />
                             <span>Dashboard</span>
                         </div>
                     </SidebarItem>
 
-                    <SidebarItem href="/categories" active={route().current('categories.index')}>
+                    <SidebarItem href="/member/profile" active={route().current('profile.index')}>
                         <div className='flex items-center gap-5'>
-                            <FaFolder size={20} />
-                            <span>Category</span>
+                            <FaUser size={20} />
+                            <span>Profile</span>
                         </div>
                     </SidebarItem>
 
-                    <SidebarItem href="/locations" active={route().current('locations.index')}>
-                        <div className='flex items-center gap-5'>
-                            <RiBookShelfFill  size={20} />
-                            <span>Location</span>
-                        </div>
-                    </SidebarItem>
-
-                    <SidebarItem href="/publications" active={route().current('publications.index')}>
-                        <div className='flex items-center gap-5'>
-                            <MdLibraryBooks size={20} />
-                            <span>Publications</span>
-                        </div>
-                    </SidebarItem>
-
-                    <SidebarItem href="/loans" active={route().current('loans.index')}>
-                        <div className='flex items-center gap-5 '>
-                            <BiSolidBookReader size={20} />
-                            <span>Loan</span>
-                        </div>
-                    </SidebarItem>
-
-                    <SidebarItem href="/articles" active={route().current('articles.index')}>
-                        <div className='flex items-center gap-5'>
-                            <MdArticle size={20} />
-                            <span>Article</span>
-                        </div>
-                    </SidebarItem>
-
-                    <SidebarItem href="/feedbacks" active={route().current('feedbacks.index')}>
-                        <div className='flex items-center gap-5'>
-                            <MdFeedback size={20} />
-                            <span>Feedback</span>
-                        </div>
-                    </SidebarItem>
-
-                    {auth.user.role === 'super-admin' && (
-
-                        <SidebarItem href="/librarians" active={route().current('librarians.index')}>
-                            <div className='flex items-center gap-5'>
-                                <MdPersonAdd size={20} />
-                                <span>Librarian</span>
-                            </div>
-                        </SidebarItem>
-                    )}
 
                      <Button className='text-white mt-auto w-full rounded-lg bg-red-400' onClick={() => handleLogout()}>
                             Logout
@@ -131,4 +95,4 @@ const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => 
     )
 }
 
-export default DashboardLayout
+export default MemberLayout
