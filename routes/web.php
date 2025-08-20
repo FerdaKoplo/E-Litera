@@ -98,6 +98,9 @@ Route::middleware(['auth', 'role:member'])->group(function () {
     Route::get('/member/home', [\App\Http\Controllers\Member\HomeController::class, 'index'])->name('home');
     Route::get('/member/dashboard', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('dashboard.member');
     Route::get('/member/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/member/articles', [\App\Http\Controllers\Member\ArticleController::class, 'articleIndex'])->name('articles.member.index');
+    Route::get('/member/articles/{article}', [\App\Http\Controllers\Member\ArticleController::class, 'articleShow'])->name('articles.member.show');
+
 });
 
 require __DIR__ . '/auth.php';

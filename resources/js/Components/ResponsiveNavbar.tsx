@@ -6,7 +6,7 @@ interface Props {
 
 const ResponsiveNavbar : React.FC<Props> = ( { children } ) => {
   return (
-    <div className='w-full flex gap-7 p-5 items-center justify-center'>
+    <div className='w-full flex gap-10 p-8 items-center bg-background shadow-md justify-center'>
         {children}
     </div>
   )

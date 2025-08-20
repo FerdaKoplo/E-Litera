@@ -7,10 +7,8 @@ import { useState } from 'react'
 import DashboardLayout from '@/Layouts/DasboardLayout'
 import { Link, useForm } from '@inertiajs/react'
 import Button from '@/Components/Button'
+import ArticleLayout from '@/Layouts/ArticleLayout'
 
-interface Props {
-
-}
 
 const breadcrumbs = [
     { name: 'Articles', href: '/articles' },
@@ -26,17 +24,25 @@ const Create = () => {
     });
 
     const titleEditor = useEditor({
-        extensions: [StarterKit, Image, Placeholder.configure({ placeholder: 'Title' })],
+        extensions: [StarterKit,
+            Image,
+            Placeholder.configure({ placeholder: 'Title' })],
         onUpdate: ({ editor }) => setData('title_article', editor.getText().trim())
     });
 
     const contentEditor = useEditor({
-        extensions: [StarterKit, Image, Placeholder.configure({ placeholder: 'Write content...' })],
-        onUpdate: ({ editor }) => setData('article_text_content', editor.getHTML())
-    });
+        extensions: [
+            StarterKit,
+            Image,
+            Placeholder.configure({ placeholder: 'Write content...' }),
+        ],
+        onUpdate: ({ editor }) => setData('article_text_content', editor.getHTML()),
+    })
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
+
+         console.log("Submitting with data:", data)
 
         const formData = new FormData();
         formData.append('title_article', data.title_article);
@@ -47,15 +53,33 @@ const Create = () => {
         });
 
         post(route('articles.store'), {
-            data: formData,
-            headers: { 'Content-Type': 'multipart/form-data' },
+            data: formData
         })
     }
 
     return (
-        <DashboardLayout header={<h2 className="font-semibold text-2xl text-gray-800">Create Article</h2>} breadcrumbs={breadcrumbs}>
-            <div className='w-full'>
-                <form onSubmit={submit}>
+        <ArticleLayout header={
+            <div className="flex items-center justify-between ">
+                <h2 className="font-semibold text-2xl text-gray-800">Create Article</h2>
+
+                <div className='flex items-center gap-10 justify-end'>
+                    <Button
+                        type="submit"
+                        form="articleForm"
+                        process={processing}
+                        className="px-6 py-2 rounded-lg bg-black text-white hover:bg-fuchsia-400 transition"
+                    >
+                        Save
+                    </Button>
+                    <Link href={route('articles.index')} className="text-gray-600">
+                        Cancel
+                    </Link>
+                </div>
+            </div>
+        } breadcrumbs={breadcrumbs}>
+            <div className='w-full '>
+                <form onSubmit={submit} id='articleForm' className='space-y-10'>
+
                     <EditorField
                         editorId="title"
                         editor={titleEditor}
@@ -70,21 +94,9 @@ const Create = () => {
                         setActiveEditor={setActiveEditor}
                         onAddImage={(file) => setData('images', [...data.images, file])}
                     />
-                    <div className='flex items-center gap-10'>
-                        <Button
-                            type="submit"
-                            process={processing}
-                            className="px-6 py-2 rounded-lg bg-black text-white hover:bg-fuchsia-400 transition"
-                        >
-                            Save
-                        </Button>
-                        <Link href={route('articles.index')} className="text-gray-600">
-                            Cancel
-                        </Link>
-                    </div>
                 </form>
             </div>
-        </DashboardLayout >
+        </ArticleLayout >
     )
 }
 

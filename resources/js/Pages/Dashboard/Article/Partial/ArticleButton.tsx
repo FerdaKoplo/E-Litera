@@ -13,24 +13,26 @@ interface ToolbarButtonProps {
 }
 
 const ToolbarButton: React.FC<ToolbarButtonProps> = ({ index, active, onClick, children }) => (
-    <Button
+    <button
         onClick={onClick}
         type='button'
-        className={`rounded-lg text-white transition-all duration-300 ease-in-out
+        className={`rounded-lg text-gray-800 transition-all duration-300 ease-in-out
       ${active ? 'opacity-100 scale-100 pointer-events-auto ' : 'opacity-0 scale-0 pointer-events-none'}`}
         style={{ transitionDelay: `${index * 50}ms` }}
     >
         {children}
-    </Button>
+    </button>
 )
 
 interface ArticleButtonProps {
     editor: Editor | null;
     index?: number;
     onAddImage?: (file: File) => void
+    editorId: 'title' | 'content'
+
 }
 
-const ArticleButton: React.FC<ArticleButtonProps> = ({ editor, index, onAddImage }) => {
+const ArticleButton: React.FC<ArticleButtonProps> = ({ editor, index, onAddImage, editorId }) => {
     const [toolbar, setToolbar] = useState(false);
 
     const handleToolButton = () => setToolbar(!toolbar);
@@ -70,9 +72,11 @@ const ArticleButton: React.FC<ArticleButtonProps> = ({ editor, index, onAddImage
             <ToolbarButton index={1} active={toolbar} onClick={() => editor?.chain().focus().toggleItalic().run()}>
                 <FaItalic />
             </ToolbarButton>
-            <ToolbarButton index={2} active={toolbar} onClick={handleImageUpload}>
-                <IoMdImage />
-            </ToolbarButton>
+            {editorId !== 'title' && (
+                <ToolbarButton index={2} active={toolbar} onClick={handleImageUpload}>
+                    <IoMdImage className='font-bold' />
+                </ToolbarButton>
+            )}
         </div>
     );
 };

@@ -9,11 +9,19 @@ use Inertia\Inertia;
 
 class ArticleController extends Controller
 {
-    public function articleIndex()
+    public function articleIndex(Request $request)
     {
         $this->authorize('view articles');
 
-        $articles = Article::paginate(10);
+        $query = Article::query();
+
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('title_article', 'like', "%{$request->search}%");
+            });
+        }
+        $articles = $query->with('user')->paginate(10);
+
 
         return Inertia::render('Dashboard/Article/Index', [
             'articles' => $articles
