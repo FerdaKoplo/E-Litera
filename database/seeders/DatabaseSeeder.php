@@ -3,6 +3,10 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Article;
+use App\Models\Category;
+use App\Models\Location;
+use App\Models\Publication;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
@@ -43,5 +47,14 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
         ]);
         $superAdmin->assignRole('super-admin');
+
+
+        User::factory(10)->create();
+        Category::factory(5)->create();
+        Location::factory(5)->create();
+
+        // Publications and articles
+        Publication::factory(50)->create();
+        Article::factory(50)->create();
     }
 }

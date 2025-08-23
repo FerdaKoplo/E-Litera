@@ -4,7 +4,6 @@ import { articleColumns } from '@/Constant/columns'
 import DashboardLayout from '@/Layouts/DasboardLayout'
 import { PageProps } from '@/types'
 import { Link, usePage } from '@inertiajs/react'
-import React from 'react'
 
 const breadcrumbs = [
     { name: 'Articles', href: '/articles' },

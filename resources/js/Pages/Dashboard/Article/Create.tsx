@@ -79,7 +79,6 @@ const Create = () => {
         } breadcrumbs={breadcrumbs}>
             <div className='w-full '>
                 <form onSubmit={submit} id='articleForm' className='space-y-10'>
-
                     <EditorField
                         editorId="title"
                         editor={titleEditor}

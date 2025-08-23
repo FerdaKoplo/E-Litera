@@ -96,10 +96,16 @@ Route::middleware(['auth', 'role:super-admin|librarian'])->group(function () {
 
 Route::middleware(['auth', 'role:member'])->group(function () {
     Route::get('/member/home', [\App\Http\Controllers\Member\HomeController::class, 'index'])->name('home');
+
     Route::get('/member/dashboard', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('dashboard.member');
     Route::get('/member/profile', [ProfileController::class, 'index'])->name('profile.index');
+
     Route::get('/member/articles', [\App\Http\Controllers\Member\ArticleController::class, 'articleIndex'])->name('articles.member.index');
     Route::get('/member/articles/{article}', [\App\Http\Controllers\Member\ArticleController::class, 'articleShow'])->name('articles.member.show');
+
+    // publications
+    Route::get('/member/publications', [\App\Http\Controllers\Member\PublicationController::class, 'publicationIndex'])->name('publications.member.index');
+    Route::get('/member/publication/{publication}', [\App\Http\Controllers\Member\PublicationController::class, 'publicationShow'])->name('publications.member.show');
 
 });
 

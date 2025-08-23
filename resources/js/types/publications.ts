@@ -6,6 +6,7 @@ interface Publications {
     category_id: string
     location_id: string
     download_count: string
+    publication_description : string
     pdf_url: string | File
     image_url: string | File
     category?: {

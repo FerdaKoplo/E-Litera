@@ -44,7 +44,7 @@ const DataTable = <T,>({
     const links = !Array.isArray(data) ? data.links : undefined
 
     return (
-        <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+        <div className="overflow-x-auto flex flex-col gap-10 rounded-xl border border-gray-200 shadow-sm">
             {/* Table */}
             <Table className="min-w-full text-sm">
                 <TableHeader>
@@ -79,7 +79,7 @@ const DataTable = <T,>({
 
             {/* Pagination */}
             {links && links.length > 0 && (
-                <Pagination>
+                <Pagination >
                     <PaginationContent>
                         {links.map((link, index) => {
                             const isDisabled = !link.url;
@@ -117,7 +117,7 @@ const DataTable = <T,>({
                                     <PaginationLink
                                         isActive={link.active}
                                         size="default"
-                                        className={isDisabled ? "pointer-events-none opacity-50" : ""}
+                                        className={`${isDisabled ? "pointer-events-none opacity-50" : ""} ${link.active ? 'bg-black text-white' : 'bg-white text-black'}` }
                                         href={link.url || undefined}
                                     >
                                         {link.label}

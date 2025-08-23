@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('publications', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('author')->nullable();
+            $table->string(column: 'author')->nullable();
             $table->enum('type', ['ebook', 'physical', 'journal']);
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->text('publication_description');
             $table->foreignId('location_id')->nullable()->constrained()->onDelete('set null');
             $table->unsignedBigInteger('download_count')->default(0);
             $table->string('pdf_url')->nullable();

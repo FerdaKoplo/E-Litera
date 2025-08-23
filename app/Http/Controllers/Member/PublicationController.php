@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Location;
 use App\Models\Publication;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -20,6 +22,16 @@ class PublicationController extends Controller
             $query->where('category_id', $request->category_id);
         }
 
+        // filter by type
+        if ($request->type) {
+            $query->where('type', $request->type);
+        }
+
+        // filter by location
+        if ($request->location_id) {
+            $query->where('location_id', $request->location_id);
+        }
+
         // Search by title or author
         if ($request->search) {
             $query->where(function ($q) use ($request) {
@@ -29,11 +41,16 @@ class PublicationController extends Controller
         }
 
         // Pagination
-        $publications = $query->paginate(10);
+        $publications = $query->paginate(16);
+
+        $categories = Category::all();
+        $locations = Location::all();
 
         return Inertia::render('Member/Publications/Index', [
             'publications' => $publications,
-            'filters' => $request->only(['category_id', 'search']),
+            'categories' => $categories,
+            'locations' => $locations,
+            'filters' => $request->only(['category_id', 'search', 'location_id', 'type']),
         ]);
     }
 
@@ -41,13 +58,12 @@ class PublicationController extends Controller
     {
         $this->authorize('view publications');
 
-
-        if (!$publication) {
-            return Inertia::render('Errors/NotFound', [
-                'message' => 'Publication not found.'
-            ])->toResponse(request())
-                ->setStatusCode(404);
-        }
+        // if (!$publication) {
+        //     return Inertia::render('Errors/NotFound', [
+        //         'message' => 'Publication not found.'
+        //     ])->toResponse(request())
+        //         ->setStatusCode(404);
+        // }
 
         return Inertia::render('Member/Publications/Show', [
             'publication' => $publication->load('category', 'location'),

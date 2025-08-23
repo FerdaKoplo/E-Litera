@@ -2,9 +2,8 @@ import Button from '@/Components/Button'
 import DashboardLayout from '@/Layouts/DasboardLayout'
 import { PageProps } from '@/types'
 import { Link, usePage } from '@inertiajs/react'
-import React from 'react'
-import DataTable, { LaravelPagination } from './Partial/DataTable'
 import { categoryColumns } from '@/Constant/columns'
+import DataTable, { LaravelPagination } from '@/Components/Table/DataTable'
 
 const breadcrumbs = [
     { name: 'Categories', href: '/categories' },
@@ -31,7 +30,7 @@ const Index = () => {
 
                 breadcrumbs={breadcrumbs}>
 
-                <div className='flex flex-col  items-center w-full'>
+                <div className='flex flex-col  '>
 
                     {/* Table */}
                     <DataTable<Category>

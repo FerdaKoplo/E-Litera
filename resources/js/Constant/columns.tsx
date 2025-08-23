@@ -1,4 +1,4 @@
-import RowActions from "@/Pages/Dashboard/Category/Partial/RowAction";
+import RowActions from "@/Components/Table/RowAction";
 import { articleActions, categoryActions, locationActions, publicationsActions, } from "./action";
 import { getTypeColor } from "@/helper/color";
 

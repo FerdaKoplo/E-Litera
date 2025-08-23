@@ -4,7 +4,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbSeparator } from '@/Components/ui
 import React from 'react'
 import { FaHome } from 'react-icons/fa'
 import { FaUser } from 'react-icons/fa6'
-import { MdArticle } from 'react-icons/md'
+import { MdArticle, MdLibraryBooks } from 'react-icons/md'
 
 interface Props {
     children: React.ReactNode
@@ -16,7 +16,6 @@ const HomeLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => {
     return (
         <div>
             <ResponsiveNavbar>
-
                 <Navbaritem href={'/member/home'} active={route().current('home')}>
                     <div className='flex flex-col items-center gap-3'>
                         <FaHome size={20} />
@@ -31,6 +30,13 @@ const HomeLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => {
                     </div>
                 </Navbaritem>
 
+                <Navbaritem href={'/member/publications'} active={route().current('publications.member.index')}>
+                    <div className='flex flex-col items-center gap-3'>
+                        <MdLibraryBooks size={20} />
+                        <span className='font-semibold'>Publications</span>
+                    </div>
+                </Navbaritem>
+
                 <Navbaritem href={''} active={false}>
                     <div className='flex flex-col items-center gap-3'>
                         <FaUser size={20} />
@@ -40,8 +46,8 @@ const HomeLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => {
             </ResponsiveNavbar>
 
             <div className='py-10 space-y-10'>
-                <header >
-                    <div className="space-y-3 max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <header>
+                    <div className="space-y-3 mx-auto py-6 px-4 sm:px-6 lg:px-32">
                         {header}
                         {breadcrumbs && (
                             <Breadcrumb className='flex items-center gap-4'>

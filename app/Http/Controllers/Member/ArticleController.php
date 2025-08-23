@@ -21,7 +21,7 @@ class ArticleController extends Controller
             });
         }
 
-        $articles = $query->paginate(10)->withQueryString();
+        $articles = $query->paginate(16);
 
         return Inertia::render('Member/Article/Index', [
             'articles' => $articles

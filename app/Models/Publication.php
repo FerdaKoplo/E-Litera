@@ -27,6 +27,12 @@ class Publication extends Model
         'location_id' => 'integer',
     ];
 
+    public function getImageUrlAttribute()
+    {
+        return $this->attributes['image_url']
+            ? asset($this->attributes['image_url'])
+            : null;
+    }
 
     public function category(): BelongsTo
     {
