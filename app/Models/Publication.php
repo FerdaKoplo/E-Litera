@@ -34,6 +34,13 @@ class Publication extends Model
             : null;
     }
 
+    public function getIsAvailableAttribute()
+    {
+        return !$this->loans()
+            ->whereIn('status', ['pending', 'borrowed'])
+            ->exists();
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id');

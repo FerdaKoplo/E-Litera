@@ -5,6 +5,7 @@ import React from 'react'
 import { FaHome } from 'react-icons/fa'
 import { FaUser } from 'react-icons/fa6'
 import { MdArticle, MdLibraryBooks } from 'react-icons/md'
+import { Toaster } from 'sonner'
 
 interface Props {
     children: React.ReactNode
@@ -17,28 +18,28 @@ const HomeLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => {
         <div>
             <ResponsiveNavbar>
                 <Navbaritem href={'/member/home'} active={route().current('home')}>
-                    <div className='flex flex-col items-center gap-3'>
+                    <div className='flex flex-col items-center gap-3 '>
                         <FaHome size={20} />
                         <span className='font-semibold'>Home</span>
                     </div>
                 </Navbaritem>
 
                 <Navbaritem href={'/member/articles'} active={route().current('articles.member.index')}>
-                    <div className='flex flex-col items-center gap-3'>
+                    <div className='flex flex-col items-center gap-3 '>
                         <MdArticle size={20} />
                         <span className='font-semibold'>Article</span>
                     </div>
                 </Navbaritem>
 
                 <Navbaritem href={'/member/publications'} active={route().current('publications.member.index')}>
-                    <div className='flex flex-col items-center gap-3'>
+                    <div className='flex flex-col items-center gap-3 '>
                         <MdLibraryBooks size={20} />
                         <span className='font-semibold'>Publications</span>
                     </div>
                 </Navbaritem>
 
                 <Navbaritem href={''} active={false}>
-                    <div className='flex flex-col items-center gap-3'>
+                    <div className='flex flex-col items-center gap-3 '>
                         <FaUser size={20} />
                         <span className='font-semibold'>Profile</span>
                     </div>
@@ -73,6 +74,7 @@ const HomeLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => {
                 </header>
                 <main className='px-32'>
                     {children}
+                    <Toaster position="top-right" richColors closeButton />
                 </main>
             </div>
         </div>

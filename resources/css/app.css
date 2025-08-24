@@ -67,9 +67,13 @@
     height: 0;
 }
 
- .editor-no-outline .ProseMirror {
+.editor-no-outline .ProseMirror {
     outline: none;
-  }
+}
+
+.will-change-backdrop-filter {
+    will-change: backdrop-filter;
+}
 
 @layer base {
     * {

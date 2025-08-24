@@ -1,15 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 interface Props {
-    children : React.ReactNode
+    children: React.ReactNode
 }
 
-const ResponsiveNavbar : React.FC<Props> = ( { children } ) => {
-  return (
-    <div className='w-full flex gap-10 p-8 items-center sticky top-0 z-50 bg-gradient-to-b from-violet-50 to-white  shadow justify-center'>
-        {children}
-    </div>
-  )
+const ResponsiveNavbar: React.FC<Props> = ({ children }) => {
+
+    const [scrolled, setScrolled] = useState(false)
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 100)
+        }
+
+        window.addEventListener("scroll", handleScroll)
+        return () => window.removeEventListener("scroll", handleScroll)
+    }, [])
+    return (
+        <nav className={`w-full flex gap-10 px-8 py-4 items-center sticky top-0 z-50  justify-center transition-colors duration-300
+      ${scrolled
+                ? "bg-slate-900/70 backdrop-blur-md text-slate-100 shadow"
+                : "bg-gradient-to-b from-violet-50 to-white text-xs"
+            }`}>
+            {children}
+        </nav>
+    )
 }
 
 export default ResponsiveNavbar

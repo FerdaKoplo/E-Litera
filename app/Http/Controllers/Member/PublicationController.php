@@ -66,7 +66,7 @@ class PublicationController extends Controller
         // }
 
         return Inertia::render('Member/Publications/Show', [
-            'publication' => $publication->load('category', 'location'),
+            'publication' => $publication->load('category', 'location')->append('is_available'),
         ]);
     }
 }

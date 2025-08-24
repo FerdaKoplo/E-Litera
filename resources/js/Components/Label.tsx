@@ -1,8 +1,8 @@
 import React from 'react'
 
 interface Props extends React.LabelHTMLAttributes<HTMLLabelElement>{
-    forInput: string;
-    value: string;
+    forInput?: string;
+    value?: string;
     className?: string;
 }
 

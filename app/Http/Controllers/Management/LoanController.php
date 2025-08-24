@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Management;
 use App\Http\Controllers\Controller;
 use App\Models\Loan;
 use App\Models\Publication;
+use App\Notifications\LoanStatusUpdated;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -49,47 +50,16 @@ class LoanController extends Controller
         ]);
     }
 
-    public function loanCreate()
-    {
-        $this->authorize('create loans');
+    // public function loanCreate()
+    // {
+    //     $this->authorize('create loans');
 
-        $publications = Publication::all();
+    //     $publications = Publication::all();
 
-        return Inertia::render('Loans/Create', [
-            'publications' => $publications
-        ]);
-    }
-
-    public function storeLoan(Request $request)
-    {
-        $this->authorize('create loans');
-
-        $validated = $request->validate([
-            'publication_id' => 'required|exists:publications,id',
-            'start_date' => 'required|date|after_or_equal:today',
-            'due_date' => 'required|date|after:start_date',
-        ]);
-
-        // Check if the book taken
-        $bookTaken = Loan::where('publication_id', $validated['publication_id'])
-            ->whereIn('status', ['pending', 'borrowed'])
-            ->exists();
-
-        if ($bookTaken) {
-            return back()->withErrors([
-                'publication_id' => 'This book is currently unavailable.'
-            ])->withInput();
-        }
-
-        Loan::create(array_merge($validated, [
-            'user_id' => auth()->id(),
-            'status' => 'borrowed',
-            'fine_amount' => 0
-        ]));
-
-        return redirect()->route('loans.index')
-            ->with('success', 'Loan request submitted.');
-    }
+    //     return Inertia::render('Loans/Create', [
+    //         'publications' => $publications
+    //     ]);
+    // }
 
     public function updateLoan(Request $request, Loan $loan)
     {
@@ -118,6 +88,8 @@ class LoanController extends Controller
             'status' => $validated['status'],
             'fine_amount' => $validated['fine_amount'] ?? 0
         ]);
+
+        $loan->user->notify(new LoanStatusUpdated($loan));
 
         return redirect()->route('loans.index')
             ->with('success', 'Loan updated successfully.');

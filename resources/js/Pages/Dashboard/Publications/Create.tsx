@@ -33,6 +33,7 @@ const Create: React.FC<Props> = ({ categories, locations }) => {
         type: string
         category_id: string
         location_id: string
+        publication_description: string
         download_count: string
         pdf_url: string | File
         image_url: string | File
@@ -42,6 +43,7 @@ const Create: React.FC<Props> = ({ categories, locations }) => {
         type: '',
         category_id: '',
         location_id: '',
+        publication_description: '',
         download_count: '',
         pdf_url: '',
         image_url: ''
@@ -119,6 +121,19 @@ const Create: React.FC<Props> = ({ categories, locations }) => {
                                 onChange={e => setData('author', e.target.value)}
                                 className="w-full bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-fuchsia-400" isFocused={false} />
                             {errors.author && <div className="text-red-500 text-sm mt-1">{errors.author}</div>}
+                        </div>
+
+
+                        {/* Description */}
+                        <div className="flex flex-col gap-2">
+                            <Label forInput="publication_description" value="Description" />
+                            <Input
+                                id="publication_description"
+                                name="publication_description"
+                                value={data.publication_description}
+                                onChange={e => setData('publication_description', e.target.value)}
+                                className="w-full bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-fuchsia-400" isFocused={false} />
+                            {errors.publication_description && <div className="text-red-500 text-sm mt-1">{errors.publication_description}</div>}
                         </div>
 
                         {/* Type */}

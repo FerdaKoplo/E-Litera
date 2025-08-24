@@ -68,7 +68,6 @@ Route::middleware(['auth', 'role:super-admin|librarian'])->group(function () {
     // loan
     Route::get('/loans', [\App\Http\Controllers\Management\LoanController::class, 'loanIndex'])->name('loans.index');
     Route::get('/loans/{loan}', [\App\Http\Controllers\Management\LoanController::class, 'loanShow'])->name('loans.show');
-    Route::get('/loans/create', [\App\Http\Controllers\Management\LoanController::class, 'loanCreate'])->name('loans.create');
     Route::post('/loans', [\App\Http\Controllers\Management\LoanController::class, 'storeLoan'])->name('loans.store');
     Route::put('/loans/{loan}', [\App\Http\Controllers\Management\LoanController::class, 'updateLoan'])->name('loans.update');
 
@@ -107,6 +106,7 @@ Route::middleware(['auth', 'role:member'])->group(function () {
     Route::get('/member/publications', [\App\Http\Controllers\Member\PublicationController::class, 'publicationIndex'])->name('publications.member.index');
     Route::get('/member/publication/{publication}', [\App\Http\Controllers\Member\PublicationController::class, 'publicationShow'])->name('publications.member.show');
 
+    Route::post('/loans', [\App\Http\Controllers\Member\LoanController::class, 'storeLoan'])->name('member.loans.store');
 });
 
 require __DIR__ . '/auth.php';

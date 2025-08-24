@@ -45,12 +45,12 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
-
         $user->assignRole('member');
+
 
         Auth::login($user);
 
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->intended();
     }
 }

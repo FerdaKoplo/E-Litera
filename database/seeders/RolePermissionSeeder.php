@@ -66,14 +66,20 @@ class RolePermissionSeeder extends Seeder
 
             $createLocations,
             $editLocations,
-            $viewLocations
+            $viewLocations,
+
+            $viewLoans,
+
         ];
 
         $permissionsMember = [
             $viewPublications,
             $viewArticles,
 
+            $createLoans,
+            $editLoans
         ];
+
 
         // Assign permissions to roles
         $librarianRole->givePermissionTo($permissionsLibrarian);
