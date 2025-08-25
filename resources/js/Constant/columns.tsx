@@ -1,6 +1,7 @@
 import RowActions from "@/Components/Table/RowAction";
-import { articleActions, categoryActions, locationActions, publicationsActions, } from "./action";
+import { articleActions, categoryActions, loanActions, locationActions, publicationsActions, } from "./action";
 import { getTypeColor } from "@/helper/color";
+import LoanStatusCell from "@/Components/Table/LoanStatus";
 
 export const categoryColumns = [
     { header: "#", accessor: (_: Category, index?: number) => (index ?? 0) + 1 },
@@ -108,6 +109,32 @@ export const articleColumns = [
         header: "Actions",
         accessor: (row: Article) => (
             <RowActions rowId={row.id} actions={articleActions(row)} />
+        ),
+    },
+]
+
+export const loanColumns = [
+    { header: "#", accessor: (_: Loan, index?: number) => (index ?? 0) + 1 },
+    { header: "Name", accessor: (row: Loan) => row.user?.name },
+    { header: "Email", accessor: (row: Loan) => row.user?.email },
+    { header: "Book Title", accessor: (row: Loan) => row.publication?.title },
+    { header: "Start Date", accessor: (row: Loan) => row.start_date },
+    { header: "Due Date", accessor: (row: Loan) => row.due_date },
+    { header: "Status", accessor: (row: Loan) => <LoanStatusCell loan={row} key={row.id} /> },
+    { header: "Fine Amount", accessor: (row: Loan) => row.fine_amount },
+    // {
+    //     header: "Content",
+    //     accessor: (row: Article) => (
+    //         <div
+    //             className="line-clamp-2 max-w-xs text-gray-700"
+    //             dangerouslySetInnerHTML={{ __html: row.article_content }}
+    //         />
+    //     ),
+    // },
+    {
+        header: "Actions",
+        accessor: (row: Loan) => (
+            <RowActions rowId={row.id} actions={loanActions(row)} />
         ),
     },
 ]

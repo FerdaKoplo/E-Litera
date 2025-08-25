@@ -3,7 +3,6 @@ import SidebarItem from '@/Components/SidebarItem'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbSeparator } from '@/Components/ui/breadcrumb'
 import { PageProps } from '@/types'
 import { useForm, usePage } from '@inertiajs/react'
-import { BellIcon, ChevronRightIcon, SlashIcon } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { BiSolidBookReader } from 'react-icons/bi'
 import { FaFolder, FaHandHolding } from 'react-icons/fa6'
@@ -11,8 +10,9 @@ import { IoMdAnalytics } from 'react-icons/io'
 import { RiBookShelfFill } from "react-icons/ri";
 import { MdArticle, MdFeedback, MdLibraryBooks, MdPersonAdd } from 'react-icons/md'
 import Button from '@/Components/Button'
-import Notification from '@/Components/Notification'
+import Notifications from '@/Components/Notifications'
 import { BsBellFill } from 'react-icons/bs'
+import { Toaster } from 'sonner'
 
 interface Props {
     header: React.ReactNode
@@ -21,8 +21,7 @@ interface Props {
 }
 
 const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => {
-    const [openNotif, setOpenNotif] = useState<boolean>(false)
-    const { auth, notifications } = usePage<PageProps>().props
+    const { auth } = usePage<PageProps>().props
     const { post } = useForm()
 
     const handleLogout = () => {
@@ -33,7 +32,7 @@ const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => 
         <div className="bg-gray-100 min-h-screen">
             {header && (
                 <header className="bg-white shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between">
+                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 ">
                         <div>
                             {header}
                             {breadcrumbs && (
@@ -58,12 +57,6 @@ const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => 
                             )}
                         </div>
 
-                        <Notification
-                            icon={<BsBellFill />}
-                            open={openNotif}
-                            onOpenChange={setOpenNotif}
-                            notifications={notifications}
-                        />
                     </div>
                 </header>
             )}
@@ -136,6 +129,7 @@ const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => 
                 {/* Content area */}
                 <main className="flex-1 p-6">
                     {children}
+                    <Toaster position="top-right" richColors closeButton />
                 </main>
             </div>
         </div >

@@ -33,19 +33,6 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function categoryShow(Category $category)
-    {
-        $this->authorize('view categories');
-
-        return inertia::render('Dashboard/Category/Show', [
-            'category' => $category,
-            'breadcrumbs' => [
-                ['name' => 'Categories', 'href' => route('categories.index')],
-                ['name' => $category->name],
-            ]
-        ]);
-    }
-
     public function createCategory()
     {
         $this->authorize('create categories');

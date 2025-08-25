@@ -1,9 +1,9 @@
 import Button from '@/Components/Button'
-import DashboardLayout from '@/Layouts/DasboardLayout'
 import { PageProps } from '@/types'
 import { Link, usePage } from '@inertiajs/react'
 import { categoryColumns } from '@/Constant/columns'
 import DataTable, { LaravelPagination } from '@/Components/Table/DataTable'
+import DashboardLayout from '@/Layouts/DasboardLayout'
 
 const breadcrumbs = [
     { name: 'Categories', href: '/categories' },

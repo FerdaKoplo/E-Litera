@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Loan;
 use App\Models\Location;
 use App\Models\Publication;
 use App\Models\User;
@@ -56,5 +57,8 @@ class DatabaseSeeder extends Seeder
         // Publications and articles
         Publication::factory(50)->create();
         Article::factory(50)->create();
+
+        // loans
+        Loan::factory(50)->create();
     }
 }

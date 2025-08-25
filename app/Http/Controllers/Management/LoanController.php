@@ -31,22 +31,9 @@ class LoanController extends Controller
 
         $loans = $query->paginate(10);
 
-        return Inertia::render('Loans/Index', [
+        return Inertia::render('Dashboard/Loans/Index', [
             'loans' => $loans,
             'filters' => $request->only('search')
-        ]);
-    }
-
-    public function loanShow(Loan $loan)
-    {
-        $this->authorize('view loans');
-
-        if (auth()->user()->hasRole('member') && $loan->user_id !== auth()->id()) {
-            abort(403);
-        }
-
-        return Inertia::render('Loans/Show', [
-            'loan' => $loan->load('user', 'publication'),
         ]);
     }
 
@@ -66,8 +53,7 @@ class LoanController extends Controller
         $this->authorize('edit loans');
 
         $validated = $request->validate([
-            'status' => 'required|in:borrowed,returned,overdue',
-            'fine_amount' => 'nullable|numeric|min:0'
+            'status' => 'required|in:borrowed,returned,overdue,pending',
         ]);
 
         // If approving a loan, check if the book is still available
@@ -84,10 +70,7 @@ class LoanController extends Controller
             }
         }
 
-        $loan->update([
-            'status' => $validated['status'],
-            'fine_amount' => $validated['fine_amount'] ?? 0
-        ]);
+        $loan->update($validated);
 
         $loan->user->notify(new LoanStatusUpdated($loan));
 

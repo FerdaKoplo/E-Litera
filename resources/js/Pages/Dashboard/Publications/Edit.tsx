@@ -21,6 +21,7 @@ interface Props {
         title: string
         author: string
         type: string
+        publication_description : string
         category_id: number
         location_id: number
         pdf_url?: string
@@ -44,11 +45,13 @@ const Edit: React.FC<Props> = ({ categories, locations, publication }) => {
         category_id: number
         location_id: number | null
         pdf_url: File | undefined
+        publication_description : string
         image_url: File | undefined
     }>({
         title: publication.title || "",
         author: publication.author || "",
         type: publication.type?.toLowerCase() || "ebook",
+        publication_description : publication.publication_description,
         category_id: publication.category_id ?? (categories[0]?.id ?? 1),
         location_id: publication.location_id ?? null,
         pdf_url: undefined,
@@ -64,6 +67,7 @@ const Edit: React.FC<Props> = ({ categories, locations, publication }) => {
             title: data.title,
             author: data.author,
             type: data.type,
+            publication_description : data.publication_description,
             category_id: data.category_id,
             location_id: data.location_id,
             pdf_url: data.pdf_url,
@@ -145,6 +149,18 @@ const Edit: React.FC<Props> = ({ categories, locations, publication }) => {
                                 onChange={e => setData('author', e.target.value)}
                                 className="w-full bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-fuchsia-400" isFocused={false} />
                             {errors.author && <div className="text-red-500 text-sm mt-1">{errors.author}</div>}
+                        </div>
+
+                         {/* Description */}
+                        <div className="flex flex-col gap-2">
+                            <Label forInput="publication_description" value="Description" />
+                            <Input
+                                id="publication_description"
+                                name="publication_description"
+                                value={data.publication_description}
+                                onChange={e => setData('publication_description', e.target.value)}
+                                className="w-full bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-fuchsia-400" isFocused={false} />
+                            {errors.publication_description && <div className="text-red-500 text-sm mt-1">{errors.publication_description}</div>}
                         </div>
 
                         {/* Type */}

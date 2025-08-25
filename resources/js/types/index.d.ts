@@ -17,10 +17,16 @@ export interface Notification {
     updated_at: string
 }
 
+
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User
     }
-
     notifications : Notification[]
+    publications: number
+    loansTotal: number
+    loansActive: number
+    loansOverdue: number
+    articles: number
+    loanChartData: { date: string, count: number }[]
 }

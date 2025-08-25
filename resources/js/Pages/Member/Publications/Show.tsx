@@ -97,7 +97,6 @@ const Show = () => {
                             )}
 
                             {publication.type === 'physical' && (
-
                                 <>
                                     <Button className="px-6 flex items-center py-3 bg-slate-800 text-white gap-3 hover:scale-110  shadow hover:bg-slate-900 transition"
                                         onClick={() => toast.info(

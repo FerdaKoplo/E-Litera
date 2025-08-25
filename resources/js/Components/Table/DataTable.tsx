@@ -117,7 +117,7 @@ const DataTable = <T,>({
                                     <PaginationLink
                                         isActive={link.active}
                                         size="default"
-                                        className={`${isDisabled ? "pointer-events-none opacity-50" : ""} ${link.active ? 'bg-black text-white' : 'bg-white text-black'}` }
+                                        className={`${isDisabled ? "pointer-events-none opacity-50 " : ""} ${link.active ? 'bg-black text-white' : 'bg-white text-black'} rounded-lg` }
                                         href={link.url || undefined}
                                     >
                                         {link.label}

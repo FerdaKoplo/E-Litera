@@ -4,7 +4,7 @@ interface Loan {
     publication_id: number
     start_date: string
     due_date: string
-    status: 'borrowed' | 'returned' | 'overdue'
+    status: 'borrowed' | 'returned' | 'overdue' | 'pending'
     fine_amount: number
     created_at: string
     updated_at: string
@@ -27,5 +27,9 @@ interface Loan {
             id: number
             name: string
         }
+    }
+    user?: {
+        name : string,
+        email : string
     }
 }

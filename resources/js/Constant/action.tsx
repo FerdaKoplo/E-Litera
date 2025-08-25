@@ -1,7 +1,6 @@
 import { Inertia } from "@inertiajs/inertia";
 
 export const categoryActions = (row: Category) => [
-    { label: "View", href: "/categories/:id" },
     { label: "Edit", href: "/categories/:id/edit" },
     {
         label: "Delete",
@@ -13,7 +12,6 @@ export const categoryActions = (row: Category) => [
 ]
 
 export const locationActions = (row: Location) => [
-    { label: "View", href: "/locations/:id" },
     { label: "Edit", href: "/locations/:id/edit" },
     {
         label: "Delete",
@@ -26,7 +24,6 @@ export const locationActions = (row: Location) => [
 
 
 export const publicationsActions = (row: Publications) => [
-    { label: "View", href: `/publications/${row.id}` },
     { label: "Edit", href: `/publications/${row.id}/edit` },
     {
         label: "Delete",
@@ -47,4 +44,8 @@ export const articleActions = (row: Article) => [
             Inertia.delete(`/articles/${id}`, { preserveScroll: true });
         },
     },
+]
+
+export const loanActions = (row: Loan) => [
+    { label: "Edit", href: `/loan/${row.id}/edit` },
 ]

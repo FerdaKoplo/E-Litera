@@ -41,7 +41,6 @@ class RolePermissionSeeder extends Seeder
         // Create Loans
         $createLoans = Permission::create(['name' => 'create loans']);
         $editLoans = Permission::create(['name' => 'edit loans']);
-        $deleteLoans = Permission::create(['name' => 'delete loans']);
         $viewLoans = Permission::create(['name' => 'view loans']);
 
 
@@ -69,7 +68,7 @@ class RolePermissionSeeder extends Seeder
             $viewLocations,
 
             $viewLoans,
-
+            $editLoans
         ];
 
         $permissionsMember = [
@@ -77,7 +76,7 @@ class RolePermissionSeeder extends Seeder
             $viewArticles,
 
             $createLoans,
-            $editLoans
+
         ];
 
 

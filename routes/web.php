@@ -67,8 +67,6 @@ Route::middleware(['auth', 'role:super-admin|librarian'])->group(function () {
 
     // loan
     Route::get('/loans', [\App\Http\Controllers\Management\LoanController::class, 'loanIndex'])->name('loans.index');
-    Route::get('/loans/{loan}', [\App\Http\Controllers\Management\LoanController::class, 'loanShow'])->name('loans.show');
-    Route::post('/loans', [\App\Http\Controllers\Management\LoanController::class, 'storeLoan'])->name('loans.store');
     Route::put('/loans/{loan}', [\App\Http\Controllers\Management\LoanController::class, 'updateLoan'])->name('loans.update');
 
     // feedback
@@ -85,11 +83,23 @@ Route::middleware(['auth', 'role:super-admin|librarian'])->group(function () {
     Route::get('/articles/create', [\App\Http\Controllers\Management\ArticleController::class, 'createArticle'])->name('articles.create');
     Route::post('/articles/image/upload', [\App\Http\Controllers\Management\ArticleController::class, 'uploadImage'])->name('articles.image.upload');
     Route::post('/articles', [\App\Http\Controllers\Management\ArticleController::class, 'storeArticle'])->name('articles.store');
-
     Route::get('/articles/{article}', [\App\Http\Controllers\Management\ArticleController::class, 'articleShow'])->name('articles.show');
     Route::get('/articles/{article}/edit', [\App\Http\Controllers\Management\ArticleController::class, 'editArticle'])->name('articles.edit');
     Route::put('/articles/{article}', [\App\Http\Controllers\Management\ArticleController::class, 'updateArticle'])->name('articles.update');
     Route::delete('/articles/{article}', [\App\Http\Controllers\Management\ArticleController::class, 'deleteArticle'])->name('articles.destroy');
+
+
+    Route::post('/notifications/{id}/read', function ($id) {
+        $user = auth()->user();
+         /** @var \Illuminate\Notifications\DatabaseNotification|null $notification */
+        $notification = $user->unreadNotifications()->find($id);
+
+        if ($notification) {
+            $notification->markAsRead();
+        }
+
+        return redirect()->back();
+    })->name('notifications.read');
 });
 
 

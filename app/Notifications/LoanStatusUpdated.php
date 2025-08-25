@@ -29,7 +29,7 @@ class LoanStatusUpdated extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database', 'mail'];
+        return ['database'];
     }
 
     /**
@@ -47,16 +47,16 @@ class LoanStatusUpdated extends Notification
         ];
     }
 
-    public function toMail(object $notifiable): MailMessage
-    {
-        return (new MailMessage)
-            ->subject("Loan Request Update: {$this->loan->publication->title}")
-            ->greeting("Hello {$notifiable->name},")
-            ->line("Your loan request for '{$this->loan->publication->title}' has been updated.")
-            ->line("Current status: '{$this->loan->status}'.")
-            ->action('View Loan Details', url(route('loans.show', $this->loan->id)))
-            ->line('Thank you for using our library system!');
-    }
+    // public function toMail(object $notifiable): MailMessage
+    // {
+    //     return (new MailMessage)
+    //         ->subject("Loan Request Update: {$this->loan->publication->title}")
+    //         ->greeting("Hello {$notifiable->name},")
+    //         ->line("Your loan request for '{$this->loan->publication->title}' has been updated.")
+    //         ->line("Current status: '{$this->loan->status}'.")
+    //         ->action('View Loan Details', url(route('loans.show', $this->loan->id)))
+    //         ->line('Thank you for using our library system!');
+    // }
     /**
      * Get the array representation of the notification.
      *

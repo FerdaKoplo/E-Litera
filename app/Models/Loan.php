@@ -15,7 +15,8 @@ class Loan extends Model
         'publication_id',
         'start_date',
         'due_date',
-        'status'
+        'status',
+        'fine_amount'
     ];
 
     public function user(): BelongsTo
