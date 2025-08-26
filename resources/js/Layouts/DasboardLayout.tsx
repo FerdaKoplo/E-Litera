@@ -61,7 +61,7 @@ const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => 
             )}
             <div className="flex">
                 <ResponsiveSidebar>
-                    <SidebarItem href="/dashboard" active={route().current('dashboard')}>
+                    <SidebarItem href="/dashboard" active={route().current('dashboard.admin')}>
                         <div className='flex items-center gap-5'>
                             <IoMdAnalytics size={20} />
                             <span>Dashboard</span>

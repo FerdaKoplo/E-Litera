@@ -16,6 +16,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/Components/ui/pagination"
+import { getVisiblePages } from "@/helper/pagination"
 
 
 export interface Column<T> {
@@ -42,7 +43,7 @@ const DataTable = <T,>({
 }: DataTableProps<T>) => {
     const rows = Array.isArray(data) ? data : data.data
     const links = !Array.isArray(data) ? data.links : undefined
-
+    const pageNumbers = getVisiblePages(links || [])
     return (
         <div className="overflow-x-auto flex flex-col gap-10 rounded-xl border border-gray-200 shadow-sm">
             {/* Table */}
@@ -79,52 +80,51 @@ const DataTable = <T,>({
 
             {/* Pagination */}
             {links && links.length > 0 && (
-                <Pagination >
-                    <PaginationContent>
-                        {links.map((link, index) => {
-                            const isDisabled = !link.url;
-
-                            if (link.label.includes("Previous")) {
-                                return (
-                                    <PaginationItem key={index}>
-                                        <PaginationPrevious
-                                            size="default"
-                                            className={isDisabled ? "pointer-events-none opacity-50" : ""}
-                                            href={link.url || undefined}
-                                        >
-                                            Previous
-                                        </PaginationPrevious>
-                                    </PaginationItem>
-                                )
-                            }
-
-                            if (link.label.includes("Next")) {
-                                return (
-                                    <PaginationItem key={index}>
-                                        <PaginationNext
-                                            size="default"
-                                            className={isDisabled ? "pointer-events-none opacity-50" : ""}
-                                            href={link.url || undefined}
-                                        >
-                                            Next
-                                        </PaginationNext>
-                                    </PaginationItem>
-                                )
-                            }
-
-                            return (
-                                <PaginationItem key={index}>
-                                    <PaginationLink
-                                        isActive={link.active}
-                                        size="default"
-                                        className={`${isDisabled ? "pointer-events-none opacity-50 " : ""} ${link.active ? 'bg-black text-white' : 'bg-white text-black'} rounded-lg` }
+                <Pagination>
+                    <PaginationContent className="flex items-center justify-center gap-2">
+                        {/* Previous */}
+                        {links.map(link =>
+                            link.label.includes("Previous") ? (
+                                <PaginationItem key={link.label}>
+                                    <PaginationPrevious
                                         href={link.url || undefined}
+                                        className={!link.url ? "pointer-events-none opacity-50" : ""}
                                     >
-                                        {link.label}
-                                    </PaginationLink>
+                                        Previous
+                                    </PaginationPrevious>
                                 </PaginationItem>
-                            )
-                        })}
+                            ) : null
+                        )}
+
+                        {/* Page numbers */}
+                        {pageNumbers.map((page, idx) => (
+                            <PaginationItem key={idx}>
+                                {page === "..." ? (
+                                    <span className="px-3 py-1">...</span>
+                                ) : (
+                                    <PaginationLink
+                                        isActive={links?.find(l => Number(l.label) === page)?.active}
+                                        href={links?.find(l => Number(l.label) === page)?.url || undefined}
+                                    >
+                                        {page}
+                                    </PaginationLink>
+                                )}
+                            </PaginationItem>
+                        ))}
+
+                        {/* Next */}
+                        {links.map(link =>
+                            link.label.includes("Next") ? (
+                                <PaginationItem key={link.label}>
+                                    <PaginationNext
+                                        href={link.url || undefined}
+                                        className={!link.url ? "pointer-events-none opacity-50" : ""}
+                                    >
+                                        Next
+                                    </PaginationNext>
+                                </PaginationItem>
+                            ) : null
+                        )}
                     </PaginationContent>
                 </Pagination>
             )}

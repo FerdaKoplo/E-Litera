@@ -33,6 +33,7 @@ class PublicationController extends Controller
         // Pagination
         $publications = $query->paginate(10);
 
+
         return Inertia::render('Dashboard/Publications/Index', [
             'publications' => $publications,
             'filters' => $request->only(['category_id', 'search']),
