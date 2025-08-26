@@ -9,11 +9,21 @@ use Inertia\Inertia;
 
 class LocationController extends Controller
 {
-        public function locationIndex()
+        public function locationIndex(Request $request)
     {
         $this->authorize('view locations');
 
-        $locations = Location::all();
+        $search = $request->search;
+
+        $query = Location::query();
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            });
+        }
+
+        $locations = $query->paginate(10);
 
         return Inertia::render('Dashboard/Locations/Index', [
             'locations' => $locations

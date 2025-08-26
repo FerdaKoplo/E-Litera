@@ -12,7 +12,7 @@ use Inertia\Inertia;
 
 class LoanController extends Controller
 {
-      public function loanIndex(Request $request)
+    public function loanIndex(Request $request)
     {
         $this->authorize('view loans');
 
@@ -23,9 +23,13 @@ class LoanController extends Controller
         }
 
         if ($request->search) {
-            $query->whereHas('publication', function ($q) use ($request) {
-                $q->where('title', 'like', "%{$request->search}%")
-                    ->orWhere('author', 'like', "%{$request->search}%");
+            $query->where(function ($q) use ($request) {
+                $q->whereHas('publication', function ($pub) use ($request) {
+                    $pub->where('title', 'like', "%{$request->search}%");
+                })->orWhereHas('user', function ($user) use ($request) {
+                    $user->where('name', 'like', "%{$request->search}%")
+                    ->orWhere('email', 'like', "%{$request->search}%");
+                });
             });
         }
 
@@ -37,20 +41,11 @@ class LoanController extends Controller
         ]);
     }
 
-    // public function loanCreate()
-    // {
-    //     $this->authorize('create loans');
-
-    //     $publications = Publication::all();
-
-    //     return Inertia::render('Loans/Create', [
-    //         'publications' => $publications
-    //     ]);
-    // }
 
     public function updateLoan(Request $request, Loan $loan)
     {
         $this->authorize('edit loans');
+
 
         $validated = $request->validate([
             'status' => 'required|in:borrowed,returned,overdue,pending',
@@ -74,8 +69,7 @@ class LoanController extends Controller
 
         $loan->user->notify(new LoanStatusUpdated($loan));
 
-        return redirect()->route('loans.index')
-            ->with('success', 'Loan updated successfully.');
+        return back()->with('success', 'Loan updated successfully.');
     }
 
     public function checkOverdue()

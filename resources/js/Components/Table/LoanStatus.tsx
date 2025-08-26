@@ -2,6 +2,7 @@ import { useForm, usePage } from '@inertiajs/react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { router } from '@inertiajs/react'
 
 type LoanStatus = 'borrowed' | 'returned' | 'overdue' | 'pending'
 
@@ -21,36 +22,23 @@ const statusColors: Record<string, string> = {
 
 const LoanStatusCell: React.FC<{ loan: Loan }> = ({ loan }) => {
 
-    const [localStatus, setLocalStatus] = useState(loan.status)
-    const { flash } = usePage<FlashProps>().props
-    const { put, data, setData, errors } = useForm({ status: loan.status })
-
+    const { put, data, setData, errors } = useForm({
+        status: loan.status,
+    })
 
     const handleChange = (newStatus: LoanStatus) => {
-        setLocalStatus(newStatus);
-        setData("status", newStatus);
+        setData("status", newStatus)
 
-        put(route('loans.update', loan.id), {
-            data: { status: newStatus },
+        router.put(route('loans.update', loan.id), { status: newStatus }, {
             preserveScroll: true,
-            onSuccess: () => {
-                toast.success("Loan updated successfully");
-            },
-            onError: () => {
-                toast.error("Failed to update loan");
-                setLocalStatus(loan.status);
-            },
-        });
+            onSuccess: () => toast.success("Loan updated successfully"),
+            onError: () => toast.error("Failed to update loan"),
+        })
     }
 
-    useEffect(() => {
-        setLocalStatus(loan.status)
-        setData("status", loan.status)
-    }, [loan.status])
-
     return (
-        <Select value={localStatus} onValueChange={handleChange}>
-            <SelectTrigger className={`w-32 ${statusColors[localStatus]}`}>
+        <Select value={data.status} onValueChange={handleChange}>
+            <SelectTrigger className={`w-32 ${statusColors[data.status]}`}>
                 <SelectValue />
             </SelectTrigger>
             <SelectContent>

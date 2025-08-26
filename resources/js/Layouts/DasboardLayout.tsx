@@ -56,7 +56,6 @@ const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => 
                                 </Breadcrumb>
                             )}
                         </div>
-
                     </div>
                 </header>
             )}

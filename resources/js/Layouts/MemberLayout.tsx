@@ -19,7 +19,7 @@ interface Props {
     breadcrumbs?: { name: string; href?: string }[]
 }
 
-const MemberLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => {
+const MemberLayout: React.FC<Props> = ({ children, header, breadcrumbs}) => {
     const { auth } = usePage<PageProps>().props
     const { post } = useForm()
 
@@ -53,7 +53,6 @@ const MemberLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => {
                                 ))}
                             </Breadcrumb>
                         )}
-
                     </div>
                 </header>
             )}

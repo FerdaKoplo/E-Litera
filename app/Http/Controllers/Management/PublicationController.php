@@ -43,7 +43,6 @@ class PublicationController extends Controller
     {
         $this->authorize('view publications');
 
-
         if (!$publication) {
             return Inertia::render('Errors/NotFound', [
                 'message' => 'Publication not found.'
@@ -76,6 +75,7 @@ class PublicationController extends Controller
             'title' => 'required|string|max:255',
             'author' => 'nullable|string|max:255',
             'type' => 'required|in:ebook,physical,journal',
+            'publication_description' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'location_id' => 'nullable|exists:locations,id',
             'pdf_url' => 'nullable|file|mimes:pdf|max:20480',
@@ -113,6 +113,7 @@ class PublicationController extends Controller
                 'title' => $publication->title,
                 'author' => $publication->author,
                 'type' => $publication->type,
+                'publication_description' => $publication->publication_description,
                 'category_id' => $publication->category_id,
                 'location_id' => $publication->location_id ?? "",
                 'download_count' => (string) $publication->download_count,
@@ -142,6 +143,7 @@ class PublicationController extends Controller
             'title' => 'required|string|max:255',
             'author' => 'nullable|string|max:255',
             'type' => 'required|in:ebook,physical,journal',
+            'publication_description' => 'required|string|max:255',
             'category_id' => 'required|integer|exists:categories,id',
             'location_id' => 'nullable|integer|exists:locations,id',
             'pdf_url' => 'nullable|file|mimes:pdf|max:20480',
