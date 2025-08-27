@@ -50,7 +50,7 @@ const RowActions: React.FC<RowActionsProps> = ({ rowId, actions }) => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button className="px-3 py-1 rounded-full text-lg bg-gray-200"><BsThreeDots /></button>
+          <button className="px-3 py-1  text-lg "><BsThreeDots /></button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           {actions.map((action, index) => (

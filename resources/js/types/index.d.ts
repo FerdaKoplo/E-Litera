@@ -17,16 +17,22 @@ export interface Notification {
     updated_at: string
 }
 
+export type LoanFilter = {
+  period: "today" | "7days" | "30days" | "all"
+}
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User
     }
-    notifications : Notification[]
+    notifications: Notification[]
     publications: number
     loansTotal: number
     loansActive: number
     loansOverdue: number
     articles: number
     loanChartData: { date: string, count: number }[]
+    filters?: LoanFilter
 }
+
+

@@ -17,6 +17,7 @@ import {
     PaginationPrevious,
 } from "@/Components/ui/pagination"
 import { getVisiblePages } from "@/helper/pagination"
+import { on } from "events"
 
 
 export interface Column<T> {
@@ -35,11 +36,13 @@ interface DataTableProps<T> {
     columns: Column<T>[]
     data: T[] | LaravelPagination<T>
     emptyMessage?: string,
+    onPageChange?: (url: string | null) => void
 }
 const DataTable = <T,>({
     columns,
     data,
-    emptyMessage = "No data found."
+    emptyMessage = "No data found.",
+    onPageChange
 }: DataTableProps<T>) => {
     const rows = Array.isArray(data) ? data : data.data
     const links = !Array.isArray(data) ? data.links : undefined
@@ -51,7 +54,7 @@ const DataTable = <T,>({
                 <TableHeader>
                     <TableRow>
                         {columns.map((col, i) => (
-                            <TableHead className="bg-gray-800 text-white text-xs font-semibold " key={i}>{col.header}</TableHead>
+                            <TableHead className="bg-gradient-to-t from-violet-400  to-fuchsia-400 text-white text-xs font-semibold " key={i}>{col.header}</TableHead>
                         ))}
 
                     </TableRow>
@@ -87,8 +90,9 @@ const DataTable = <T,>({
                             link.label.includes("Previous") ? (
                                 <PaginationItem key={link.label}>
                                     <PaginationPrevious
-                                        href={link.url || undefined}
-                                        className={!link.url ? "pointer-events-none opacity-50" : ""}
+                                        href={!onPageChange ? link.url || undefined : undefined}
+                                        className={!link.url ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                                        onClick={onPageChange ? () => onPageChange(link.url) : undefined}
                                     >
                                         Previous
                                     </PaginationPrevious>
@@ -97,28 +101,33 @@ const DataTable = <T,>({
                         )}
 
                         {/* Page numbers */}
-                        {pageNumbers.map((page, idx) => (
-                            <PaginationItem key={idx}>
-                                {page === "..." ? (
-                                    <span className="px-3 py-1">...</span>
-                                ) : (
-                                    <PaginationLink
-                                        isActive={links?.find(l => Number(l.label) === page)?.active}
-                                        href={links?.find(l => Number(l.label) === page)?.url || undefined}
-                                    >
-                                        {page}
-                                    </PaginationLink>
-                                )}
-                            </PaginationItem>
-                        ))}
+                        {pageNumbers.map((page, idx) => {
+                            const link = links?.find(l => Number(l.label) === page)
+                            return (
+                                <PaginationItem key={idx}>
+                                    {page === "..." ? (
+                                        <span className="px-3 py-1">...</span>
+                                    ) : (
+                                        <PaginationLink
+                                            isActive={link?.active}
+                                            href={!onPageChange ? link?.url || undefined : undefined}
+                                            onClick={onPageChange ? () => onPageChange(link?.url || null) : undefined}
+                                        >
+                                            {page}
+                                        </PaginationLink>
+                                    )}
+                                </PaginationItem>
+                            )
+                        })}
 
                         {/* Next */}
                         {links.map(link =>
                             link.label.includes("Next") ? (
                                 <PaginationItem key={link.label}>
                                     <PaginationNext
-                                        href={link.url || undefined}
-                                        className={!link.url ? "pointer-events-none opacity-50" : ""}
+                                        href={!onPageChange ? link.url || undefined : undefined}
+                                        className={!link.url ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                                        onClick={onPageChange ? () => onPageChange(link.url) : undefined}
                                     >
                                         Next
                                     </PaginationNext>

@@ -15,6 +15,11 @@ class CategoryController extends Controller
 
         $query = Category::with('parent');
 
+        // filter by type
+         if ($request->type) {
+            $query->where('type', $request->type);
+        }
+
         if ($request->search) {
             $query->where(function ($q) use ($request) {
                 $q->where('name', 'like', "%{$request->search}%")
@@ -27,9 +32,6 @@ class CategoryController extends Controller
         return Inertia::render('Dashboard/Category/Index', [
             'categories' => $categories,
             'filters' => $request->only('search'),
-            'breadcrumbs' => [
-                ['name' => 'Categories']
-            ]
         ]);
     }
 

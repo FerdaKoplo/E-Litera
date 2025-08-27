@@ -13,6 +13,7 @@ import Button from '@/Components/Button'
 import Notifications from '@/Components/Notifications'
 import { BsBellFill } from 'react-icons/bs'
 import { Toaster } from 'sonner'
+import ProfileCard from '@/Components/ProfileCard'
 
 interface Props {
     header: React.ReactNode
@@ -24,6 +25,12 @@ const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => 
     const { auth } = usePage<PageProps>().props
     const { post } = useForm()
 
+    const getFirstAndLastName = (name: string) => {
+        const parts = name.trim().split(' ')
+        if (parts.length === 1) return parts[0]
+        return `${parts[0]} ${parts[parts.length - 1]}`
+    }
+
     const handleLogout = () => {
         post(route('logout'))
     }
@@ -32,7 +39,7 @@ const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => 
         <div className="bg-gray-100 min-h-screen">
             {header && (
                 <header className="bg-white shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 ">
+                    <div className="max-w-7xl mx-auto py-6 sm:px-6">
                         <div>
                             {header}
                             {breadcrumbs && (
@@ -120,9 +127,12 @@ const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => 
                         </SidebarItem>
                     )}
 
-                    <Button className='text-white mt-auto w-full rounded-lg bg-red-400' onClick={() => handleLogout()}>
-                        Logout
-                    </Button>
+                    <div className='mt-auto flex flex-col gap-4'>
+                        <ProfileCard fallback={auth.user.name} profile='' username={auth.user.name} email={auth.user.email}/>
+                        <Button className='text-white w-full rounded-lg bg-red-400' onClick={() => handleLogout()}>
+                            Logout
+                        </Button>
+                    </div>
                 </ResponsiveSidebar>
 
                 {/* Content area */}

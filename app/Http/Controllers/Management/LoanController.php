@@ -22,6 +22,11 @@ class LoanController extends Controller
             $query->where('user_id', auth()->id());
         }
 
+        // filter by status
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
         if ($request->search) {
             $query->where(function ($q) use ($request) {
                 $q->whereHas('publication', function ($pub) use ($request) {

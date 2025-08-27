@@ -46,6 +46,3 @@ export const articleActions = (row: Article) => [
     },
 ]
 
-export const loanActions = (row: Loan) => [
-    { label: "Edit", href: `/loan/${row.id}/edit` },
-]

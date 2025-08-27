@@ -1,13 +1,17 @@
 import Notifications from '@/Components/Notifications'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card'
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/Components/ui/chart'
-import { SelectContent, SelectItem, SelectValue } from '@/Components/ui/select'
 import DashboardLayout from '@/Layouts/DasboardLayout'
-import { PageProps } from '@/types'
-import { Link, usePage } from '@inertiajs/react'
-import { SelectTrigger } from '@radix-ui/react-select'
+import { LoanFilter, PageProps } from '@/types'
+import { Link, router, usePage } from '@inertiajs/react'
 import React, { useEffect, useState } from 'react'
-import { Select } from 'react-day-picker'
+import {
+    Select,
+    SelectTrigger,
+    SelectContent,
+    SelectItem,
+    SelectValue
+} from "@/Components/ui/select"
 import { BiSolidBookReader } from 'react-icons/bi'
 import { BsBellFill } from 'react-icons/bs'
 import { IoIosPaper, IoMdWarning } from 'react-icons/io'
@@ -25,7 +29,14 @@ const chartConfig = {
 const Dashboard = () => {
 
     const [openNotif, setOpenNotif] = useState<boolean>(false)
-    const { notifications, articles, publications, loansTotal, loansOverdue, loansActive, loanChartData } = usePage<PageProps>().props
+    const { notifications, filters, articles, publications, loansTotal, loansOverdue, loansActive, loanChartData } = usePage<PageProps>().props
+    const handleFilterChange = (value: LoanFilter["period"]) => {
+        router.get(route("dashboard.admin"), { period: value }, {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true,
+        });
+    }
 
     return (
         <DashboardLayout header={
@@ -41,6 +52,22 @@ const Dashboard = () => {
         } breadcrumbs={breadcrumbs}>
 
             <div>
+                <div className="flex justify-end mb-4">
+                    <Select
+                        value={filters?.period ?? "all"}
+                        onValueChange={(value) => handleFilterChange(value as LoanFilter["period"])}
+                    >
+                        <SelectTrigger className="w-[180px] bg-white">
+                            <SelectValue placeholder="Select filter" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All Time</SelectItem>
+                            <SelectItem value="today">Today</SelectItem>
+                            <SelectItem value="7days">Last 7 Days</SelectItem>
+                            <SelectItem value="30days">Last 30 Days</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 mb-6">
                     <Card className='bg-gradient-to-t flex flex-col justify-center from-zinc-100 to-white hover:scale-105 transition duration-300'>
                         <div className='flex items-center justify-center'>
@@ -104,7 +131,6 @@ const Dashboard = () => {
                         </Link>
                     </Card>
 
-
                     <Card className='bg-gradient-to-t flex flex-col justify-center  from-zinc-100 to-white hover:scale-105 transition duration-300'>
                         <div className='flex items-center justify-center'>
                             <CardTitle className='text-2xl bg-gradient-to-t p-3 text-white rounded-xl from-blue-500 to-sky-300'>
@@ -154,10 +180,13 @@ const Dashboard = () => {
                         Total Loans
                     </CardTitle>
                     <CardDescription>
-                        Total Loans For Past Month
+                        {filters?.period === "today" && "Total Loans For Today"}
+                        {filters?.period === "7days" && "Total Loans For Last 7 Days"}
+                        {filters?.period === "30days" && "Total Loans For Last 30 Days"}
+                        {(!filters?.period || filters?.period === "all") && "Total Loans For All Time"}
                     </CardDescription>
                     <ChartContainer config={chartConfig}>
-                        <AreaChart data={loanChartData} width={700} height={300} >
+                        <AreaChart key={filters?.period} data={loanChartData} width={700} height={300} >
                             <defs>
                                 <linearGradient id="fillLoan" x1="0" y1="0" x2="0" y2="1">
                                     <stop offset="5%" stopColor="#a78bfa" stopOpacity={0.8} />

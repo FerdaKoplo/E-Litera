@@ -18,7 +18,7 @@ const Index = () => {
         <DashboardLayout header={<div className="flex justify-between items-center">
             <h1 className="text-2xl font-semibold">Articles</h1>
             <Link  href={route('articles.create')}>
-                <Button  type="button" process={false} className="text-white rounded-lg">
+                <Button  type="button"  className="bg-white border-violet-400 border-2 font-semibold hover:bg-violet-50 text-violet-400 rounded-lg">
                     + Add Article
                 </Button>
             </Link>

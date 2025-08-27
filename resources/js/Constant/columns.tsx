@@ -1,5 +1,5 @@
 import RowActions from "@/Components/Table/RowAction";
-import { articleActions, categoryActions, loanActions, locationActions, publicationsActions, } from "./action";
+import { articleActions, categoryActions, locationActions, publicationsActions, } from "./action";
 import { getTypeColor } from "@/helper/color";
 import LoanStatusCell from "@/Components/Table/LoanStatus";
 
@@ -131,10 +131,5 @@ export const loanColumns = [
     //         />
     //     ),
     // },
-    {
-        header: "Actions",
-        accessor: (row: Loan) => (
-            <RowActions rowId={row.id} actions={loanActions(row)} />
-        ),
-    },
+
 ]

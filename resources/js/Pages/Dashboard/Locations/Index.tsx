@@ -36,7 +36,7 @@ const Index = () => {
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-semibold">Location</h1>
                 <Link href="/locations/create">
-                    <Button type="button" className="text-white rounded-lg">
+                    <Button type="button" className="bg-white border-violet-400 border-2 hover:bg-violet-50 font-semibold text-violet-400 rounded-lg">
                         + Add Location
                     </Button>
                 </Link>

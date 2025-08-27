@@ -31,12 +31,12 @@ export default function SearchBar({
           placeholder={placeholder}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="pl-10 pr-3 py-2 !rounded-full w-full focus:outline-none focus:ring-2 focus:ring-violet-200"
+          className="pl-10 pr-3 py-3 !rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-violet-200"
         />
       </div>
       <Button
         type="submit"
-        className="bg-black text-white px-4 py-2 rounded-lg hover:bg-violet-400 transition h-full sm:h-auto"
+        className="bg-white text-violet-400 border-violet-400  px-4 border-2  hover:bg-violet-100 transition h-full sm:h-auto"
       >
         {buttonLabel}
       </Button>

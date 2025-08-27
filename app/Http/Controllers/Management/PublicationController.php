@@ -22,6 +22,16 @@ class PublicationController extends Controller
             $query->where('category_id', $request->category_id);
         }
 
+        // filter by type
+        if ($request->type) {
+            $query->where('type', $request->type);
+        }
+
+        // filter by location
+        if ($request->location_id) {
+            $query->where('location_id', $request->location_id);
+        }
+
         // Search by title or author
         if ($request->search) {
             $query->where(function ($q) use ($request) {
@@ -31,12 +41,15 @@ class PublicationController extends Controller
         }
 
         // Pagination
-        $publications = $query->paginate(10);
-
+        $publications = $query->paginate(10)->appends($request->all());
+        $categories = Category::all();
+        $locations = Location::all();
 
         return Inertia::render('Dashboard/Publications/Index', [
             'publications' => $publications,
-            'filters' => $request->only(['category_id', 'search']),
+            'categories' => $categories,
+            'locations' => $locations,
+            'filters' => $request->only(['category_id', 'search', 'location_id', 'type']),
         ]);
     }
 

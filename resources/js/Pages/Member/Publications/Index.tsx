@@ -25,6 +25,8 @@ const Index = () => {
         categories: Category[],
         locations: Location[]
     }>>().props
+
+
     const { data, setData, get } = useForm<{
         search: string;
         page: number;
@@ -66,8 +68,7 @@ const Index = () => {
     }
 
     const goToPage = (url: string | null) => {
-        if (!url)
-            return
+        if (!url) return
         const query = url.includes("?") ? url.split("?")[1] : ""
         const params = new URLSearchParams(query)
         const nextPage = Number(params.get("page") || 1)
