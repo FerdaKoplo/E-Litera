@@ -12,6 +12,7 @@ import { BiBookAdd } from 'react-icons/bi'
 import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa'
 import { IoIosPaper } from 'react-icons/io'
 import { toast } from 'sonner'
+import FeedbackAll from './Partial/FeedbackAll'
 
 const breadcrumb = [
     { name: 'Publications', href: '/member/publications' },
@@ -48,7 +49,7 @@ const Show = () => {
                     Publications
                 </h2>
             } breadcrumbs={breadcrumb}>
-            <div className="max-w-5xl mx-auto py-10">
+            <div className="max-w-5xl mx-auto py-10 space-y-10">
                 <div className="flex flex-col md:flex-row gap-8">
                     <div className="flex-shrink-0 w-full md:w-1/3">
                         <img
@@ -106,7 +107,7 @@ const Show = () => {
                                         Check Availability
                                     </Button>
 
-                                    <Button onClick={submitLoan} className='bg-slate-80 px-6 flex items-center gap-3 hover:scale-110 transition'>
+                                    <Button onClick={submitLoan} className='bg-slate-800 px-6 flex items-center gap-3 hover:scale-110 transition'>
                                         <BiBookAdd size={18} />
                                         Request Loan
                                     </Button>
@@ -134,6 +135,10 @@ const Show = () => {
                     <p className="text-slate-600 leading-relaxed">
                         {publication.publication_description}
                     </p>
+                </div>
+
+                <div>
+                    <FeedbackAll publicationId={publication.id} />
                 </div>
             </div>
         </HomeLayout>

@@ -3,30 +3,28 @@
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
+use App\Models\Feedback;
+use App\Models\Publication;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class FeedbackController extends Controller
 {
-       public function feedbackShow(Feedback $feedback)
+    public function viewFeedback(Request $request, Publication $publication)
     {
         $this->authorize('view feedback');
 
-        if (auth()->user()->hasRole('member') && $feedback->user_id !== auth()->id()) {
-            abort(403);
+        $query = $publication->feedbacks()->with('user');
+
+        if ($request->filter === 'newest') {
+            $query->latest();
+        } elseif ($request->filter === '24h') {
+            $query->where('created_at', '>=', now()->subDay());
         }
 
-        return Inertia::render('Feedback/Show', [
-            'feedback' => $feedback->load('user', 'publication'),
-        ]);
+        return response()->json($query->paginate(10));
     }
-    public function feedbackCreate(Publication $publication)
-    {
-        $this->authorize('create feedback');
 
-        return Inertia::render('Feedback/Create', [
-            'publication' => $publication
-        ]);
-    }
 
     public function storeFeedback(Request $request)
     {
@@ -40,23 +38,18 @@ class FeedbackController extends Controller
 
         $validated['user_id'] = auth()->id();
 
-        Feedback::create($validated);
+        $existingFeedback = Feedback::where('user_id', $validated['user_id'])
+            ->where('publication_id', $validated['publication_id'])
+            ->first();
 
-        return redirect()->route('publications.index')
-            ->with('success', 'Feedback submitted successfully.');
-    }
-
-    public function feedbackEdit(Feedback $feedback)
-    {
-        $this->authorize('edit feedback');
-
-        if (auth()->user()->hasRole('member') && $feedback->user_id !== auth()->id()) {
-            abort(403);
+        if ($existingFeedback) {
+            return redirect()->route('publications.member.show', $validated['publication_id'])
+                ->with('error', 'You have already submitted feedback for this publication.');
         }
 
-        return Inertia::render('Feedback/Edit', [
-            'feedback' => $feedback
-        ]);
+        Feedback::create($validated);
+
+        return redirect()->back()->with('success', 'Feedback submitted successfully.');
     }
 
     public function updateFeedback(Request $request, Feedback $feedback)

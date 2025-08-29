@@ -1,6 +1,7 @@
+import Button from '@/Components/Button';
 import LaravelPagination from '@/Components/LaravelPagination';
 import SearchInput from '@/Components/SearchInput';
-import { Button } from '@/Components/ui/button';
+import { Card, CardTitle } from '@/Components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { ToggleGroup, ToggleGroupItem } from '@/Components/ui/toggle-group';
 import HomeLayout from '@/Layouts/HomeLayout'
@@ -11,8 +12,9 @@ import React, { useEffect, useState } from 'react'
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { FaFilter, FaTag, FaUserPen } from 'react-icons/fa6';
 import { GiWhiteBook } from "react-icons/gi";
-import { IoBookSharp } from 'react-icons/io5';
+import { IoBookSharp, IoDocumentText, IoLibrary } from 'react-icons/io5';
 import { RxCross2 } from 'react-icons/rx';
+import { Label } from 'recharts';
 
 const breadcrumbs = [
     { name: 'Publications', href: '/member/publications' },
@@ -112,119 +114,139 @@ const Index = () => {
         } breadcrumbs={breadcrumbs} >
 
             <div className='flex flex-col gap-10'>
-                <div className="flex flex-col sm:flex-row md:flex-col sm:items-end md:items-start gap-4 flex-wrap">
-                    <div className='p-5 bg-white shadow-sm rounded-xl border flex flex-wrap gap-6 items-center'>
-                        <div className='flex items-center gap-3'>
-                            <FaTag className='text-gray-400' />
-                            <Select
-                                value={data.category_id ?? ''}
-                                onValueChange={(val) => {
-                                    setData('category_id', val || null)
-                                    applyFilter()
-                                }}>
-                                <SelectTrigger className="w-full sm:w-48">
-                                    <SelectValue placeholder="Category" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {categories.map((cat) => (
-                                        <SelectItem key={cat.id} value={cat.id.toString()}>
-                                            {cat.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                <div className="flex flex-col gap-6">
+                    {/* Active Filter Chips */}
+                    {(data.category_id || data.type || data.location_id) && (
+                        <div className="flex flex-wrap gap-2">
+                            {data.category_id && (
+                                <Button className="border-violet-500 border-2 bg-white text-violet-500 px-2 py-1 rounded-full flex items-center gap-1">
+                                    {categories.find(c => c.id.toString() === data.category_id)?.name}
+                                    <RxCross2
+                                        className="cursor-pointer"
+                                        onClick={() => { setData("category_id", null); applyFilter() }}
+                                    />
+                                </Button>
+                            )}
+                            {data.type && (
+                                <Button className="border-sky-500 border-2 bg-white text-sky-500 px-2 py-1 rounded-full flex items-center gap-1">
+                                    {data.type.charAt(0).toUpperCase() + data.type.slice(1)}
+                                    <RxCross2
+                                        className="cursor-pointer"
+                                        onClick={() => { setData("type", null); applyFilter() }}
+                                    />
+                                </Button>
+                            )}
+                            {data.location_id && (
+                                <Button className="border-zinc-800 border-2 bg-white text-zinc-800 px-2 py-1 rounded-full flex items-center gap-1">
+                                    {locations.find(l => l.id.toString() === data.location_id)?.name}
+                                    <RxCross2
+                                        className="cursor-pointer"
+                                        onClick={() => { setData("location_id", null); applyFilter() }}
+                                    />
+                                </Button>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Filters */}
+                    <Card className="p-4 bg-white border shadow-sm rounded-xl">
+                        <div className="flex justify-between items-center mb-4">
+                            <CardTitle className="text-xl">Filters</CardTitle>
+                            {(data.category_id || data.type || data.location_id) && (
+                                <Button
+                                    onClick={() => setData({ ...data, category_id: null, type: null, location_id: null })}
+                                    className="text-sm text-red-500 bg-white border border-red-300 hover:bg-red-50"
+                                >
+                                    Clear all
+                                </Button>
+                            )}
                         </div>
 
-                        <div className='flex items-center gap-7'>
-                            <div className='flex items-center gap-3'>
-                                <IoBookSharp className='text-gray-400' />
-                                <ToggleGroup
-                                    type="single"
-                                    value={data.type ?? ''}
-                                    onValueChange={(val) => {
-                                        setData('type', val || null)
-                                        applyFilter()
-                                    }}
-                                    className="inline-flex border rounded-lg overflow-hidden">
-                                    {['ebook', 'physical', 'journal'].map((t) => (
-                                        <ToggleGroupItem
-                                            key={t}
-                                            value={t}
-                                            className={`px-4 py-2 text-sm font-medium transition-colors
-                                             ${data.type === t ? 'bg-violet-500 text-white' : 'text-gray-700 hover:bg-gray-100'}`}>
-                                            {t.charAt(0).toUpperCase() + t.slice(1)}
-                                        </ToggleGroupItem>
-                                    ))}
-                                </ToggleGroup>
-                            </div>
-                        </div>
-
-                        {data.type === 'physical' && (
-                            <div className='flex items-center gap-3'>
-                                <FaMapMarkerAlt className='text-gray-400' />
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {/* Category Filter */}
+                            <div className="flex flex-col gap-1">
+                                <Label className="text-xs text-gray-500 font-medium flex items-center gap-2">
+                                    <FaTag className="text-gray-400" /> Category
+                                </Label>
                                 <Select
-                                    value={data.location_id ?? ''}
+                                    value={data.category_id ?? ""}
                                     onValueChange={(val) => {
-                                        setData('location_id', val || null)
+                                        setData("category_id", val || null)
                                         applyFilter()
                                     }}
                                 >
-                                    <SelectTrigger className="w-full sm:w-48">
-                                        <SelectValue placeholder="Location" />
+                                    <SelectTrigger className="w-full bg-white">
+                                        <SelectValue placeholder="Select Category" />
                                     </SelectTrigger>
-                                    <SelectContent>
-                                        {locations.map((loc) => (
-                                            <SelectItem key={loc.id} value={loc.id.toString()}>
-                                                {loc.name}
+                                    <SelectContent className="bg-white">
+                                        {categories.map((cat) => (
+                                            <SelectItem key={cat.id} value={cat.id.toString()}>
+                                                {cat.name}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
                             </div>
-                        )}
 
-                        {(data.category_id || data.type || data.location_id) && (
-                            <button
-                                onClick={() => setData({ ...data, category_id: null, type: null, location_id: null })}
-                                className="text-sm text-red-500  font-semibold  ml-2"
-                            >
-                                Clear all
-                            </button>
-                        )}
-                    </div>
-
-                    <div className="flex flex-wrap gap-4 mt-5">
-                        {data.category_id && (
-                            <span className="border-violet-500 border-2 text-violet-500 flex-row-reverse  px-3 py-1 rounded-full flex items-center gap-2">
-                                {categories.find(c => c.id.toString() === data.category_id)?.name}
-                                <button
-                                    type="button"
-                                    onClick={() => { setData('category_id', null); applyFilter() }}
-                                    className="l-1 font-bold"
+                            {/* Type Filter */}
+                            <div className="flex flex-col gap-1">
+                                <Label className="text-xs text-gray-500 font-medium flex gap-2 items-center">
+                                    <IoBookSharp className="text-gray-400" />
+                                    Type
+                                </Label>
+                                <ToggleGroup
+                                    type="single"
+                                    value={data.type ?? ""}
+                                    onValueChange={(val) => {
+                                        setData("type", val || null)
+                                        applyFilter()
+                                    }}
+                                    className="inline-flex bg-white border rounded-lg overflow-hidden"
                                 >
-                                    <RxCross2 className=' font-bold' />
-                                </button>
-                            </span>
-                        )}
+                                    {[
+                                        { key: "ebook", label: "Ebook", icon: <IoBookSharp className="text-violet-500" /> },
+                                        { key: "physical", label: "Physical", icon: <IoLibrary className="text-zinc-700" /> },
+                                        { key: "journal", label: "Journal", icon: <IoDocumentText className="text-sky-500" /> },
+                                    ].map((item) => (
+                                        <ToggleGroupItem
+                                            key={item.key}
+                                            value={item.key}
+                                            className="px-4 py-2 text-sm font-medium flex items-center gap-2 bg-white"
+                                        >
+                                            {item.icon}
+                                            {item.label}
+                                        </ToggleGroupItem>
+                                    ))}
+                                </ToggleGroup>
+                            </div>
 
-                        {data.type && (
-                            <span className="border-sky-500 border-2 text-sky-500  px-3 py-1 rounded-full flex items-center gap-2">
-                                {data.type.charAt(0).toUpperCase() + data.type.slice(1)}
-                                <button type="button" onClick={() => { setData('type', null); applyFilter() }}>
-                                    <RxCross2 />
-                                </button>
-                            </span>
-                        )}
-
-                        {data.location_id && (
-                            <span className="border-zinc-800 border-2 text-zinc-800 px-3 py-1 rounded-full flex items-center gap-2">
-                                {locations.find(l => l.id.toString() === data.location_id)?.name}
-                                <button type="button" onClick={() => { setData('location_id', null); applyFilter() }}>
-                                    <RxCross2 />
-                                </button>
-                            </span>
-                        )}
-                    </div>
+                            {data.type === "physical" && (
+                                <div className="flex flex-col gap-1">
+                                    <Label className="text-xs text-gray-500 font-medium flex items-center gap-2">
+                                        <FaMapMarkerAlt className="text-gray-400" /> Location
+                                    </Label>
+                                    <Select
+                                        value={data.location_id ?? ""}
+                                        onValueChange={(val) => {
+                                            setData("location_id", val || null)
+                                            applyFilter()
+                                        }}
+                                    >
+                                        <SelectTrigger className="w-full bg-white">
+                                            <SelectValue placeholder="Select Location" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {locations.map((loc) => (
+                                                <SelectItem key={loc.id} value={loc.id.toString()}>
+                                                    {loc.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            )}
+                        </div>
+                    </Card>
                 </div>
                 <div className="grid grid-cols-4 gap-10 rounded-xl ">
                     {publications.data.map((pub, index) => (

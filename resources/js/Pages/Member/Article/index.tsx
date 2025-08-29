@@ -19,6 +19,7 @@ import Input from '@/Components/Input'
 import { IoIosSearch } from 'react-icons/io'
 import { IoChevronBack, IoChevronForward } from "react-icons/io5"
 import LaravelPagination from '@/Components/LaravelPagination'
+import SearchInput from '@/Components/SearchInput'
 
 const breadcrumbs = [
     { name: 'Articles', href: '/member/articles' },
@@ -55,24 +56,11 @@ const Index = () => {
                     Article
                 </h2>
 
-                <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2 w-full max-w-lg">
-                    <div className="relative flex-1">
-                        <IoIosSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                        <Input
-                            type="text"
-                            placeholder="Search articles..."
-                            value={data.search}
-                            onChange={(e) => setData('search', e.target.value)}
-                            className="pl-10 pr-3 py-2 !rounded-full w-full focus:outline-none focus:ring-2 focus:ring-violet-200"
-                        />
-                    </div>
-                    <Button
-                        type="submit"
-                        className="bg-black text-white px-4 py-2 rounded-lg hover:bg-violet-400 transition h-full sm:h-auto"
-                    >
-                        Search
-                    </Button>
-                </form>
+                <SearchInput placeholder='Search publication...'
+                    buttonLabel='Search'
+                    value={data.search}
+                    onChange={(val) => setData("search", val)}
+                    onSubmit={handleSearch} />
             </div>
         } breadcrumbs={breadcrumbs} >
             <div className='flex flex-col gap-10'>

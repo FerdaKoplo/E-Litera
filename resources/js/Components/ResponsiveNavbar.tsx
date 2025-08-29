@@ -19,8 +19,8 @@ const ResponsiveNavbar: React.FC<Props> = ({ children }) => {
     return (
         <nav className={`w-full flex gap-10 px-8 py-4 items-center sticky top-0 z-50  justify-center transition-colors duration-300
       ${scrolled
-                ? "bg-slate-900/70 backdrop-blur-md text-slate-100 shadow"
-                : "bg-gradient-to-b from-violet-50 to-white text-xs"
+                ? "bg-gradient-to-b from-violet-200  to-indigo-200  shadow"
+                : "bg-gradient-to-b from-violet-100 to-slate-50 text-xs"
             }`}>
             {children}
         </nav>

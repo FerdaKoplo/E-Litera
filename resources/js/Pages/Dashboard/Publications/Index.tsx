@@ -1,4 +1,3 @@
-import Button from '@/Components/Button'
 import DashboardLayout from '@/Layouts/DasboardLayout'
 import { Link, useForm, usePage } from '@inertiajs/react'
 import { PageProps } from '@/types'
@@ -13,6 +12,7 @@ import { IoBookSharp, IoDocumentText, IoLibrary } from 'react-icons/io5'
 import { useEffect } from 'react'
 import { Card, CardHeader, CardTitle } from '@/Components/ui/card'
 import Label from '@/Components/Label'
+import Button from '@/Components/Button'
 
 
 const breadcrumbs = [
@@ -116,11 +116,11 @@ const Index = () => {
                     {(data.category_id || data.type || data.location_id) && (
                         <div className="flex flex-wrap gap-2">
                             {data.category_id && (
-                                <Button className="border-violet-500 border-2 bg-white text-violet-500 px-2 py-1 rounded-full flex items-center gap-1">
+                                <Button className="border-violet-500 border-2 hover:bg-violet-50 bg-white text-violet-500 px-2 py-1 rounded-full flex items-center gap-1">
                                     {categories.find(c => c.id.toString() === data.category_id)?.name}
                                     <RxCross2
                                         className="cursor-pointer"
-                                        onClick={() => { setData("category_id", null); applyFilter() }}
+                                        onClick={() => { setData("category_id", null), applyFilter() }}
                                     />
                                 </Button>
                             )}
@@ -129,7 +129,7 @@ const Index = () => {
                                     {data.type.charAt(0).toUpperCase() + data.type.slice(1)}
                                     <RxCross2
                                         className="cursor-pointer"
-                                        onClick={() => { setData("type", null); applyFilter() }}
+                                        onClick={() => { setData("type", null), applyFilter() }}
                                     />
                                 </Button>
                             )}
@@ -138,7 +138,7 @@ const Index = () => {
                                     {locations.find(l => l.id.toString() === data.location_id)?.name}
                                     <RxCross2
                                         className="cursor-pointer"
-                                        onClick={() => { setData("location_id", null); applyFilter() }}
+                                        onClick={() => { setData("location_id", null), applyFilter() }}
                                     />
                                 </Button>
                             )}

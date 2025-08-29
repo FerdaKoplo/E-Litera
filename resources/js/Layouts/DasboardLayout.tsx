@@ -25,12 +25,6 @@ const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => 
     const { auth } = usePage<PageProps>().props
     const { post } = useForm()
 
-    const getFirstAndLastName = (name: string) => {
-        const parts = name.trim().split(' ')
-        if (parts.length === 1) return parts[0]
-        return `${parts[0]} ${parts[parts.length - 1]}`
-    }
-
     const handleLogout = () => {
         post(route('logout'))
     }

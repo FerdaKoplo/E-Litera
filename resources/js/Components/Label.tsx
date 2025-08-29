@@ -9,7 +9,7 @@ interface Props extends React.LabelHTMLAttributes<HTMLLabelElement>{
 
 const Label : React.FC<Props> = ( {forInput, value, children, className = '', ...props} ) => {
   return (
-    <label htmlFor={forInput} className={`block font-medium text-sm text-gray-700 ${className}`} {...props}>
+    <label htmlFor={forInput} className={`block font-semibold text-sm text-gray-700 ${className}`} {...props}>
         {value ?? children}
     </label>
   )

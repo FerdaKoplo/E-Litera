@@ -15,33 +15,33 @@ interface Props {
 
 const HomeLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => {
     return (
-        <div>
+        <div className='bg-slate-50'>
             <ResponsiveNavbar>
                 <Navbaritem href={'/member/home'} active={route().current('home')}>
                     <div className='flex flex-col items-center gap-3 '>
                         <FaHome size={20} />
-                        <span className='font-semibold'>Home</span>
+                        <span className=''>Home</span>
                     </div>
                 </Navbaritem>
 
                 <Navbaritem href={'/member/articles'} active={route().current('articles.member.index')}>
                     <div className='flex flex-col items-center gap-3 '>
                         <MdArticle size={20} />
-                        <span className='font-semibold'>Article</span>
+                        <span className=''>Article</span>
                     </div>
                 </Navbaritem>
 
                 <Navbaritem href={'/member/publications'} active={route().current('publications.member.index')}>
                     <div className='flex flex-col items-center gap-3 '>
                         <MdLibraryBooks size={20} />
-                        <span className='font-semibold'>Publications</span>
+                        <span className=''>Publications</span>
                     </div>
                 </Navbaritem>
 
-                <Navbaritem href={''} active={false}>
+                <Navbaritem href={'/member/profile'} active={false}>
                     <div className='flex flex-col items-center gap-3 '>
                         <FaUser size={20} />
-                        <span className='font-semibold'>Profile</span>
+                        <span className=''>Profile</span>
                     </div>
                 </Navbaritem>
             </ResponsiveNavbar>

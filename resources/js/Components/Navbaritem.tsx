@@ -15,8 +15,8 @@ const Navbaritem: React.FC<Props> = ({ active, children, href }) => {
             className={`
                 flex  items-center justify-center gap-5
                 ${active
-                    ? 'text-violet-300 font-semibold'
-                    : ' hover:text-violet-400 transition-all '}
+                    ? 'text-violet-500 font-bold  '
+                    : ' hover:text-indigo-400 transition-all text-zinc-700'}
             `}
         >
             {children}

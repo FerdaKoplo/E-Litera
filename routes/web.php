@@ -116,7 +116,13 @@ Route::middleware(['auth', 'role:member'])->group(function () {
     Route::get('/member/publications', [\App\Http\Controllers\Member\PublicationController::class, 'publicationIndex'])->name('publications.member.index');
     Route::get('/member/publication/{publication}', [\App\Http\Controllers\Member\PublicationController::class, 'publicationShow'])->name('publications.member.show');
 
+    // loans
     Route::post('/loans', [\App\Http\Controllers\Member\LoanController::class, 'storeLoan'])->name('member.loans.store');
-});
 
+    // feedback
+    Route::get('/publications/{publication}/feedback', [\App\Http\Controllers\Member\FeedbackController::class, 'viewFeedback'])
+    ->name('member.feedback.view');
+    Route::post('/feedback', [\App\Http\Controllers\Member\FeedbackController::class, 'storeFeedback'])->name('member.feedback.store');
+
+});
 require __DIR__ . '/auth.php';
