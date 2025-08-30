@@ -2,8 +2,13 @@ export interface User {
     id: number
     name: string
     email: string
-    email_verified_at: string
+    email_verified_at: string,
     role: string
+    profile?: string
+    phone_number?: string
+    instagram?: string
+    facebook?: string
+    created_at: Date
 }
 
 export interface Notification {

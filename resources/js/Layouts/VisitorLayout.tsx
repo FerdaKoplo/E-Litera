@@ -23,7 +23,7 @@ const VisitorLayout: React.FC<Props> = ({ children }) => {
             </Link>
             <div className="relative w-full sm:max-w-md mt-6">
                 <div className="absolute top-7 left-12 w-full h-full opacity-15 bg-black rounded-lg"></div>
-                <div className="relative px-6 py-4 bg-gradient-to-t bg-background shadow-md sm:rounded-lg border border-black">
+                <div className="relative px-6 py-4 bg-white shadow-md sm:rounded-lg border border-black">
                      <Toaster position="top-right" />
                     {children}
                 </div>

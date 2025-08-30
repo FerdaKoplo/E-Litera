@@ -2,7 +2,7 @@ import ResponsiveSidebar from '@/Components/ResponsiveSidebar'
 import SidebarItem from '@/Components/SidebarItem'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbSeparator } from '@/Components/ui/breadcrumb'
 import { PageProps } from '@/types'
-import { useForm, usePage } from '@inertiajs/react'
+import { Link, useForm, usePage } from '@inertiajs/react'
 import { ChevronRightIcon, SlashIcon } from 'lucide-react'
 import React, { useEffect } from 'react'
 import { BiSolidBookReader } from 'react-icons/bi'
@@ -12,6 +12,7 @@ import { FaHome } from "react-icons/fa";
 import { RiBookShelfFill } from "react-icons/ri";
 import { MdArticle, MdFeedback, MdLibraryBooks, MdPersonAdd } from 'react-icons/md'
 import Button from '@/Components/Button'
+import ProfileCard from '@/Components/ProfileCard'
 
 interface Props {
     header: React.ReactNode
@@ -72,17 +73,22 @@ const MemberLayout: React.FC<Props> = ({ children, header, breadcrumbs}) => {
                         </div>
                     </SidebarItem>
 
-                    <SidebarItem href="/member/profile" active={route().current('profile.index')}>
+                     <SidebarItem href="/member/loans" active={route().current('loans.member.index')}>
                         <div className='flex items-center gap-5'>
-                            <FaUser size={20} />
-                            <span>Profile</span>
+                            <BiSolidBookReader size={20} />
+                            <span>My Loans</span>
                         </div>
                     </SidebarItem>
 
+                    <div className='mt-auto w-full flex flex-col gap-5'>
+                         <Link href="/member/profile" >
+                             <ProfileCard email={auth.user.email} profile='' fallback={auth.user.name} username={auth.user.name} />
+                         </Link>
 
-                     <Button className='text-white mt-auto w-full rounded-lg bg-red-400' onClick={() => handleLogout()}>
-                            Logout
-                     </Button>
+                          <Button className='text-white w-full  rounded-lg bg-red-400' onClick={() => handleLogout()}>
+                                 Logout
+                          </Button>
+                     </div>
                 </ResponsiveSidebar>
 
                 {/* Content area */}

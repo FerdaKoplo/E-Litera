@@ -7,22 +7,17 @@ import { IoReturnUpBackOutline } from "react-icons/io5";
 
 const NotFound = () => {
 
-
-
-
     return (
-        <div className="min-h-screen justify-center flex flex-col items-center bg-background relative overflow-hidden">
+        <div className="relative bg-slate-50 min-h-screen flex flex-col items-center justify-center overflow-hidden">
 
-            <div className='absolute h-full w-full'>
+            {/* Decorative Eyes */}
+            <div className="absolute opacity-30 z-10  w-full h-full">
                 <Eyes />
             </div>
 
-            {/* Circle background */}
-            <div className="absolute w-[300px] md:w-[350px] h-[300px] md:h-[200px] rounded-full bg-gradient-to-tr from-fuchsia-400/45 to-violet-500/40 blur-3xl animate-pulse" />
-
-            {/* Video */}
+            {/* Floating Video */}
             <video
-                className="relative z-10 w-[250px] md:w-[400px] h-auto"
+                className="relative w-[250px] md:w-[450px]  h-auto drop-shadow-md"
                 autoPlay
                 muted
                 loop
@@ -30,13 +25,24 @@ const NotFound = () => {
                 src="/assets/gif/floating.webm"
             />
 
-            <div className='relative flex flex-col justify-center items-center'>
+            {/* Error Text */}
+            <div className="relative  text-center z-20 px-4">
+               <h1 className="font-black text-6xl md:text-8xl text-primary">
+                    <span className='text-violet-400' >4</span>
+                    <span className='text-fuchsia-400' >0</span>
+                    <span className='text-indigo-400' >4</span>
+                </h1>
+                <p className="mt-2 text-xl font-semibold">Oops! Page not found</p>
+                <h2 className="text-lg md:text-xl font-medium mt-2 text-muted-foreground">
+                    We couldn’t find the knowledge you were looking for.
+                </h2>
 
-
-
-                <div className="flex items-center flex-col gap-5 relative z-10">
-                    <h1 className="font-black text-5xl">OOPS</h1>
-                    <h2 className='text-xl font-semibold'>We cannot find the page you were looking for.</h2>
+                {/* CTA */}
+                <div className="mt-6">
+                    <Link href="/" className="cursor-pointer  inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary/90 transition">
+                        <IoReturnUpBackOutline className="text-xl" />
+                        Back to Home
+                    </Link>
                 </div>
             </div>
         </div>

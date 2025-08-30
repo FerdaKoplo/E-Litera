@@ -26,8 +26,8 @@ const ProfileCard: React.FC<Props> = ({ profile, fallback, username, email }) =>
                     <AvatarFallback className='bg-slate-700 text-white font-semibold'>{getInitials(fallback)}</AvatarFallback>
                 </Avatar>
                 <div className='text-white '>
-                    <p className='text-sm font-semibold'>{username}</p>
-                    <p className='text-xs line-clamp-2 text-gray-300'>{email}</p>
+                    <p className='text-sm font-semibold '>{username}</p>
+                    <p className='text-xs text-gray-300 truncate max-w-[110px] block'>{email}</p>
                 </div>
             </div>
             <div className='text-white text-lg'>

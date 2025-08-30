@@ -28,12 +28,19 @@ const Eyes = () => {
             {[0, 1].map((i) => (
                 <div
                     key={i}
-                    className="relative w-[200px] h-[200px] rounded-full bg-gray-200 flex justify-center items-center"
+                    className="relative w-[200px] h-[200px] rounded-full bg-gradient-to-t from-violet-400 to-purple-400 flex justify-center items-center"
                 >
                     <div
-                        className="absolute w-12 h-12 bg-black rounded-full transition-transform duration-100"
+                        className="absolute  w-12 h-12 bg-violet-600 rounded-full transition-transform duration-100"
                         style={{
                             transform: `translate(${position.x * 20}px, ${position.y * 20}px)`,
+                        }}
+                    />
+
+                    <div
+                        className="absolute w-4 h-4  bg-white rounded-full transition-transform duration-100"
+                        style={{
+                            transform: `translate(${position.x * 35}px, ${position.y * 35}px)`,
                         }}
                     />
                 </div>
