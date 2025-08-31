@@ -7,10 +7,39 @@ use App\Models\Loan;
 use App\Models\User;
 use App\Notifications\LoanRequested;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Notification;
 
 class LoanController extends Controller
 {
+    public function viewLoan(Request $request){
+
+        $this->authorize('view loans');
+
+        $query = Loan::with('publication', 'user')
+            ->where('user_id', auth()->id())
+            ->orderBy('created_at', 'desc');
+
+        // filter by status
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->whereHas('publication', function ($pub) use ($request) {
+                    $pub->where('title', 'like', "%{$request->search}%");
+                });
+            });
+        }
+
+        $loans = $query->paginate(10);
+
+        return Inertia::render('Member/Loans/Index', [
+            'loans' => $loans,
+        ]);
+    }
+
     public function storeLoan(Request $request)
     {
         $this->authorize('create loans');

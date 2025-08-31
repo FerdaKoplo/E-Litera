@@ -79,6 +79,7 @@ class RolePermissionSeeder extends Seeder
             $viewPublications,
             $viewArticles,
 
+            $viewLoans,
             $createLoans,
 
             $createFeedback,

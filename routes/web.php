@@ -117,6 +117,7 @@ Route::middleware(['auth', 'role:member'])->group(function () {
     Route::get('/member/publication/{publication}', [\App\Http\Controllers\Member\PublicationController::class, 'publicationShow'])->name('publications.member.show');
 
     // loans
+    Route::get('/member/loans', [\App\Http\Controllers\Member\LoanController::class, 'viewLoan'])->name('member.loans.view');
     Route::post('/loans', [\App\Http\Controllers\Member\LoanController::class, 'storeLoan'])->name('member.loans.store');
 
     // feedback

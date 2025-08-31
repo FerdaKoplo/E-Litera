@@ -109,6 +109,7 @@ const DataTable = <T,>({
                                         <span className="px-3 py-1">...</span>
                                     ) : (
                                         <PaginationLink
+                                            className="cursor-pointer"
                                             isActive={link?.active}
                                             href={!onPageChange ? link?.url || undefined : undefined}
                                             onClick={onPageChange ? () => onPageChange(link?.url || null) : undefined}
