@@ -34,7 +34,7 @@ const Index = () => {
 
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        get(route('member.feedback.view'), {
+        get(route('member.loans.view'), {
             preserveState: true,
             preserveScroll: true,
             data: { search: data.search, page: 1 }
@@ -47,7 +47,7 @@ const Index = () => {
         const params = new URLSearchParams(query)
         const nextPage = Number(params.get("page") || 1)
         setData("page", nextPage)
-        get(route('member.feedback.view'), {
+        get(route('member.loans.view'), {
             preserveState: true,
             preserveScroll: true,
             data: {
@@ -59,7 +59,7 @@ const Index = () => {
 
     const applyFilter = (overrideData?: typeof data) => {
         const payload = overrideData || data;
-        get(route('member.feedback.view'), {
+        get(route('member.loans.view'), {
             preserveState: true,
             preserveScroll: true,
             data: payload,
@@ -68,7 +68,7 @@ const Index = () => {
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
-            get(route('member.feedback.view'), {
+            get(route('member.loans.view'), {
                 preserveState: true,
                 preserveScroll: true,
                 data

@@ -149,7 +149,7 @@ const Index = () => {
                     )}
 
                     {/* Filters */}
-                    <Card className="p-4 bg-white border shadow-sm rounded-xl">
+                    <Card className="p-4 bg-gradient-to-l from-violet-100 to-indigo-50 border shadow-sm rounded-xl">
                         <div className="flex justify-between items-center mb-4">
                             <CardTitle className="text-xl">Filters</CardTitle>
                             {(data.category_id || data.type || data.location_id) && (
@@ -250,7 +250,7 @@ const Index = () => {
                 </div>
                 <div className="grid grid-cols-4 gap-10 rounded-xl ">
                     {publications.data.map((pub, index) => (
-                        <Link href={`/member/publication/${pub.id}`} key={index} className={`flex flex-col  shadow-md rounded-xl bg-slate-800 text-white hover:shadow-lg gap-5 hover:scale-[1.02] transition-all duration-700 `}>
+                        <Link href={`/member/publication/${pub.id}`} key={index} className={`flex flex-col  shadow-md rounded-xl bg-gradient-to-br from-fuchsia-100 to-violet-100 text-white hover:shadow-lg gap-5 hover:scale-[1.02] transition-all duration-700 `}>
                             {pub.image_url && (
                                 <div className="overflow-hidden relative ">
                                     <div className="absolute left-[-40px] top-4 rotate-[-45deg] bg-violet-500 text-white text-lg font-semibold px-12 py-1 shadow-md">
@@ -264,7 +264,7 @@ const Index = () => {
                                     />
                                 </div>
                             )}
-                            <div className="flex flex-col flex-grow p-5">
+                            <div className="flex bg-white  text-black  flex-col flex-grow p-5 rounded-xl">
                                 <div className="flex flex-col gap-3 flex-grow">
                                     <p className="bg-slate-100 text-slate-700 text-sm font-medium w-fit px-3 py-1 rounded-full">
                                         {pub.category?.name}
@@ -274,7 +274,7 @@ const Index = () => {
                                         {pub.title}
                                     </h1>
 
-                                    <h2 className='line-clamp-3 text-slate-300'>
+                                    <h2 className='line-clamp-3 text-slate-400'>
                                         {pub.publication_description}
                                     </h2>
 

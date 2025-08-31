@@ -66,7 +66,7 @@ const Index = () => {
             <div className='flex flex-col gap-10'>
                 <div className="grid grid-cols-4 gap-10 rounded-xl ">
                     {articles.data.map((arti, index) => (
-                        <Link href={`/member/articles/${arti.id}`} key={index} className={`p-6 flex flex-col shadow-md rounded-xl bg-slate-800 hover:shadow-lg gap-5 hover:scale-[1.02] transition-all duration-700 text-white`}>
+                        <Link href={`/member/articles/${arti.id}`} key={index} className={` flex flex-col shadow-md rounded-xl bg-gradient-to-br from-indigo-100 to-fuchsia-100 hover:shadow-lg gap-5 hover:scale-[1.02] transition-all duration-700 text-white`}>
                             {arti.images && arti.images.length > 0 && (
                                 <img
                                     loading='lazy'
@@ -76,28 +76,26 @@ const Index = () => {
                                 />
                             )}
 
-                            <div className="flex flex-col flex-grow">
-                                <div className="flex flex-col gap-4 flex-grow">
-                                    <h1 className="font-bold text-xl line-clamp-2">
-                                        {arti.title_article}
-                                    </h1>
-                                    <p
-                                        className="line-clamp-3 text-sm"
-                                        dangerouslySetInnerHTML={{
-                                            __html: DOMPurify.sanitize(arti.article_text_content, {
-                                                ALLOWED_TAGS: ["p", "b", "i", "u", "a", "ul", "ol", "li", "img", "h1", "h2", "h3", "blockquote", "code", "pre"],
-                                                ALLOWED_ATTR: ["href", "target", "src", "alt", "title", "width", "height"],
-                                            }),
-                                        }}
-                                    />
+                            <div className="flex flex-col gap-4 p-5 flex-grow rounded-b-xl text-black bg-white">
+                                <h1 className="font-bold text-xl line-clamp-2">
+                                    {arti.title_article}
+                                </h1>
+                                <p
+                                    className="line-clamp-3 text-slate-400 text-sm"
+                                    dangerouslySetInnerHTML={{
+                                        __html: DOMPurify.sanitize(arti.article_text_content, {
+                                            ALLOWED_TAGS: ["p", "b", "i", "u", "a", "ul", "ol", "li", "img", "h1", "h2", "h3", "blockquote", "code", "pre"],
+                                            ALLOWED_ATTR: ["href", "target", "src", "alt", "title", "width", "height"],
+                                        }),
+                                    }}
+                                />
 
-                                    <div className='flex flex-col text-sm'>
-                                        <p className='font-bold'>by {arti.user?.name ?? "null"}</p>
+                                <div className='flex flex-col text-sm'>
+                                    <p className='font-bold'>by {arti.user?.name ?? "null"}</p>
 
-                                        <p title={new Date(arti.created_at).toLocaleString()}>
-                                            {new Date(arti.created_at).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
-                                        </p>
-                                    </div>
+                                    <p title={new Date(arti.created_at).toLocaleString()}>
+                                        {new Date(arti.created_at).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
+                                    </p>
                                 </div>
                             </div>
                         </Link>
