@@ -8,10 +8,11 @@ import { FaUser } from 'react-icons/fa6'
 
 interface Props {
     publicationId: number
+    refreshKey?: number
 }
 
 
-const FeedbackList: React.FC<Props> = ({ publicationId }) => {
+const FeedbackList: React.FC<Props> = ({ publicationId, refreshKey }) => {
 
     const [feedbacks, setFeedbacks] = useState<Feedback[]>([])
     const [loading, setLoading] = useState(true)
@@ -30,7 +31,7 @@ const FeedbackList: React.FC<Props> = ({ publicationId }) => {
         }
 
         fetchFeedbacks()
-    }, [publicationId])
+    }, [publicationId, refreshKey])
 
     if (loading) return <p>Loading feedbacks...</p>
     if (error) return <p className="text-red-500">{error}</p>
@@ -52,7 +53,7 @@ const FeedbackList: React.FC<Props> = ({ publicationId }) => {
                         {feedbacks.map((fb) => (
                             <div
                                 key={fb.id}
-                                className="p-4 border rounded-lg shadow-sm space-y-5  "
+                                className="p-4 border rounded-lg shadow-sm space-y-5 bg-white"
                             >
                                 <div className="flex items-center gap-3 mb-2">
                                     <div className="w-10 h-10 flex items-center justify-center rounded-full bg-whte  text-black">

@@ -59,7 +59,7 @@ const MemberLayout: React.FC<Props> = ({ children, header, breadcrumbs}) => {
             )}
             <div className="flex">
                 <ResponsiveSidebar>
-                     <SidebarItem href="/member/home" active={route().current('home')}>
+                     <SidebarItem href="/member/articles" active={route().current('home')}>
                         <div className='flex items-center gap-5'>
                             <FaHome size={20}/>
                             <span>Home</span>

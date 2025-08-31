@@ -1,7 +1,7 @@
 import Button from '@/Components/Button'
 import Label from '@/Components/Label'
 import Stars from '@/Components/Stars'
-import { Card, CardDescription, CardTitle } from '@/Components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card'
 import { Textarea } from '@/Components/ui/textarea'
 import { useForm, usePage } from '@inertiajs/react'
 import React, { useEffect, useState } from 'react'
@@ -9,9 +9,10 @@ import { toast } from 'sonner'
 
 interface Props {
     publicationId: number
+    onSubmitted?: () => void
 }
 
-const FeedbackForm: React.FC<Props> = ({ publicationId }) => {
+const FeedbackForm: React.FC<Props> = ({ publicationId, onSubmitted }) => {
 
     const [showForm, setShowForm] = useState<boolean>(false)
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -28,7 +29,12 @@ const FeedbackForm: React.FC<Props> = ({ publicationId }) => {
 
     const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault()
-        post(route('member.feedback.store'))
+        post(route('member.feedback.store'), {
+            onSuccess: () => {
+                reset()
+                if (onSubmitted) onSubmitted()
+            },
+        })
     }
     useEffect(() => {
         if (props.flash.success) toast.success(props.flash.success)
@@ -37,9 +43,19 @@ const FeedbackForm: React.FC<Props> = ({ publicationId }) => {
 
     return (
         <form onSubmit={handleSubmit} className='flex flex-col gap-4 '>
-            <div className='flex items-center justify-center'>
-                <Stars initialRating={Number(data.rating)} onRatingChange={handleRatingChange} />
-            </div>
+            <Card className='flex  items-center flex-col  justify-center'>
+                <CardHeader className=' flex flex-col items-center'>
+                    <CardTitle className='text-xl font-semibold'>
+                        Give a Rating
+                    </CardTitle>
+                    <CardDescription>
+                        Give us your feedback by rating this publication
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className=' flex items-center justify-center'>
+                    <Stars initialRating={Number(data.rating)} onRatingChange={handleRatingChange} />
+                </CardContent>
+            </Card>
 
             <div
                 className={`flex flex-col gap-2 transition-all duration-500 ease-in-out overflow-hidden ${showForm

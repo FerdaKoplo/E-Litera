@@ -17,12 +17,6 @@ const HomeLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => {
     return (
         <div className='bg-slate-50'>
             <ResponsiveNavbar>
-                <Navbaritem href={'/member/home'} active={route().current('home')}>
-                    <div className='flex flex-col items-center gap-3 '>
-                        <FaHome size={20} />
-                        <span className=''>Home</span>
-                    </div>
-                </Navbaritem>
 
                 <Navbaritem href={'/member/articles'} active={route().current('articles.member.index')}>
                     <div className='flex flex-col items-center gap-3 '>
