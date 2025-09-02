@@ -29,20 +29,26 @@ const breadcrumbs = [
 ]
 
 const Dashboard = () => {
-    const { filters, loanChartData } = usePage<PageProps>().props
+    const [openNotif, setOpenNotif] = useState<boolean>(false)
+    const {notifications, filters, loanChartData } = usePage<PageProps>().props
     const handleFilterChange = (value: LoanFilter["period"]) => {
-           router.get(route("dashboard.member"), { period: value }, {
-               preserveState: true,
-               preserveScroll: true,
-               replace: true,
-           });
-       }
-
+        router.get(route("dashboard.member"), { period: value }, {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true,
+        });
+    }
 
     return (
         <MemberLayout header={
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-semibold">Dashboard</h1>
+                <Notifications
+                    icon={<BsBellFill />}
+                    open={openNotif}
+                    onOpenChange={setOpenNotif}
+                    notifications={notifications}
+                />
             </div>
         } breadcrumbs={breadcrumbs} >
             <div>
@@ -124,7 +130,7 @@ const Dashboard = () => {
                             </CardHeader>
                         </Link>
                     </Card> */}
-{/*
+                    {/*
                     <Card className='bg-gradient-to-t flex flex-col justify-center  from-zinc-100 to-white hover:scale-105 transition duration-300'>
                         <div className='flex items-center justify-center'>
                             <CardTitle className='text-2xl bg-gradient-to-t p-3 text-white rounded-xl from-blue-500 to-sky-300'>

@@ -125,5 +125,16 @@ Route::middleware(['auth', 'role:member'])->group(function () {
     ->name('member.feedback.view');
     Route::post('/feedback', [\App\Http\Controllers\Member\FeedbackController::class, 'storeFeedback'])->name('member.feedback.store');
 
+    Route::post('/notifications/{id}/read', function ($id) {
+        $user = auth()->user();
+         /** @var \Illuminate\Notifications\DatabaseNotification|null $notification */
+        $notification = $user->unreadNotifications()->find($id);
+
+        if ($notification) {
+            $notification->markAsRead();
+        }
+
+        return redirect()->back();
+    })->name('notifications.read');
 });
 require __DIR__ . '/auth.php';

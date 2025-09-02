@@ -91,7 +91,7 @@ const Show = () => {
                                 <a
                                     href={publication.pdf_url as string}
                                     target="_blank"
-                                    className="px-6 py-3 bg-violet-600 text-white rounded-lg shadow hover:bg-violet-700 transition"
+                                    className="px-6 py-3 bg-gradient-to-t from-violet-500 to-violet-400 text-white rounded-lg shadow hover:bg-violet-700 transition"
                                 >
                                     📖 Read / Download
                                 </a>
@@ -99,7 +99,7 @@ const Show = () => {
 
                             {publication.type === 'physical' && (
                                 <>
-                                    <Button className="px-6 flex items-center py-3 bg-slate-800 text-white gap-3 hover:scale-110  shadow hover:bg-slate-900 transition"
+                                    <Button className="px-6 flex items-center py-3 bg-gradient-to-t from-slate-800 to-slate-700 text-white gap-3 hover:scale-110  shadow hover:bg-slate-900 transition"
                                         onClick={() => toast.info(
                                             publication.is_available ? "Available" : "Currently unavailable"
                                         )}>
@@ -107,7 +107,7 @@ const Show = () => {
                                         Check Availability
                                     </Button>
 
-                                    <Button onClick={submitLoan} className='bg-slate-800 px-6 flex items-center gap-3 hover:scale-110 transition'>
+                                    <Button onClick={submitLoan} className='bg-gradient-to-t from-slate-800 to-slate-700 px-6 flex items-center gap-3 hover:scale-110 transition'>
                                         <BiBookAdd size={18} />
                                         Request Loan
                                     </Button>
@@ -118,7 +118,7 @@ const Show = () => {
                                 <a
                                     href={publication.pdf_url as string}
                                     target="_blank"
-                                    className="px-6 py-3 items-center gap-3 flex bg-emerald-600 text-white rounded-lg hover:scale-110  shadow  transition"
+                                    className="px-6 py-3 items-center gap-3 flex bg-gradient-to-t from-emerald-500 to-emerald-400 text-white rounded-lg hover:scale-110  shadow  transition"
                                 >
                                     <IoIosPaper />
                                     View Journal

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Management;
 
 use App\Http\Controllers\Controller;
+use App\Models\Delivery;
 use App\Models\Loan;
 use App\Models\Publication;
 use App\Notifications\LoanStatusUpdated;
@@ -33,7 +34,7 @@ class LoanController extends Controller
                     $pub->where('title', 'like', "%{$request->search}%");
                 })->orWhereHas('user', function ($user) use ($request) {
                     $user->where('name', 'like', "%{$request->search}%")
-                    ->orWhere('email', 'like', "%{$request->search}%");
+                        ->orWhere('email', 'like', "%{$request->search}%");
                 });
             });
         }
@@ -71,6 +72,17 @@ class LoanController extends Controller
         }
 
         $loan->update($validated);
+
+        if ($validated['status'] === 'borrowed') {
+            // Check if delivery already exists for this loan
+            if (!$loan->delivery) {
+                Delivery::create([
+                    'loan_id' => $loan->id,
+                    'tracking_number' => 'TRK-' . strtoupper(uniqid()),
+                    'status' => 'processing',
+                ]);
+            }
+        }
 
         $loan->user->notify(new LoanStatusUpdated($loan));
 

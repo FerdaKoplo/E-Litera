@@ -8,15 +8,15 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class LoanStatusUpdated extends Notification implements ShouldQueue
+class LoanOverdue extends Notification implements ShouldQueue
 {
     use Queueable;
-
-    protected Loan $loan;
 
     /**
      * Create a new notification instance.
      */
+    protected Loan $loan;
+
     public function __construct(Loan $loan)
     {
         $this->loan = $loan;
@@ -35,33 +35,31 @@ class LoanStatusUpdated extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      */
-
-    public function toDatabase($notifiable)
-    {
-        return [
-            'loan_id' => $this->loan->id,
-            'publication_title' => $this->loan->publication->title,
-            'status' => $this->loan->status,
-            'message' => "Your loan request for '{$this->loan->publication->title}' is now '{$this->loan->status}'.",
-            'updated_at' => now(),
-        ];
-    }
-
     // public function toMail(object $notifiable): MailMessage
     // {
     //     return (new MailMessage)
-    //         ->subject("Loan Request Update: {$this->loan->publication->title}")
-    //         ->greeting("Hello {$notifiable->name},")
-    //         ->line("Your loan request for '{$this->loan->publication->title}' has been updated.")
-    //         ->line("Current status: '{$this->loan->status}'.")
-    //         ->action('View Loan Details', url(route('loans.show', $this->loan->id)))
-    //         ->line('Thank you for using our library system!');
+    //                 ->line('The introduction to the notification.')
+    //                 ->action('Notification Action', url('/'))
+    //                 ->line('Thank you for using our application!');
     // }
+
     /**
      * Get the array representation of the notification.
      *
      * @return array<string, mixed>
      */
+
+    public function toDatabase($notifiable): array
+    {
+        return [
+            'loan_id' => $this->loan->id,
+            'publication_title' => $this->loan->publication->title,
+            'status' => 'overdue',
+            'fine_amount' => $this->loan->fine_amount,
+            'message' => "Your loan for '{$this->loan->publication->title}' is overdue. Fine: {$this->loan->fine_amount} IDR",
+            'updated_at' => now(),
+        ];
+    }
     public function toArray(object $notifiable): array
     {
         return [

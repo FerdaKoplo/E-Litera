@@ -9,7 +9,6 @@ import DashboardLayout from '@/Layouts/DasboardLayout'
 import { PageProps } from '@/types'
 import { useForm, usePage } from '@inertiajs/react'
 import React, { useEffect } from 'react'
-import { Select } from 'react-day-picker'
 import { MdCheckCircle, MdError, MdLibraryBooks, MdPending } from 'react-icons/md'
 import { RxCross2 } from 'react-icons/rx'
 
