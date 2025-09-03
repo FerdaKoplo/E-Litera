@@ -95,7 +95,10 @@ Route::middleware(['auth', 'role:super-admin|librarian'])->group(function () {
     Route::delete('/articles/{article}', [\App\Http\Controllers\Management\ArticleController::class, 'deleteArticle'])->name('articles.destroy');
 
 
-    Route::post('/notifications/{id}/read', function ($id) {
+
+});
+
+ Route::post('/notifications/{id}/read', function ($id) {
         $user = auth()->user();
          /** @var \Illuminate\Notifications\DatabaseNotification|null $notification */
         $notification = $user->unreadNotifications()->find($id);
@@ -106,8 +109,6 @@ Route::middleware(['auth', 'role:super-admin|librarian'])->group(function () {
 
         return redirect()->back();
     })->name('notifications.read');
-});
-
 
 Route::middleware(['auth', 'role:member'])->group(function () {
     Route::get('/member/home', [\App\Http\Controllers\Member\HomeController::class, 'index'])->name('home');

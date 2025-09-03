@@ -63,6 +63,8 @@ class DeliveryController extends Controller
 
 
         $delivery->update($validated);
+        // $delivery->user->notify(new Delivery($delivery));
+
 
         return redirect()->route('delivery.index')
                          ->with('success', 'Delivery updated successfully.');

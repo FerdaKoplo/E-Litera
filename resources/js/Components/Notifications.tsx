@@ -1,5 +1,5 @@
 import { useForm } from '@inertiajs/react'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Button from './Button'
 import { IoCheckmarkDoneSharp } from 'react-icons/io5'
 
@@ -19,7 +19,7 @@ interface Props {
 
 const Notifications: React.FC<Props> = ({ icon, open, onOpenChange, notifications }) => {
     const { post } = useForm()
-
+     const notificationRef = useRef<HTMLDivElement>(null)
     const [localNotifications, setLocalNotifications] = useState(notifications)
 
     const handleMarkRead = (notif: NotificationItem) => {
@@ -31,8 +31,67 @@ const Notifications: React.FC<Props> = ({ icon, open, onOpenChange, notification
         }
     }
 
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
+                onOpenChange?.(false)
+            }
+        }
+
+        if (open) {
+            document.addEventListener('mousedown', handleClickOutside)
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [open, onOpenChange])
+
+     useEffect(() => {
+        let timeoutId: NodeJS.Timeout
+
+        if (open) {
+            timeoutId = setTimeout(() => {
+                onOpenChange?.(false)
+            }, 10000)
+        }
+
+        return () => {
+            if (timeoutId) {
+                clearTimeout(timeoutId)
+            }
+        }
+    }, [open, onOpenChange])
+
+     useEffect(() => {
+        const handleEscapeKey = (event: KeyboardEvent) => {
+            if (event.key === 'Escape' && open) {
+                onOpenChange?.(false)
+            }
+        }
+
+        if (open) {
+            document.addEventListener('keydown', handleEscapeKey)
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleEscapeKey)
+        }
+    }, [open, onOpenChange])
+
+     useEffect(() => {
+        if (open && localNotifications.length === 0) {
+            const timeoutId = setTimeout(() => {
+                onOpenChange?.(false)
+            }, 1000)
+
+            return () => clearTimeout(timeoutId)
+        }
+    }, [localNotifications.length, open, onOpenChange])
+
+
     return (
-        <div className="relative">
+        <div className="relative" ref={notificationRef}>
             <button onClick={() => onOpenChange?.(!open)}>
                 {icon}
                 {localNotifications.some(n => !n.read_at) && (

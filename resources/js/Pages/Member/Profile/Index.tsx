@@ -28,7 +28,7 @@ const Index = () => {
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-semibold">Profile</h1>
                 <Link href="/profile/edit">
-                    <Button type="button" className="text-white rounded-lg">
+                    <Button type="button" className="bg-white border-violet-400 border-2 font-semibold hover:bg-violet-50 text-violet-400 rounded-lg">
                         Edit Profile
                     </Button>
                 </Link>

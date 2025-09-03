@@ -23,7 +23,7 @@ const ProfileCard: React.FC<Props> = ({ profile, fallback, username, email }) =>
             <div className='flex gap-3 items-center'>
                 <Avatar>
                     <AvatarImage src={profile} />
-                    <AvatarFallback className='bg-slate-700 text-white font-semibold'>{getInitials(fallback)}</AvatarFallback>
+                    <AvatarFallback className='bg-gradient-to-t from-violet-500 to-indigo-400 text-white font-semibold'>{getInitials(fallback)}</AvatarFallback>
                 </Avatar>
                 <div className='text-white '>
                     <p className='text-sm font-semibold truncate max-w-[110px] block'>{username}</p>

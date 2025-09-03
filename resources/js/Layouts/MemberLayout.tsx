@@ -66,14 +66,14 @@ const MemberLayout: React.FC<Props> = ({ children, header, breadcrumbs}) => {
                         </div>
                     </SidebarItem>
 
-                    <SidebarItem href="/member/dashboard" active={route().current('dashboard')}>
+                    <SidebarItem href="/member/dashboard" active={route().current('dashboard.member')}>
                         <div className='flex items-center gap-5'>
                             <IoMdAnalytics size={20} />
                             <span>Dashboard</span>
                         </div>
                     </SidebarItem>
 
-                     <SidebarItem href="/member/loans" active={route().current('loans.member.index')}>
+                     <SidebarItem href="/member/loans" active={route().current('member.loans.view')}>
                         <div className='flex items-center gap-5'>
                             <BiSolidBookReader size={20} />
                             <span>My Loans</span>

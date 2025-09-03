@@ -88,18 +88,18 @@ class LoanController extends Controller
         return back()->with('success', 'Loan updated successfully.');
     }
 
-    public function checkOverdue()
-    {
-        $loans = Loan::where('status', 'borrowed')
-            ->where('due_date', '<', Carbon::today())
-            ->get();
+    // public function checkOverdue()
+    // {
+    //     $loans = Loan::where('status', 'borrowed')
+    //         ->where('due_date', '<', Carbon::today())
+    //         ->get();
 
-        foreach ($loans as $loan) {
-            $daysOverdue = Carbon::today()->diffInDays($loan->due_date);
-            $loan->update([
-                'status' => 'overdue',
-                'fine_amount' => $daysOverdue * 5000
-            ]);
-        }
-    }
+    //     foreach ($loans as $loan) {
+    //         $daysOverdue = Carbon::today()->diffInDays($loan->due_date);
+    //         $loan->update([
+    //             'status' => 'overdue',
+    //             'fine_amount' => $daysOverdue * 5000
+    //         ]);
+    //     }
+    // }
 }
