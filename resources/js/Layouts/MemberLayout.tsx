@@ -6,7 +6,7 @@ import { Link, useForm, usePage } from '@inertiajs/react'
 import { ChevronRightIcon, SlashIcon } from 'lucide-react'
 import React, { useEffect } from 'react'
 import { BiSolidBookReader } from 'react-icons/bi'
-import { FaFolder, FaHandHolding, FaUser } from 'react-icons/fa6'
+import { FaFolder, FaHandHolding, FaTruck, FaUser } from 'react-icons/fa6'
 import { IoMdAnalytics } from 'react-icons/io'
 import { FaHome } from "react-icons/fa";
 import { RiBookShelfFill } from "react-icons/ri";
@@ -77,6 +77,14 @@ const MemberLayout: React.FC<Props> = ({ children, header, breadcrumbs}) => {
                         <div className='flex items-center gap-5'>
                             <BiSolidBookReader size={20} />
                             <span>My Loans</span>
+                        </div>
+                    </SidebarItem>
+
+
+                    <SidebarItem href="/member/delivery" active={route().current('member.delivery.index')}>
+                        <div className='flex items-center gap-5'>
+                            <FaTruck size={20} />
+                            <span>Delivery</span>
                         </div>
                     </SidebarItem>
 

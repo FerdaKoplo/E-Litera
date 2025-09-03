@@ -1,42 +1,39 @@
+import MemberLayout from '@/Layouts/MemberLayout'
 import Button from '@/Components/Button'
 import Label from '@/Components/Label'
 import SearchBar from '@/Components/SearchInput'
 import DataTable, { LaravelPagination } from '@/Components/Table/DataTable'
 import { Card, CardTitle } from '@/Components/ui/card'
 import { ToggleGroup, ToggleGroupItem } from '@/Components/ui/toggle-group'
-import { deliveryColumns } from '@/Constant/columns'
-import DashboardLayout from '@/Layouts/DasboardLayout'
+import { deliveryColumns, deliveryMemberColumns } from '@/Constant/columns'
 import { PageProps } from '@/types'
 import { useForm, usePage } from '@inertiajs/react'
 import React, { useEffect } from 'react'
 import { MdCancel, MdCheckCircle, MdError, MdLocalShipping, MdPendingActions } from 'react-icons/md'
 import { RxCross2 } from 'react-icons/rx'
-import { toast, Toaster } from 'sonner'
 
 const breadcrumbs = [
-    { name: 'Delivery', href: '/delivery' },
+    { name: 'Delivery', href: '/member/delivery' },
 ]
 
 const Index = () => {
-
     const { deliveries } = usePage<
-        PageProps<{ deliveries: LaravelPagination<Delivery>}>
+        PageProps<{ deliveries: LaravelPagination<Delivery> }>
     >().props
-      const { flash } = usePage<PageProps<{ flash: { success?: string, error?: string } }>>().props
 
-    const { data, setData, get } = useForm<{
-        search: string;
-        page: number;
-        status: string | null;
-    }>({
-        search: '',
-        page: 1,
-        status: null,
-    })
+     const { data, setData, get } = useForm<{
+            search: string;
+            page: number;
+            status: string | null;
+        }>({
+            search: '',
+            page: 1,
+            status: null,
+        })
 
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        get(route('delivery.index'), {
+        get(route('member.delivery.index'), {
             preserveState: true,
             preserveScroll: true,
             data: { search: data.search, page: 1 }
@@ -49,7 +46,7 @@ const Index = () => {
         const params = new URLSearchParams(query)
         const nextPage = Number(params.get("page") || 1)
         setData("page", nextPage)
-        get(route('delivery.index'), {
+        get(route('member.delivery.index'), {
             preserveState: true,
             preserveScroll: true,
             data: {
@@ -61,7 +58,7 @@ const Index = () => {
 
     const applyFilter = (overrideData?: typeof data) => {
         const payload = overrideData || data;
-        get(route('delivery.index'), {
+        get(route('member.delivery.index'), {
             preserveState: true,
             preserveScroll: true,
             data: payload,
@@ -70,7 +67,7 @@ const Index = () => {
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
-            get(route('delivery.index'), {
+            get(route('member.delivery.index'), {
                 preserveState: true,
                 preserveScroll: true,
                 data
@@ -80,16 +77,9 @@ const Index = () => {
         return () => clearTimeout(timeoutId);
     }, [data.status, data.page])
 
-    useEffect(() => {
-        if (flash) {
-            if (flash.success) toast.success(flash.success)
-            if (flash.error) toast.error(flash.error)
-        }
-    }, [flash])
 
     return (
-
-        <DashboardLayout header={
+        <MemberLayout header={
             <h1 className="text-2xl font-semibold">Delivery</h1>
         } breadcrumbs={breadcrumbs}>
             <div className='flex flex-col gap-10'>
@@ -110,7 +100,7 @@ const Index = () => {
                         <div className="flex flex-wrap gap-2">
                             <Button
                                 className={`px-3 py-1 rounded-full flex items-center gap-2 border-2 bg-white
-                                                  ${data.status === "cancelled" ? "border-red-500 text-red-500" :
+                                                          ${data.status === "cancelled" ? "border-red-500 text-red-500" :
                                         data.status === "pending" ? "border-yellow-500 text-yellow-500" :
                                             data.status === "shipped" ? "border-orange-400 text-orange-400" :
                                                 "border-green-400 text-green-400"}`}
@@ -164,7 +154,7 @@ const Index = () => {
                                         key={item.key}
                                         value={item.key}
                                         className={`px-4 py-2 text-sm font-medium flex items-center gap-2 bg-white
-                                                          ${data.status === item.key ? "bg-violet-500 text-white" : "text-gray-700 hover:bg-gray-100"}`}
+                                                                  ${data.status === item.key ? "bg-violet-500 text-white" : "text-gray-700 hover:bg-gray-100"}`}
                                     >
                                         {item.icon}
                                         {item.label}
@@ -174,9 +164,10 @@ const Index = () => {
                         </div>
                     </Card>
                 </div>
-                <DataTable columns={deliveryColumns} data={deliveries} onPageChange={goToPage}/>
+                <DataTable columns={deliveryMemberColumns} data={deliveries} onPageChange={goToPage} />
             </div>
-        </DashboardLayout>
+
+        </MemberLayout>
     )
 }
 

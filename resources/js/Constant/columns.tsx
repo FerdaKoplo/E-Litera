@@ -139,6 +139,7 @@ export const deliveryColumns = [
     { header: "#", accessor: (_: Delivery, index?: number) => (index ?? 0) + 1 },
     { header: "Member Name", accessor: (row: Delivery) => row.loan?.user?.name ?? "-" },
     { header: "Member Loan Status", accessor: (row: Delivery) => row.loan?.status },
+    { header: "Publication Name", accessor: (row: Delivery) => row.loan?.publication?.title },
     { header: "Tracking Number", accessor: (row: Delivery) => row.tracking_number },
     { header: "Courier", accessor: (row: Delivery) => row.courier ?? "-" },
     { header: "Status", accessor: (row: Delivery) => row.status },
@@ -151,6 +152,17 @@ export const deliveryColumns = [
 
 
 // member
+
+
+export const deliveryMemberColumns = [
+    { header: "#", accessor: (_: Delivery, index?: number) => (index ?? 0) + 1 },
+    { header: "Publication Name", accessor: (row: Delivery) => row.loan?.publication?.title },
+    { header: "Member Loan Status", accessor: (row: Delivery) => row.loan?.status },
+    { header: "Tracking Number", accessor: (row: Delivery) => row.tracking_number },
+    { header: "Courier", accessor: (row: Delivery) => row.courier ?? "-" },
+    { header: "Status", accessor: (row: Delivery) => row.status },
+];
+
 
 export const loanMemberColumns = [
     { header: "#", accessor: (_: Loan, index?: number) => (index ?? 0) + 1 },

@@ -126,6 +126,10 @@ Route::middleware(['auth', 'role:member'])->group(function () {
     Route::get('/member/loans', [\App\Http\Controllers\Member\LoanController::class, 'viewLoan'])->name('member.loans.view');
     Route::post('/loans', [\App\Http\Controllers\Member\LoanController::class, 'storeLoan'])->name('member.loans.store');
 
+
+    // delivery
+    Route::get('/member/delivery', [\App\Http\Controllers\Member\DeliveryController::class, 'deliveryIndex'])->name('member.delivery.index');
+
     // feedback
     Route::get('/publications/{publication}/feedback', [\App\Http\Controllers\Member\FeedbackController::class, 'viewFeedback'])
     ->name('member.feedback.view');
