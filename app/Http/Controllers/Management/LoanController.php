@@ -74,12 +74,11 @@ class LoanController extends Controller
         $loan->update($validated);
 
         if ($validated['status'] === 'borrowed') {
-            // Check if delivery already exists for this loan
             if (!$loan->delivery) {
                 Delivery::create([
                     'loan_id' => $loan->id,
                     'tracking_number' => 'TRK-' . strtoupper(uniqid()),
-                    'status' => 'processing',
+                    'status' => 'pending',
                 ]);
             }
         }

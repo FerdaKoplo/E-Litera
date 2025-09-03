@@ -1,5 +1,5 @@
 import RowActions from "@/Components/Table/RowAction";
-import { articleActions, categoryActions, locationActions, publicationsActions, } from "./action";
+import { articleActions, categoryActions, deliveryActions, locationActions, publicationsActions, } from "./action";
 import { getTypeColor } from "@/helper/color";
 import LoanStatusCell from "@/Components/Table/LoanStatus";
 
@@ -134,6 +134,23 @@ export const loanColumns = [
 
 ]
 
+
+export const deliveryColumns = [
+    { header: "#", accessor: (_: Delivery, index?: number) => (index ?? 0) + 1 },
+    { header: "Member Name", accessor: (row: Delivery) => row.loan?.user?.name ?? "-" },
+    { header: "Member Loan Status", accessor: (row: Delivery) => row.loan?.status },
+    { header: "Tracking Number", accessor: (row: Delivery) => row.tracking_number },
+    { header: "Courier", accessor: (row: Delivery) => row.courier ?? "-" },
+    { header: "Status", accessor: (row: Delivery) => row.status },
+    {
+        header: "Actions",
+        accessor: (row: Delivery) => <RowActions rowId={row.id} actions={deliveryActions(row)} />,
+    },
+];
+
+
+
+// member
 
 export const loanMemberColumns = [
     { header: "#", accessor: (_: Loan, index?: number) => (index ?? 0) + 1 },

@@ -43,6 +43,11 @@ class RolePermissionSeeder extends Seeder
         $editLoans = Permission::create(['name' => 'edit loans']);
         $viewLoans = Permission::create(['name' => 'view loans']);
 
+        // Create Deliveries
+        $editDelivery= Permission::create(['name' => 'edit delivery']);
+        $viewDelivery = Permission::create(['name' => 'view delivery']);
+
+
         // Create Feedback
         $createFeedback = Permission::create(['name' => 'create feedback']);
         $updateFeedback = Permission::create(['name' => 'edit feedback']);
@@ -72,7 +77,10 @@ class RolePermissionSeeder extends Seeder
             $viewLocations,
 
             $viewLoans,
-            $editLoans
+            $editLoans,
+
+            $editDelivery,
+            $viewDelivery
         ];
 
         $permissionsMember = [
@@ -84,7 +92,10 @@ class RolePermissionSeeder extends Seeder
 
             $createFeedback,
             $updateFeedback,
-            $viewFeedback
+            $viewFeedback,
+
+            $viewDelivery
+
         ];
 
 

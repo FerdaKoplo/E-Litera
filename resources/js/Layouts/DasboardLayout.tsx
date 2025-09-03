@@ -5,7 +5,7 @@ import { PageProps } from '@/types'
 import { useForm, usePage } from '@inertiajs/react'
 import React, { useEffect, useState } from 'react'
 import { BiSolidBookReader } from 'react-icons/bi'
-import { FaFolder, FaHandHolding } from 'react-icons/fa6'
+import { FaFolder, FaHandHolding, FaTruck } from 'react-icons/fa6'
 import { IoMdAnalytics } from 'react-icons/io'
 import { RiBookShelfFill } from "react-icons/ri";
 import { MdArticle, MdFeedback, MdLibraryBooks, MdPersonAdd } from 'react-icons/md'
@@ -97,6 +97,13 @@ const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => 
                         </div>
                     </SidebarItem>
 
+                    <SidebarItem href="/delivery" active={route().current('delivery.index')}>
+                        <div className='flex items-center gap-5'>
+                            <FaTruck size={20} />
+                            <span>Delivery</span>
+                        </div>
+                    </SidebarItem>
+
                     <SidebarItem href="/articles" active={route().current('articles.index')}>
                         <div className='flex items-center gap-5'>
                             <MdArticle size={20} />
@@ -104,12 +111,15 @@ const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => 
                         </div>
                     </SidebarItem>
 
+
+
                     <SidebarItem href="/feedbacks" active={route().current('feedbacks.index')}>
                         <div className='flex items-center gap-5'>
                             <MdFeedback size={20} />
                             <span>Feedback</span>
                         </div>
                     </SidebarItem>
+
 
                     {auth.user.role === 'super-admin' && (
 

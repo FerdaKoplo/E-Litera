@@ -78,6 +78,12 @@ Route::middleware(['auth', 'role:super-admin|librarian'])->group(function () {
     // Route::put('/feedback/{feedback}', [FeedbackController::class, 'updateFeedback'])->name('feedback.update');
     // Route::delete('/feedback/{feedback}', [FeedbackController::class, 'deleteFeedback'])->name('feedback.destroy');
 
+    // delivery
+    Route::get('/delivery', [\App\Http\Controllers\Management\DeliveryController::class, 'deliveryIndex'])->name('delivery.index');
+    Route::get('/delivery/{delivery}/edit', [\App\Http\Controllers\Management\DeliveryController::class, 'editDelivery'])->name('delivery.edit');
+    Route::put('/delivery/{delivery}/edit', [\App\Http\Controllers\Management\DeliveryController::class, 'updateDelivery'])->name('delivery.update');
+
+
     // Article
     Route::get('/articles', [\App\Http\Controllers\Management\ArticleController::class, 'articleIndex'])->name('articles.index');
     Route::get('/articles/create', [\App\Http\Controllers\Management\ArticleController::class, 'createArticle'])->name('articles.create');
@@ -125,16 +131,16 @@ Route::middleware(['auth', 'role:member'])->group(function () {
     ->name('member.feedback.view');
     Route::post('/feedback', [\App\Http\Controllers\Member\FeedbackController::class, 'storeFeedback'])->name('member.feedback.store');
 
-    Route::post('/notifications/{id}/read', function ($id) {
-        $user = auth()->user();
-         /** @var \Illuminate\Notifications\DatabaseNotification|null $notification */
-        $notification = $user->unreadNotifications()->find($id);
+    // Route::post('/notifications/{id}/read', function ($id) {
+    //     $user = auth()->user();
+    //      /** @var \Illuminate\Notifications\DatabaseNotification|null $notification */
+    //     $notification = $user->unreadNotifications()->find($id);
 
-        if ($notification) {
-            $notification->markAsRead();
-        }
+    //     if ($notification) {
+    //         $notification->markAsRead();
+    //     }
 
-        return redirect()->back();
-    })->name('notifications.read');
+    //     return redirect()->back();
+    // })->name('notifications.read');
 });
 require __DIR__ . '/auth.php';

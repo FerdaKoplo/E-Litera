@@ -16,7 +16,7 @@ class DeliveryController extends Controller
         $search = $request->search;
         $status = $request->status;
 
-        $query = Delivery::with('loan');
+        $query = Delivery::with(['loan.user', 'loan.publication']);
 
         if ($status) {
             $query->where('status', $status);
@@ -64,7 +64,7 @@ class DeliveryController extends Controller
 
         $delivery->update($validated);
 
-        return redirect()->route('deliveries.index')
+        return redirect()->route('delivery.index')
                          ->with('success', 'Delivery updated successfully.');
     }
 }

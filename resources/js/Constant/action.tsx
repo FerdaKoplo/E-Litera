@@ -22,6 +22,11 @@ export const locationActions = (row: Location) => [
     },
 ]
 
+export const deliveryActions = (row: Delivery) => [
+    { label: "Edit", href: `/delivery/${row.id}/edit` },
+]
+
+
 
 export const publicationsActions = (row: Publications) => [
     { label: "Edit", href: `/publications/${row.id}/edit` },
