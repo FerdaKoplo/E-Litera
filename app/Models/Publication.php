@@ -17,6 +17,7 @@ class Publication extends Model
         'type',
         'category_id',
         'location_id',
+        'publication_description',
         'download_count',
         'pdf_url',
         'image_url'

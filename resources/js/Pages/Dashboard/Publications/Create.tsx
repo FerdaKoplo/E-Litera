@@ -3,7 +3,7 @@ import Label from '@/Components/Label'
 import Button from '@/Components/Button'
 import DashboardLayout from '@/Layouts/DasboardLayout'
 import { useForm, Link } from '@inertiajs/react'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Alert, AlertTitle, AlertDescription } from '@/Components/ui/alert'
 import {
     Select,
@@ -12,6 +12,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/Components/ui/select"
+import { useDropzone } from "react-dropzone"
+import { Progress } from '@/Components/ui/progress'
 
 interface Props {
     categories: { id: number; name: string }[]
@@ -25,7 +27,9 @@ const breadcrumbs = [
 
 const Create: React.FC<Props> = ({ categories, locations }) => {
     const [showDraftAlert, setShowDraftAlert] = useState(false)
+    const [uploadProgress, setUploadProgress] = useState<number>(0)
     const [previewImage, setPreviewImage] = useState<string | null>(null)
+    const [pdfFileName, setPdfFileName] = useState<string | null>(null)
 
     const { data, setData, post, processing, errors } = useForm<{
         title: string
@@ -49,10 +53,48 @@ const Create: React.FC<Props> = ({ categories, locations }) => {
         image_url: ''
     })
 
+    const onDrop = useCallback((acceptedFIles: File[]) => {
+        if (acceptedFIles.length > 0) {
+            const file = acceptedFIles[0]
+            setData("image_url", file)
+            setPreviewImage(URL.createObjectURL(file))
+        }
+    }, [setData])
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        onDrop,
+        accept: {
+            "image/*": []
+        },
+        multiple: false
+    })
+
+    const onPdfDrop = useCallback((acceptedFiles: File[]) => {
+        if (acceptedFiles.length > 0) {
+            const file = acceptedFiles[0]
+            setData("pdf_url", file)
+            setPdfFileName(file.name)
+        }
+    }, [setData])
+
+    const { getRootProps: getPdfRootProps, getInputProps: getPdfInputProps, isDragActive: isPdfDragActive } = useDropzone({
+        onDrop: onPdfDrop,
+        accept: {
+            "application/pdf": []
+        },
+        multiple: false
+    })
+
     const submit = (e: React.FormEvent) => {
         e.preventDefault()
-        post(route('publications.store'), {
-            onSuccess: () => localStorage.removeItem('publicationDraft'),
+        post(route("publications.store"), {
+            onProgress: (progress) => {
+                if (progress?.percentage) {
+                    setUploadProgress(progress.percentage)
+                }
+            },
+            onFinish: () => setUploadProgress(0),
+            onSuccess: () => localStorage.removeItem("publicationDraft"),
             forceFormData: true,
         })
     }
@@ -202,39 +244,65 @@ const Create: React.FC<Props> = ({ categories, locations }) => {
                         {/* PDF URL */}
                         <div className="flex flex-col gap-2">
                             <Label forInput="pdf_url" value="PDF File (for Ebook/Journal)" />
-                            <Input
-                                id="pdf_url"
-                                type="file"
-                                accept="application/pdf"
-                                onChange={e => setData('pdf_url', e.target.files ? e.target.files[0] : '')}
-                                className="  w-full border border-gray-300 rounded-lg shadow-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0
-                                     file:text-sm file:font-semibold file:bg-fuchsia-100 file:text-fuchsia-700 hover:file:bg-fuchsia-200 transition"
-                                isFocused={false} />
-                            {errors.pdf_url && <div className="text-red-500 text-sm mt-1">{errors.pdf_url}</div>}
+                            <div {...getPdfRootProps()}
+                                className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition
+              ${isPdfDragActive ? "border-fuchsia-500 bg-fuchsia-50" : "border-gray-300"}`}>
+                                <input {...getPdfInputProps()} />
+                                {pdfFileName ? (
+                                    <div className="space-y-2">
+                                        <p className="text-sm text-gray-700 font-semibold">{pdfFileName}</p>
+                                        <p className="text-sm text-gray-500">Click or drag to replace the PDF</p>
+                                    </div>
+                                ) : (
+                                    <p className="text-sm text-gray-500">
+                                        {isPdfDragActive ? "Drop the PDF here..." : "Drag & drop or click to upload PDF"}
+                                    </p>
+                                )}
+                            </div>
+
+                            {/* Progress bar */}
+                            {uploadProgress > 0 && (
+                                <Progress
+                                    value={uploadProgress}
+                                    className={`h-2 w-full [&>div]:bg-violet-400`}
+                                />
+                            )}
+
+                            {errors.pdf_url && (
+                                <div className="text-red-500 text-sm mt-1">{errors.pdf_url}</div>
+                            )}
                         </div>
 
                         {/* Image Upload + Preview */}
                         <div className="flex flex-col gap-2">
                             <Label forInput="image_url" value="Cover Image" />
-                            <Input
-                                id="image_url"
-                                type="file"
-                                accept="image/*"
-                                onChange={handleImageChange}
-                                className="w-full border border-gray-300 rounded-lg shadow-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm
-                                    file:font-semibold file:bg-fuchsia-100 file:text-fuchsia-700 hover:file:bg-fuchsia-200 transition"
-                                isFocused={false}
-                            />
-                            {previewImage && (
-                                <div className="mt-4">
-                                    <img
-                                        src={previewImage}
-                                        alt="Preview"
-                                        className="w-full h-64 object-cover rounded-lg border shadow"
-                                    />
-                                </div>
+                            <div {...getRootProps()}
+                                className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition
+                                      ${isDragActive ? "border-fuchsia-500 bg-fuchsia-50" : "border-gray-300"}`}>
+                                <input {...getInputProps()} />
+                                {previewImage ? (
+                                    <div className="space-y-2">
+                                        <img src={previewImage} alt="Preview" className="w-full h-64 object-cover rounded-lg border shadow" />
+                                        <p className="text-sm text-gray-500">Click or drag to replace the image</p>
+                                    </div>
+                                ) : (
+                                    <p className="text-sm text-gray-500">
+                                        {isDragActive ? "Drop the file here..." : "Drag & drop or click to upload cover image"}
+                                    </p>
+                                )}
+                            </div>
+
+                            {/* Progress bar */}
+                            {uploadProgress > 0 && (
+                                <Progress
+                                    value={uploadProgress}
+                                    className={`h-2 w-full [&>div]:bg-violet-400`}
+                                />
                             )}
-                            {errors.image_url && <div className="text-red-500 text-sm mt-1">{errors.image_url}</div>}
+
+                            {errors.image_url && (
+                                <div className="text-red-500 text-sm mt-1">{errors.image_url}</div>
+                            )}
                         </div>
                     </div>
                 </div>
