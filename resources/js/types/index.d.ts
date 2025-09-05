@@ -22,6 +22,13 @@ export interface Notification {
     updated_at: string
 }
 
+export interface HighestRatedPublication {
+    id: number
+    title: string
+    avg_rating: number
+    total_ratings?: number
+}
+
 export type LoanFilter = {
   period: "today" | "7days" | "30days" | "all"
 }
@@ -37,7 +44,8 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     loansOverdue: number
     articles: number
     loanChartData: { date: string, count: number }[]
-    filters?: LoanFilter
+    filters?: LoanFilter,
+    highestRatedPublications: HighestRatedPublication[]
 }
 
 

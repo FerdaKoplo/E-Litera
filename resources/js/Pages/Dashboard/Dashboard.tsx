@@ -15,9 +15,12 @@ import {
 import { BiSolidBookReader } from 'react-icons/bi'
 import { BsBellFill } from 'react-icons/bs'
 import { IoIosPaper, IoMdWarning } from 'react-icons/io'
-import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts'
+import { Area, AreaChart, Bar, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { TbBooks, TbClock } from "react-icons/tb";
 import { FaArrowRightLong } from 'react-icons/fa6'
+import {
+    BarChart,
+} from 'recharts';
 
 const breadcrumbs = [
     { name: 'Dashboard', href: '/dashboard' },
@@ -29,7 +32,7 @@ const chartConfig = {
 const Dashboard = () => {
 
     const [openNotif, setOpenNotif] = useState<boolean>(false)
-    const { notifications, filters, articles, publications, loansTotal, loansOverdue, loansActive, loanChartData } = usePage<PageProps>().props
+    const { highestRatedPublications, notifications, filters, articles, publications, loansTotal, loansOverdue, loansActive, loanChartData } = usePage<PageProps>().props
     const handleFilterChange = (value: LoanFilter["period"]) => {
         router.get(route("dashboard.admin"), { period: value }, {
             preserveState: true,
@@ -174,45 +177,66 @@ const Dashboard = () => {
                     </Card>
                 </div>
 
+                <div className='flex flex-col gap-10'>
+                    <Card className='p-5'>
+                        <CardTitle className='text-2xl'>Top Rated Publications</CardTitle>
+                        <CardDescription>
+                            {filters?.period === "today" && "Total Rating For Today"}
+                            {filters?.period === "7days" && "Total Rating For Last 7 Days"}
+                            {filters?.period === "30days" && "Total Rating For Last 30 Days"}
+                            {(!filters?.period || filters?.period === "all") && "Total Loans For All Time"}
+                        </CardDescription>
+                        <ResponsiveContainer key={filters?.period} width="100%" height={300}>
+                            <BarChart data={highestRatedPublications} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="title" tick={{ fontSize: 12 }} />
+                                <YAxis domain={[0, 5]} />
+                                <Tooltip />
+                                <Bar dataKey="avg_rating" fill="#8b5cf6" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </Card>
 
-                <Card className='p-5'>
-                    <CardTitle className='text-2xl'>
-                        Total Loans
-                    </CardTitle>
-                    <CardDescription>
-                        {filters?.period === "today" && "Total Loans For Today"}
-                        {filters?.period === "7days" && "Total Loans For Last 7 Days"}
-                        {filters?.period === "30days" && "Total Loans For Last 30 Days"}
-                        {(!filters?.period || filters?.period === "all") && "Total Loans For All Time"}
-                    </CardDescription>
-                    <ChartContainer config={chartConfig}>
-                        <AreaChart key={filters?.period} data={loanChartData} width={700} height={300} >
-                            <defs>
-                                <linearGradient id="fillLoan" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#a78bfa" stopOpacity={0.8} />
-                                    <stop offset="95%" stopColor="#a78bfa   " stopOpacity={0.1} />
-                                </linearGradient>
-                            </defs>
-                            <CartesianGrid vertical={false} />
-                            <XAxis
-                                dataKey="date"
-                                tickFormatter={(value) => {
-                                    const date = new Date(value);
-                                    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-                                }}
-                            />
-                            <ChartTooltip
-                                content={<ChartTooltipContent labelFormatter={(value) => new Date(value).toLocaleDateString("en-US", { month: "short", day: "numeric" })} indicator="dot" />}
-                            />
-                            <Area
-                                dataKey="count"
-                                type="natural"
-                                fill="url(#fillLoan)"
-                                stroke="#8b5cf6"
-                            />
-                        </AreaChart>
-                    </ChartContainer>
-                </Card>
+                    <Card className='p-5'>
+                        <CardTitle className='text-2xl'>
+                            Total Loans
+                        </CardTitle>
+                        <CardDescription>
+                            {filters?.period === "today" && "Total Loans For Today"}
+                            {filters?.period === "7days" && "Total Loans For Last 7 Days"}
+                            {filters?.period === "30days" && "Total Loans For Last 30 Days"}
+                            {(!filters?.period || filters?.period === "all") && "Total Loans For All Time"}
+                        </CardDescription>
+
+                        <ChartContainer config={chartConfig}>
+                            <AreaChart key={filters?.period} data={loanChartData} width={700} height={300} >
+                                <defs>
+                                    <linearGradient id="fillLoan" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="#a78bfa" stopOpacity={0.8} />
+                                        <stop offset="95%" stopColor="#a78bfa   " stopOpacity={0.1} />
+                                    </linearGradient>
+                                </defs>
+                                <CartesianGrid vertical={false} />
+                                <XAxis
+                                    dataKey="date"
+                                    tickFormatter={(value) => {
+                                        const date = new Date(value);
+                                        return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+                                    }}
+                                />
+                                <ChartTooltip
+                                    content={<ChartTooltipContent labelFormatter={(value) => new Date(value).toLocaleDateString("en-US", { month: "short", day: "numeric" })} indicator="dot" />}
+                                />
+                                <Area
+                                    dataKey="count"
+                                    type="natural"
+                                    fill="url(#fillLoan)"
+                                    stroke="#8b5cf6"
+                                />
+                            </AreaChart>
+                        </ChartContainer>
+                    </Card>
+                </div>
             </div>
         </DashboardLayout>
     )
