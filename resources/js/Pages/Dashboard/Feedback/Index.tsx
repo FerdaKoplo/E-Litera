@@ -1,3 +1,4 @@
+import Button from '@/Components/Button'
 import Label from '@/Components/Label'
 import SearchBar from '@/Components/SearchInput'
 import DataTable, { LaravelPagination } from '@/Components/Table/DataTable'
@@ -9,6 +10,7 @@ import { PageProps } from '@/types'
 import { useForm, usePage } from '@inertiajs/react'
 import React, { useEffect } from 'react'
 import { FiClock } from 'react-icons/fi'
+import { TbClock24, TbClockExclamation } from 'react-icons/tb'
 
 const breadcrumbs = [
     { name: 'Feedback', href: '/feedback' },
@@ -85,6 +87,14 @@ const Index = () => {
                 <Card className="p-4 bg-gradient-to-l from-violet-100 to-indigo-50 border shadow-sm rounded-xl">
                     <div className="flex justify-between items-center mb-4">
                         <CardTitle className="text-xl">Time Filter</CardTitle>
+                        {data.timeFilter && (
+                            <Button
+                                onClick={() => setData({ ...data, timeFilter: null })}
+                                className="text-sm text-red-500 bg-white border border-red-300 hover:bg-red-50"
+                            >
+                                Clear all
+                            </Button>
+                        )}
                     </div>
 
                     <div className="flex flex-col gap-1">
@@ -93,25 +103,29 @@ const Index = () => {
                         </Label>
                         <ToggleGroup
                             type="single"
-                            value={data.timeFilter ?? ''}
+                            value={data.timeFilter ?? ""}
                             onValueChange={(val) => {
-                                setData('timeFilter', val || null)
+                                setData("timeFilter", val || null)
                                 applyFilter()
                             }}
                             className="inline-flex bg-white border rounded-lg overflow-hidden"
                         >
-                            <ToggleGroupItem
-                                value="newest"
-                                className="px-4 py-2 text-sm font-medium bg-white"
-                            >
-                                Newest
-                            </ToggleGroupItem>
-                            <ToggleGroupItem
-                                value="24h"
-                                className="px-4 py-2 text-sm font-medium bg-white"
-                            >
-                                Last 24h
-                            </ToggleGroupItem>
+                            {[
+
+                                { key: "newest", label: "Newest", icon: <TbClockExclamation className="text-black" /> },
+                                { key: "24h", label: "Last 24 Hours", icon: <TbClock24 className="text-purple-500" /> },
+
+                            ].map((item) => (
+                                <ToggleGroupItem
+                                    key={item.key}
+                                    value={item.key}
+                                    className={`px-4 py-2 text-sm font-medium flex items-center gap-2 bg-white
+                                     ${data.timeFilter === item.key ? "bg-violet-500 text-white" : "text-gray-700 hover:bg-gray-100"}`}
+                                >
+                                    {item.icon}
+                                    {item.label}
+                                </ToggleGroupItem>
+                            ))}
                         </ToggleGroup>
                     </div>
                 </Card>

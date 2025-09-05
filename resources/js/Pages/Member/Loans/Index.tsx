@@ -87,7 +87,7 @@ const Index = () => {
                 My Loans
             </h2>} breadcrumbs={breadcrumbs}>
 
-            <div>
+            <div className='flex flex-col gap-6'>
                 <div className="flex flex-col gap-6">
                     {/* Search Bar */}
                     <div className="flex justify-between items-center">

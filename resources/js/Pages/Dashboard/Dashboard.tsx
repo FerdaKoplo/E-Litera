@@ -186,13 +186,22 @@ const Dashboard = () => {
                             {filters?.period === "30days" && "Total Rating For Last 30 Days"}
                             {(!filters?.period || filters?.period === "all") && "Total Loans For All Time"}
                         </CardDescription>
-                        <ResponsiveContainer key={filters?.period} width="100%" height={300}>
-                            <BarChart data={highestRatedPublications} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart
+                                data={highestRatedPublications}
+                                margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+                            >
+                                <defs>
+                                    <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="100%" stopColor="#a78bfa" stopOpacity={0.3} />
+                                        <stop offset="5%" stopColor="#a78bfa" stopOpacity={0.8} />
+                                    </linearGradient>
+                                </defs>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="title" tick={{ fontSize: 12 }} />
                                 <YAxis domain={[0, 5]} />
                                 <Tooltip />
-                                <Bar dataKey="avg_rating" fill="#8b5cf6" />
+                                <Bar dataKey="avg_rating" fill="url(#barGradient)" />
                             </BarChart>
                         </ResponsiveContainer>
                     </Card>

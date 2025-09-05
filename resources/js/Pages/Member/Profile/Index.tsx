@@ -3,11 +3,12 @@ import Profile from '@/Components/Profile'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card'
 import MemberLayout from '@/Layouts/MemberLayout'
 import { PageProps } from '@/types'
-import { Link, usePage } from '@inertiajs/react'
+import { Link, router, usePage } from '@inertiajs/react'
 import React from 'react'
 import { FaInstagram, FaWhatsapp } from 'react-icons/fa6'
 import { MdEmail } from 'react-icons/md'
 import { CiFacebook } from "react-icons/ci"
+import EditableField from '@/Components/EditableField'
 
 const breadcrumbs = [
     { name: 'Profile', href: '/member/profile' },
@@ -22,6 +23,15 @@ const Index = () => {
         day: "numeric",
         year: "numeric",
     }).format(new Date(auth.user.created_at))
+
+    const saveProfileField = (field: string, value: string) => {
+        router.patch(route("profile.update"), {
+            [field]: value === "" ? null : value
+        }, {
+            preserveScroll: true,
+            onSuccess: (page) => console.log("Updated:", page),
+        })
+    }
 
     return (
         <MemberLayout header={
@@ -43,7 +53,10 @@ const Index = () => {
                         <div className="flex items-center gap-5">
                             <Profile profile="" fallback={auth.user.name} />
                             <div>
-                                <p className="text-2xl font-semibold">{auth.user.name}</p>
+                                <EditableField
+                                    value={auth.user.name}
+                                    onSave={(newValue) => saveProfileField('name', newValue)}
+                                />
                                 <p className="text-sm text-muted-foreground">Member since {joinDate}</p>
                             </div>
                         </div>
@@ -55,41 +68,31 @@ const Index = () => {
                                     {auth.user.email}
                                 </a>
                             </p>
-                            <p className="flex items-center gap-2 text-sm">
+                            <div className="flex items-center gap-2 text-sm">
                                 <FaWhatsapp className="text-lg " aria-hidden="true" />
-                                {auth.user.phone_number ? (
-                                    <a
-                                        href={`https://wa.me/${auth.user.phone_number}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="hover:underline"
-                                    >
-                                        {auth.user.phone_number}
-                                    </a>
-                                ) : (
-                                    <span className="text-muted-foreground">Not provided</span>
-                                )}
-                            </p>
+                                <EditableField
+                                    value={auth.user.phone_number ?? null}
+                                    onSave={(newValue) => saveProfileField('phone_number', newValue)}
+                                />
+                            </div>
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <p className="flex items-center gap-2 text-sm">
-                                <FaInstagram  className="text-lg" aria-hidden="true" />
-                                {auth.user.instagram ? (
-                                    <span>{auth.user.instagram}</span>
-                                ) : (
-                                    <span className="text-muted-foreground">Not provided</span>
-                                )}
-                            </p>
+                            <div className="flex items-center gap-2 text-sm">
+                                <FaInstagram className="text-lg" aria-hidden="true" />
+                                <EditableField
+                                    value={auth.user.instagram ?? null}
+                                    onSave={(newValue) => saveProfileField('instagram', newValue)}
+                                />
+                            </div>
 
-                            <p className="flex items-center gap-2 text-sm">
-                                <CiFacebook  className="text-lg" aria-hidden="true" />
-                                {auth.user.instagram ? (
-                                    <span>{auth.user.instagram}</span>
-                                ) : (
-                                    <span className="text-muted-foreground">Not provided</span>
-                                )}
-                            </p>
+                            <div className="flex items-center gap-2 text-sm">
+                                <CiFacebook className="text-lg" aria-hidden="true" />
+                                <EditableField
+                                    value={auth.user.facebook ?? null}
+                                    onSave={(newValue) => saveProfileField('facebook', newValue)}
+                                />
+                            </div>
                         </div>
 
                     </div>
