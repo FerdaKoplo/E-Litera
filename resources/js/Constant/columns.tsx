@@ -117,11 +117,17 @@ export const articleColumns = [
 
 export const feedbackColumns = [
     { header: "#", accessor: (_: Feedback, index?: number) => (index ?? 0) + 1 },
-    { header: "Member Name", accessor: (row: Feedback) => row.user?.name},
-    { header: "Publication Name", accessor: (row: Feedback) => row.publication?.title},
-    { header: "Publication Type", accessor: (row: Feedback) => row.publication?.type},
-    { header: "Review", accessor: (row: Feedback) => row.review},
-    { header: "Rating", accessor: (row: Feedback) => <DisplayStars rating={row.rating} color="#ffc107"/>},
+    { header: "Member Name", accessor: (row: Feedback) => row.user?.name },
+    { header: "Publication Name", accessor: (row: Feedback) => row.publication?.title },
+    { header: "Publication Type", accessor: (row: Feedback) => row.publication?.type },
+    { header: "Review", accessor: (row: Feedback) => row.review },
+    { header: "Rating", accessor: (row: Feedback) => <DisplayStars rating={row.rating} color="#ffc107" /> },
+    {
+        header: "Reviewed At", accessor: (row: Feedback) => (
+            new Date(row.created_at).toLocaleDateString("en-US", {hour:"numeric",  year: "numeric", month: "short", day: "numeric" })
+        )
+    },
+
 ];
 
 
@@ -154,7 +160,8 @@ export const deliveryColumns = [
     { header: "Publication Name", accessor: (row: Delivery) => row.loan?.publication?.title },
     { header: "Tracking Number", accessor: (row: Delivery) => row.tracking_number },
     { header: "Courier", accessor: (row: Delivery) => row.courier ?? "-" },
-    { header: "Status", accessor: (row: Delivery) => <StatusCell
+    {
+        header: "Status", accessor: (row: Delivery) => <StatusCell
             status={row.status}
             styleMap={{
                 cancelled: "border-red-500 text-red-500",
@@ -162,7 +169,8 @@ export const deliveryColumns = [
                 shipped: "border-orange-400 text-orange-400",
                 delivered: "border-green-400 text-green-400",
             }}
-        /> },
+        />
+    },
     {
         header: "Actions",
         accessor: (row: Delivery) => <RowActions rowId={row.id} actions={deliveryActions(row)} />,
@@ -201,7 +209,7 @@ export const loanMemberColumns = [
     { header: "Book Title", accessor: (row: Loan) => row.publication?.title },
     { header: "Start Date", accessor: (row: Loan) => row.start_date },
     { header: "Due Date", accessor: (row: Loan) => row.due_date },
-    { header: "Status", accessor: (row: Loan) => <StatusCell status={row.status}/> },
+    { header: "Status", accessor: (row: Loan) => <StatusCell status={row.status} /> },
     { header: "Fine Amount", accessor: (row: Loan) => row.fine_amount },
     // {
     //     header: "Content",

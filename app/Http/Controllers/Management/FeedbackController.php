@@ -19,7 +19,13 @@ class FeedbackController extends Controller
             $query->where('user_id', auth()->id());
         }
 
-         if ($request->filter === 'newest') {
+        if ($request->search) {
+            $query->whereHas('user', fn($q) => $q->where('name', 'like', "%{$request->search}%"))
+                ->orWhereHas('publication', fn($q) => $q->where('title', 'like', "%{$request->search}%"))
+                ->orWhere('review', 'like', "%{$request->search}%");
+        }
+
+        if ($request->filter === 'newest') {
             $query->latest();
         } elseif ($request->filter === '24h') {
             $query->where('created_at', '>=', now()->subDay());
