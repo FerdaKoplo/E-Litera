@@ -113,7 +113,7 @@ const DashboardLayout: React.FC<Props> = ({ children, header, breadcrumbs }) => 
 
 
 
-                    <SidebarItem href="/feedbacks" active={route().current('feedbacks.index')}>
+                    <SidebarItem href="/feedbacks" active={route().current('feedback.index')}>
                         <div className='flex items-center gap-5'>
                             <MdFeedback size={20} />
                             <span>Feedback</span>

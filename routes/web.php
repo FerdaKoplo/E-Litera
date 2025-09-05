@@ -70,7 +70,7 @@ Route::middleware(['auth', 'role:super-admin|librarian'])->group(function () {
     Route::put('/loans/{loan}', [\App\Http\Controllers\Management\LoanController::class, 'updateLoan'])->name('loans.update');
 
     // feedback
-    // Route::get('/feedback', [FeedbackController::class, 'feedbackIndex'])->name('feedback.index');
+    Route::get('/feedbacks', [\App\Http\Controllers\Management\FeedbackController::class, 'feedbackIndex'])->name('feedback.index');
     // Route::get('/publications/{publication}/feedback/create', [FeedbackController::class, 'feedbackCreate'])->name('feedback.create');
     // Route::post('/feedback', [FeedbackController::class, 'storeFeedback'])->name('feedback.store');
     // Route::get('/feedback/{feedback}', [FeedbackController::class, 'feedbackShow'])->name('feedback.show');

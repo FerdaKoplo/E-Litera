@@ -54,7 +54,7 @@ const DataTable = <T,>({
                 <TableHeader>
                     <TableRow>
                         {columns.map((col, i) => (
-                            <TableHead className="bg-gradient-to-t from-violet-400  to-fuchsia-400 text-white text-xs font-semibold " key={i}>{col.header}</TableHead>
+                            <TableHead className="bg-gradient-to-br from-fuchsia-100 to-violet-100 font-bold text-xs  " key={i}>{col.header}</TableHead>
                         ))}
 
                     </TableRow>

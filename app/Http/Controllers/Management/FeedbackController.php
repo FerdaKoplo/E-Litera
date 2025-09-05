@@ -19,9 +19,15 @@ class FeedbackController extends Controller
             $query->where('user_id', auth()->id());
         }
 
+         if ($request->filter === 'newest') {
+            $query->latest();
+        } elseif ($request->filter === '24h') {
+            $query->where('created_at', '>=', now()->subDay());
+        }
+
         $feedbacks = $query->paginate(10);
 
-        return Inertia::render('Feedback/Index', [
+        return Inertia::render('Dashboard/Feedback/Index', [
             'feedbacks' => $feedbacks,
             'filters' => $request->only('search')
         ]);

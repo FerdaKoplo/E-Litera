@@ -120,7 +120,7 @@ const Index = () => {
                     )}
 
                     {/* Filters */}
-                    <Card className="p-4 bg-white border shadow-sm rounded-xl">
+                    <Card className="p-4 bg-gradient-to-l from-violet-100 to-indigo-50 border shadow-sm rounded-xl">
                         <div className="flex justify-between items-center mb-4">
                             <CardTitle className="text-xl">Filters</CardTitle>
                             {data.status && (

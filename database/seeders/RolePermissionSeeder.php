@@ -76,6 +76,8 @@ class RolePermissionSeeder extends Seeder
             $editLocations,
             $viewLocations,
 
+            $viewFeedback,
+
             $viewLoans,
             $editLoans,
 
@@ -95,7 +97,6 @@ class RolePermissionSeeder extends Seeder
             $viewFeedback,
 
             $viewDelivery
-
         ];
 
 

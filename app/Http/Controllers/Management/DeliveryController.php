@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Management;
 
 use App\Http\Controllers\Controller;
 use App\Models\Delivery;
+use App\Notifications\DeliveryShipped;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -63,10 +64,12 @@ class DeliveryController extends Controller
 
 
         $delivery->update($validated);
-        // $delivery->user->notify(new Delivery($delivery));
+        if ($delivery->loan && $delivery->loan->user) {
+            $delivery->loan->user->notify(new DeliveryShipped($delivery));
+        }
 
 
         return redirect()->route('delivery.index')
-                         ->with('success', 'Delivery updated successfully.');
+            ->with('success', 'Delivery updated successfully.');
     }
 }
