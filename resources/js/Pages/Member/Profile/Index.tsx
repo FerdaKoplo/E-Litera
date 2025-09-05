@@ -9,6 +9,9 @@ import { FaInstagram, FaWhatsapp } from 'react-icons/fa6'
 import { MdEmail } from 'react-icons/md'
 import { CiFacebook } from "react-icons/ci"
 import EditableField from '@/Components/EditableField'
+import { AccountModal } from '@/Components/AccountModal'
+import Input from '@/Components/Input'
+import AccountForms from '@/Components/AccountForm'
 
 const breadcrumbs = [
     { name: 'Profile', href: '/member/profile' },
@@ -37,11 +40,9 @@ const Index = () => {
         <MemberLayout header={
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-semibold">Profile</h1>
-                <Link href="/profile/edit">
-                    <Button type="button" className="bg-white border-violet-400 border-2 font-semibold hover:bg-violet-50 text-violet-400 rounded-lg">
-                        Edit Profile
-                    </Button>
-                </Link>
+                <AccountModal triggerLabel="Edit Account" title="Manage Account">
+                      <AccountForms />
+                </AccountModal>
             </div>
         } breadcrumbs={breadcrumbs}>
             <Card>
@@ -51,7 +52,7 @@ const Index = () => {
                 <CardContent>
                     <div className="grid md:grid-cols-3 gap-6 items-center">
                         <div className="flex items-center gap-5">
-                            <Profile profile="" fallback={auth.user.name} />
+                            <Profile profile={auth.user.avatar_url} fallback={auth.user.name} />
                             <div>
                                 <EditableField
                                     value={auth.user.name}

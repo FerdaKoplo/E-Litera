@@ -139,5 +139,11 @@ Route::middleware(['auth', 'role:member'])->group(function () {
     // profile
    Route::patch('/member/profile', [\App\Http\Controllers\Member\ProfileController::class, 'updateProfile'])
     ->name('profile.update');
+    Route::patch('/member/profile/edit-account/email', [\App\Http\Controllers\Member\ProfileController::class, 'updateEmail'])
+    ->name('profile.update.email');
+    Route::patch('/member/profile/edit-account/password', [\App\Http\Controllers\Member\ProfileController::class, 'updatePassword'])
+    ->name('profile.update.password');
+    Route::patch('/member/profile/edit-account/avatar', [\App\Http\Controllers\Member\ProfileController::class, 'updateAvatar'])
+    ->name('profile.update.avatar');
 });
 require __DIR__ . '/auth.php';

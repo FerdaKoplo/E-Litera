@@ -4,7 +4,7 @@ export interface User {
     email: string
     email_verified_at: string,
     role: string
-    profile?: string
+    avatar_url?: string
     phone_number?: string
     instagram?: string
     facebook?: string

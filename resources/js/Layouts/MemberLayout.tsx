@@ -90,7 +90,7 @@ const MemberLayout: React.FC<Props> = ({ children, header, breadcrumbs}) => {
 
                     <div className='mt-auto w-full flex flex-col gap-5'>
                          <Link href="/member/profile" >
-                             <ProfileCard email={auth.user.email} profile='' fallback={auth.user.name} username={auth.user.name} />
+                             <ProfileCard email={auth.user.email} profile={auth.user.avatar_url} fallback={auth.user.name} username={auth.user.name} />
                          </Link>
 
                           <Button className='text-white w-full  rounded-lg bg-red-400' onClick={() => handleLogout()}>

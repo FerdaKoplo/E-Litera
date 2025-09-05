@@ -48,11 +48,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $appends = ['role'];
+    protected $appends = ['role', 'avatar_url'];
 
     public function getRoleAttribute()
     {
         return $this->roles->pluck('name')->first();
+    }
+
+    public function getAvatarUrlAttribute()
+    {
+        return $this->avatar
+            ? asset('storage/' . $this->avatar)
+            : null;
     }
 
     public function loans(): HasMany
