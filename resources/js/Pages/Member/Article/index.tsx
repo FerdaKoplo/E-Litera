@@ -20,6 +20,7 @@ import { IoIosSearch } from 'react-icons/io'
 import { IoChevronBack, IoChevronForward } from "react-icons/io5"
 import LaravelPagination from '@/Components/LaravelPagination'
 import SearchInput from '@/Components/SearchInput'
+import axios from 'axios'
 
 const breadcrumbs = [
     { name: 'Articles', href: '/member/articles' },
@@ -29,18 +30,45 @@ const breadcrumbs = [
 const Index = () => {
 
     const { articles } = usePage<PageProps<{ articles: PaginatedResponse<Article> }>>().props
-    const { data, setData, get, processing } = useForm({
-        search: '',
-    })
+    // const { data, setData, get, processing } = useForm({
+    //     search: '',
+    // })
 
-    const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        get(route('articles.member.index'), {
-            preserveState: true,
-            preserveScroll: true,
-            data: { search: data.search, page: 1 }
-        })
-    }
+    const [liveQuery, setLiveQuery] = useState<string>('');
+    const [liveResults, setLiveResults] = useState<{ id: number; title_article: string; }[]>([]);
+    const [showLiveResults, setShowLiveResults] = useState<boolean>(false);
+
+    // const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault()
+    //     get(route('articles.member.index'), {
+    //         preserveState: true,
+    //         preserveScroll: true,
+    //         data: { search: data.search, page: 1 }
+    //     })
+    // }
+
+    useEffect(() => {
+        if (liveQuery.length === 0) {
+            setLiveResults([]);
+            setShowLiveResults(false);
+            return;
+        }
+
+        const timeout = setTimeout(() => {
+            axios
+                .get('/member/articles/search', { params: { q: liveQuery } })
+                .then((res) => {
+                    setLiveResults(res.data);
+                    setShowLiveResults(true);
+                })
+                .catch(() => {
+                    setLiveResults([]);
+                    setShowLiveResults(false);
+                });
+        }, 300);
+
+        return () => clearTimeout(timeout);
+    }, [liveQuery])
 
     const goToPage = (url: string | null) => {
         if (!url)
@@ -56,11 +84,22 @@ const Index = () => {
                     Article
                 </h2>
 
-                <SearchInput placeholder='Search publication...'
-                    buttonLabel='Search'
-                    value={data.search}
-                    onChange={(val) => setData("search", val)}
-                    onSubmit={handleSearch} />
+                <SearchInput placeholder="Search article..."
+                    buttonLabel="Search"
+                    value={liveQuery}
+                    onChange={setLiveQuery}
+                    liveResults={liveResults}
+                    showLiveResults={showLiveResults}
+                    onSelectLiveResult={(item) => {
+                        Inertia.visit(`/member/articles/${item.id}`);
+                        setLiveQuery('');
+                    }}
+                     renderResult={(item) => (
+                        <>
+                            {item.title_article}
+                        </>
+                    )}
+                />
             </div>
         } breadcrumbs={breadcrumbs} >
             <div className='flex flex-col gap-10'>

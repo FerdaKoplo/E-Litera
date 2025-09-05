@@ -11,6 +11,19 @@ use Inertia\Inertia;
 
 class PublicationController extends Controller
 {
+    public function publicationSearch(Request $request)
+    {
+        $search = $request->query('q');
+
+        $results = Publication::query()
+            ->where('title', 'like', "%{$search}%")
+            ->orWhere('author', 'like', "%{$search}%")
+            ->limit(5)
+            ->get(['id', 'title', 'author']);
+
+        return response()->json($results);
+    }
+
     public function publicationIndex(Request $request)
     {
         $this->authorize('view publications');
@@ -33,12 +46,12 @@ class PublicationController extends Controller
         }
 
         // Search by title or author
-        if ($request->search) {
-            $query->where(function ($q) use ($request) {
-                $q->where('title', 'like', "%{$request->search}%")
-                    ->orWhere('author', 'like', "%{$request->search}%");
-            });
-        }
+        // if ($request->search) {
+        //     $query->where(function ($q) use ($request) {
+        //         $q->where('title', 'like', "%{$request->search}%")
+        //             ->orWhere('author', 'like', "%{$request->search}%");
+        //     });
+        // }
 
         // Pagination
         $publications = $query->paginate(16);
@@ -50,9 +63,11 @@ class PublicationController extends Controller
             'publications' => $publications,
             'categories' => $categories,
             'locations' => $locations,
-            'filters' => $request->only(['category_id', 'search', 'location_id', 'type']),
+            'filters' => $request->only(['category_id',  'location_id', 'type']),
         ]);
     }
+
+
 
     public function publicationShow(Publication $publication)
     {

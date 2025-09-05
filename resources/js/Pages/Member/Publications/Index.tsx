@@ -8,6 +8,7 @@ import HomeLayout from '@/Layouts/HomeLayout'
 import { PageProps } from '@/types'
 import { Inertia } from '@inertiajs/inertia';
 import { Link, useForm, usePage } from '@inertiajs/react'
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { FaFilter, FaTag, FaUserPen } from 'react-icons/fa6';
@@ -29,28 +30,48 @@ const Index = () => {
     }>>().props
 
 
+
+
     const { data, setData, get } = useForm<{
-        search: string;
         page: number;
         category_id: string | null;
         type: string | null;
         location_id: string | null;
     }>({
-        search: '',
         page: 1,
         category_id: null,
         type: null,
         location_id: null,
     })
 
-    const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        get(route('publications.member.index'), {
-            preserveState: true,
-            preserveScroll: true,
-            data: { search: data.search, page: 1 }
-        })
-    }
+
+    const [liveQuery, setLiveQuery] = useState<string>('');
+    const [liveResults, setLiveResults] = useState<{ id: number; title: string; author: string }[]>([]);
+    const [showLiveResults, setShowLiveResults] = useState<boolean>(false);
+
+
+    useEffect(() => {
+        if (liveQuery.length === 0) {
+            setLiveResults([]);
+            setShowLiveResults(false);
+            return;
+        }
+
+        const timeout = setTimeout(() => {
+            axios
+                .get('/member/publications/search', { params: { q: liveQuery } })
+                .then((res) => {
+                    setLiveResults(res.data);
+                    setShowLiveResults(true);
+                })
+                .catch(() => {
+                    setLiveResults([]);
+                    setShowLiveResults(false);
+                });
+        }, 300);
+
+        return () => clearTimeout(timeout);
+    }, [liveQuery])
 
 
     const applyFilter = (overrideData?: typeof data) => {
@@ -60,7 +81,6 @@ const Index = () => {
             preserveState: true,
             preserveScroll: true,
             data: {
-                search: payload.search,
                 page: 1,
                 category_id: payload.category_id,
                 type: payload.type,
@@ -104,12 +124,24 @@ const Index = () => {
                 <h2 className="font-semibold text-4xl text-gray-800">
                     Publications
                 </h2>
+                <SearchInput
+                    placeholder="Search publication..."
+                    buttonLabel="Search"
+                    value={liveQuery}
+                    onChange={setLiveQuery}
+                    liveResults={liveResults}
+                    showLiveResults={showLiveResults}
+                    onSelectLiveResult={(item) => {
+                        Inertia.visit(`/member/publication/${item.id}`);
+                        setLiveQuery('');
+                    }}
+                    renderResult={(item) => (
+                        <>
+                            {item.title} <span className="text-gray-400 text-sm">by {item.author}</span>
+                        </>
+                    )}
+                />
 
-                <SearchInput placeholder='Search publication...'
-                    buttonLabel='Search'
-                    value={data.search}
-                    onChange={(val) => setData("search", val)}
-                    onSubmit={handleSearch} />
             </div>
         } breadcrumbs={breadcrumbs} >
 

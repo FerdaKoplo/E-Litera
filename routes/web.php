@@ -116,17 +116,21 @@ Route::middleware(['auth', 'role:member'])->group(function () {
     Route::get('/member/dashboard', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('dashboard.member');
     Route::get('/member/profile', [ProfileController::class, 'index'])->name('profile.index');
 
+    // article
+    Route::get('/member/articles/search', [\App\Http\Controllers\Member\ArticleController::class, 'articleSearch'])
+    ->name('articles.member.search');
     Route::get('/member/articles', [\App\Http\Controllers\Member\ArticleController::class, 'articleIndex'])->name('articles.member.index');
     Route::get('/member/articles/{article}', [\App\Http\Controllers\Member\ArticleController::class, 'articleShow'])->name('articles.member.show');
 
     // publications
+    Route::get('/member/publications/search', [\App\Http\Controllers\Member\PublicationController::class, 'publicationSearch'])
+    ->name('publications.member.search');
     Route::get('/member/publications', [\App\Http\Controllers\Member\PublicationController::class, 'publicationIndex'])->name('publications.member.index');
     Route::get('/member/publication/{publication}', [\App\Http\Controllers\Member\PublicationController::class, 'publicationShow'])->name('publications.member.show');
 
     // loans
     Route::get('/member/loans', [\App\Http\Controllers\Member\LoanController::class, 'viewLoan'])->name('member.loans.view');
     Route::post('/loans', [\App\Http\Controllers\Member\LoanController::class, 'storeLoan'])->name('member.loans.store');
-
 
     // delivery
     Route::get('/member/delivery', [\App\Http\Controllers\Member\DeliveryController::class, 'deliveryIndex'])->name('member.delivery.index');
