@@ -5,14 +5,14 @@ import MemberLayout from '@/Layouts/MemberLayout'
 import { PageProps } from '@/types'
 import { Link, router, usePage } from '@inertiajs/react'
 import React from 'react'
-import { FaInstagram, FaWhatsapp } from 'react-icons/fa6'
+import { FaBuilding, FaCity, FaHouse, FaInstagram, FaMap, FaWhatsapp } from 'react-icons/fa6'
 import { MdEmail } from 'react-icons/md'
 import { CiFacebook } from "react-icons/ci"
 import EditableField from '@/Components/EditableField'
 import { AccountModal } from '@/Components/AccountModal'
 import Input from '@/Components/Input'
 import AccountForms from '@/Components/AccountForm'
-import { FaBirthdayCake, FaMapMarkedAlt } from 'react-icons/fa'
+import { FaBirthdayCake, FaMailBulk, FaMapMarkedAlt } from 'react-icons/fa'
 import EditableTextArea from '@/Components/EditableTextArea'
 import EditableDateField from '@/Components/EditableDateField'
 import EditableSelectAddress from '@/Components/EditableSelectAddress'
@@ -139,85 +139,83 @@ const Index = () => {
                             Your address, state, date of birth, gender, city, state, and postal code
                         </CardDescription>
                     </CardHeader>
-                    <CardContent className='grid grid-cols-4'>
-                        <div className='flex flex-col gap-10'>
+                    <CardContent >
+                        <div className='grid grid-cols-2 gap-6 p-4'>
+                            <div className='flex flex-col gap-10'>
 
-                            <div className="flex items-center gap-2 text-sm">
-                                <FaBirthdayCake className="text-lg " aria-hidden="true" />
-                                <EditableDateField
-                                    value={auth.user.date_of_birth ?? null}
-                                    onSave={(newValue) => saveProfileField('date_of_birth', newValue)}
-                                />
-                            </div>
-                        </div>
-
-                        <div className='flex flex-col items-center gap-10'>
-                            <div className="flex items-center gap-2 text-sm">
-                                <FaMapMarkedAlt className="text-lg " aria-hidden="true" />
-                                <EditableTextArea
-                                    placeholder='Your address...'
-                                    value={address.full_address ?? null}
-                                    onSave={(newValue) => saveAddressField('full_address', newValue)}
-                                />
-                            </div>
-
-                        </div>
-
-                        <div className='flex flex-col gap-10'>
-                            <div className="flex items-center gap-2 text-sm">
-                                <FaMapMarkedAlt className="text-lg " aria-hidden="true" />
-                                <EditableSelectAddress
-                                    placeholder='Your province...'
-                                    value={address?.province_name ?? null}
-                                    onSave={(newValue) => saveAddressField('province', newValue)}
-                                    level={'province'} />
-                            </div>
-
-                            <div className="flex items-center gap-2 text-sm">
-                                <FaMapMarkedAlt className="text-lg " aria-hidden="true" />
-                                <EditableSelectAddress
-                                    placeholder='Your city...'
-                                    value={address?.city_name ?? null}
-                                    parentId={address?.province_id?.toString() ?? undefined}
-                                    onSave={(newValue) => saveAddressField('city', newValue)}
-                                    level={'city'} />
-                            </div>
-                        </div>
-
-                        <div className='flex flex-col gap-10'>
-                            <div className="flex items-center gap-2 text-sm">
-                                <FaMapMarkedAlt className="text-lg " aria-hidden="true" />
-                                <EditableSelectAddress
-                                    placeholder='Your district...'
-                                    value={address?.district_name ?? null}
-                                    parentId={address?.city_id?.toString() ?? undefined}
-                                    onSave={(newValue) => saveAddressField('district', newValue)}
-                                    level={'district'}
-                                />
-                            </div>
-
-                            <div className="flex items-center gap-2 text-sm">
-                                <FaMapMarkedAlt className="text-lg " aria-hidden="true" />
-                                <EditableSelectAddress
-                                    placeholder='Your sub district...'
-                                    value={address?.sub_district_name ?? null}
-                                    parentId={address?.district_id?.toString() ?? undefined}
-                                    onSave={(newValue) => saveAddressField('sub_district', newValue)}
-                                    level={'subDistrict'}
-                                />
+                                <div className="flex items-center gap-2 text-sm">
+                                    <FaBirthdayCake className="text-lg " aria-hidden="true" />
+                                    <EditableDateField
+                                        value={auth.user.date_of_birth ?? null}
+                                        onSave={(newValue) => saveProfileField('date_of_birth', newValue)}
+                                    />
+                                </div>
                             </div>
 
 
-                            <div className="flex items-center gap-2 text-sm">
-                                <FaMapMarkedAlt className="text-lg " aria-hidden="true" />
-                                <EditableSelectAddress
-                                    placeholder='Your postal code...'
-                                    value={address?.postal_code ?? null}
-                                    parentId={address?.sub_district_id?.toString() ?? undefined}
-                                    onSave={(newValue) => saveAddressField('postal_code', newValue)}
-                                    level={'postalCode'}
-                                    grandParentId={address?.city_id?.toString() ?? undefined}
-                                />
+                            <div className='flex flex-col gap-10'>
+                                <div className="flex items-center gap-2 text-sm">
+                                    <FaMap className="text-lg " aria-hidden="true" />
+                                    <EditableSelectAddress
+                                        placeholder='Your province...'
+                                        value={address?.province_name ?? null}
+                                        onSave={(newValue) => saveAddressField('province', newValue)}
+                                        level={'province'} />
+                                </div>
+
+                                <div className="flex items-center gap-2 text-sm">
+                                    <FaCity className="text-lg " aria-hidden="true" />
+                                    <EditableSelectAddress
+                                        placeholder='Your city...'
+                                        value={address?.city_name ?? null}
+                                        parentId={address?.province_id?.toString() ?? undefined}
+                                        onSave={(newValue) => saveAddressField('city', newValue)}
+                                        level={'city'} />
+                                </div>
+
+                                <div className="flex items-center gap-2 text-sm">
+                                    <FaBuilding className="text-lg " aria-hidden="true" />
+                                    <EditableSelectAddress
+                                        placeholder='Your district...'
+                                        value={address?.district_name ?? null}
+                                        parentId={address?.city_id?.toString() ?? undefined}
+                                        onSave={(newValue) => saveAddressField('district', newValue)}
+                                        level={'district'}
+                                    />
+                                </div>
+
+                                <div className="flex items-center gap-2 text-sm">
+                                    <FaHouse className="text-lg " aria-hidden="true" />
+                                    <EditableSelectAddress
+                                        placeholder='Your sub district...'
+                                        value={address?.sub_district_name ?? null}
+                                        parentId={address?.district_id?.toString() ?? undefined}
+                                        onSave={(newValue) => saveAddressField('sub_district', newValue)}
+                                        level={'subDistrict'}
+                                    />
+                                </div>
+
+
+                                <div className="flex items-center gap-2 text-sm">
+                                    <FaMailBulk className="text-lg " aria-hidden="true" />
+                                    <EditableSelectAddress
+                                        placeholder='Your postal code...'
+                                        value={address?.postal_code ?? null}
+                                        parentId={address?.sub_district_id?.toString() ?? undefined}
+                                        onSave={(newValue) => saveAddressField('postal_code', newValue)}
+                                        level={'postalCode'}
+                                        grandParentId={address?.city_id?.toString() ?? undefined}
+                                    />
+                                </div>
+
+                                <div className="flex items-center gap-2 text-sm">
+                                    <FaMapMarkedAlt className="text-lg " aria-hidden="true" />
+                                    <EditableTextArea
+                                        placeholder='Your address...'
+                                        value={address.full_address ?? null}
+                                        onSave={(newValue) => saveAddressField('full_address', newValue)}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </CardContent>

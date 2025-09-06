@@ -72,7 +72,7 @@ const EditableDateField = ({ value, onSave, placeholder }: EditableDateFieldProp
     }, [isEditing, handleSave, handleCancel, selectedDate])
 
     return (
-        <div ref={wrapperRef} className="flex flex-col flex-1">
+        <div ref={wrapperRef} className="flex flex-col ">
             {isEditing ? (
                 <Popover open>
                     <PopoverTrigger asChild>
