@@ -15,12 +15,12 @@ interface EditableSelectAddressProps {
     level: AddressLevel
     value: string | null
     parentId?: string
-     grandParentId?: string
+    grandParentId?: string
     onSave: (newValue: { id: number; name: string }) => void
     placeholder?: string
 }
 
-const EditableSelectAddress = ({grandParentId, level, value, parentId, onSave, placeholder }: EditableSelectAddressProps) => {
+const EditableSelectAddress = ({ grandParentId, level, value, parentId, onSave, placeholder }: EditableSelectAddressProps) => {
     const { provinces, cities, districts, subDistricts, postalCodes,
         fetchCities, fetchDistricts, fetchSubDistricts, fetchPostalCodes } = useAddress()
     const wrapperRef = useRef<HTMLDivElement>(null)
@@ -111,11 +111,21 @@ const EditableSelectAddress = ({grandParentId, level, value, parentId, onSave, p
         }
     }, [isEditing, handleCancel])
 
-    if (level === "city" && !parentId) {
+    const dependencyMap: Record<AddressLevel, { parentKey?: string; message: string }> = {
+        province: { message: "" },
+        city: { parentKey: "parentId", message: "Select province first" },
+        district: { parentKey: "parentId", message: "Select city first" },
+        subDistrict: { parentKey: "parentId", message: "Select district first" },
+        postalCode: { parentKey: "parentId", message: "Select sub district first" },
+    }
+
+    const dependency = dependencyMap[level]
+
+    if (dependency.parentKey && !parentId) {
         return (
             <div className="flex flex-col flex-1">
                 <span className="cursor-not-allowed px-1 gap-2 py-0.5 rounded flex items-center text-gray-400">
-                    Select province first
+                    {dependency.message}
                     <FaPen size={8} className="text-gray-300" />
                 </span>
             </div>

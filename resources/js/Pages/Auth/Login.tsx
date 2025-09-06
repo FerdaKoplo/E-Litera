@@ -37,7 +37,6 @@ const Login = () => {
 
     }
 
-
     return (
         <VisitorLayout>
             <form onSubmit={submit} className='flex flex-col gap-10 '>
@@ -77,8 +76,19 @@ const Login = () => {
                 </div>
 
                 <Button type='submit' process={processing} className='text-white bg-gradient-to-r from-violet-400 to-fuchsia-400 '>
-                    Submit
+                    Login
                 </Button>
+
+                <div className="mt-6 flex flex-col items-center gap-4">
+                    <span className="text-gray-500">Or login with</span>
+                    <a
+                        href={route('google.redirect')}
+                        className="w-full flex justify-center items-center gap-2 px-4 py-2 border rounded-lg text-gray-700 bg-white hover:bg-gray-100 transition"
+                    >
+                        <img src="/icons/google.svg" alt="Google" className="w-5 h-5" />
+                        Continue with Google
+                    </a>
+                </div>
             </form>
         </VisitorLayout>
     )

@@ -23,7 +23,7 @@ const breadcrumbs = [
 
 const Index = () => {
 
-    const { auth, address } = usePage<PageProps>().props
+    const { auth, address  } = usePage<PageProps>().props
 
     const joinDate = new Intl.DateTimeFormat("en-US", {
         month: "long",
@@ -247,7 +247,7 @@ const Index = () => {
                                         <FaMapMarkedAlt className="text-lg " aria-hidden="true" />
                                         <EditableTextArea
                                             placeholder='Your address...'
-                                            value={address.full_address ?? null}
+                                            value={address?.full_address ?? null}
                                             onSave={(newValue) => saveAddressField('full_address', newValue)}
                                         />
                                     </div>
