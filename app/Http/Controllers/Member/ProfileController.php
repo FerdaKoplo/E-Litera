@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class ProfileController extends Controller
 {
 
-     public function updateEmail(Request $request)
+    public function updateEmail(Request $request)
     {
         $user = Auth::user();
 
@@ -59,14 +59,18 @@ class ProfileController extends Controller
         return back()->with('success', 'Avatar updated successfully!');
     }
 
-    public function updateProfile(Request $request){
-          $user = Auth::user();
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
 
         $validated = $request->validate([
             'name' => 'string|max:255',
             'phone_number' => 'nullable|string|max:20',
             'instagram' => 'nullable|string|max:100',
             'facebook' => 'nullable|string|max:100',
+            'date_of_birth' => 'nullable|date',
+            'gender' => 'nullable|in:male,female',
+
         ]);
 
         $user->update($validated);

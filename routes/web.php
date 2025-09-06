@@ -98,17 +98,19 @@ Route::middleware(['auth', 'role:super-admin|librarian'])->group(function () {
 
 });
 
- Route::post('/notifications/{id}/read', function ($id) {
-        $user = auth()->user();
-         /** @var \Illuminate\Notifications\DatabaseNotification|null $notification */
-        $notification = $user->unreadNotifications()->find($id);
+Route::post('/notifications/{id}/read', function ($id) {
+    $user = auth()->user();
+    /** @var \Illuminate\Notifications\DatabaseNotification|null $notification */
+    $notification = $user->unreadNotifications()->find($id);
 
-        if ($notification) {
-            $notification->markAsRead();
-        }
+    if ($notification) {
+        $notification->markAsRead();
+    }
 
-        return redirect()->back();
-    })->name('notifications.read');
+    return redirect()->back();
+})->name('notifications.read');
+
+
 
 Route::middleware(['auth', 'role:member'])->group(function () {
     Route::get('/member/home', [\App\Http\Controllers\Member\HomeController::class, 'index'])->name('home');
@@ -118,13 +120,13 @@ Route::middleware(['auth', 'role:member'])->group(function () {
 
     // article
     Route::get('/member/articles/search', [\App\Http\Controllers\Member\ArticleController::class, 'articleSearch'])
-    ->name('articles.member.search');
+        ->name('articles.member.search');
     Route::get('/member/articles', [\App\Http\Controllers\Member\ArticleController::class, 'articleIndex'])->name('articles.member.index');
     Route::get('/member/articles/{article}', [\App\Http\Controllers\Member\ArticleController::class, 'articleShow'])->name('articles.member.show');
 
     // publications
     Route::get('/member/publications/search', [\App\Http\Controllers\Member\PublicationController::class, 'publicationSearch'])
-    ->name('publications.member.search');
+        ->name('publications.member.search');
     Route::get('/member/publications', [\App\Http\Controllers\Member\PublicationController::class, 'publicationIndex'])->name('publications.member.index');
     Route::get('/member/publication/{publication}', [\App\Http\Controllers\Member\PublicationController::class, 'publicationShow'])->name('publications.member.show');
 
@@ -137,17 +139,23 @@ Route::middleware(['auth', 'role:member'])->group(function () {
 
     // feedback
     Route::get('/publications/{publication}/feedback', [\App\Http\Controllers\Member\FeedbackController::class, 'viewFeedback'])
-    ->name('member.feedback.view');
+        ->name('member.feedback.view');
     Route::post('/feedback', [\App\Http\Controllers\Member\FeedbackController::class, 'storeFeedback'])->name('member.feedback.store');
 
     // profile
-   Route::patch('/member/profile', [\App\Http\Controllers\Member\ProfileController::class, 'updateProfile'])
-    ->name('profile.update');
+    Route::patch('/member/profile', [\App\Http\Controllers\Member\ProfileController::class, 'updateProfile'])
+        ->name('profile.update');
+    Route::patch('/member/profile/address', [\App\Http\Controllers\Member\UserAddressController::class, 'updateAddress'])
+        ->name('profile.update.address');
     Route::patch('/member/profile/edit-account/email', [\App\Http\Controllers\Member\ProfileController::class, 'updateEmail'])
-    ->name('profile.update.email');
+        ->name('profile.update.email');
     Route::patch('/member/profile/edit-account/password', [\App\Http\Controllers\Member\ProfileController::class, 'updatePassword'])
-    ->name('profile.update.password');
+        ->name('profile.update.password');
     Route::patch('/member/profile/edit-account/avatar', [\App\Http\Controllers\Member\ProfileController::class, 'updateAvatar'])
-    ->name('profile.update.avatar');
+        ->name('profile.update.avatar');
+
+
 });
+
+
 require __DIR__ . '/auth.php';

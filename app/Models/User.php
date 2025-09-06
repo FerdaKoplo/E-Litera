@@ -26,7 +26,9 @@ class User extends Authenticatable
         'password',
         'phone_number',
         'instagram',
-        'facebook'
+        'facebook',
+        'date_of_birth',
+        'gender',
     ];
 
     /**
@@ -75,6 +77,11 @@ class User extends Authenticatable
     public function articles(): HasMany
     {
         return $this->hasMany(Article::class);
+    }
+
+    public function address()
+    {
+        return $this->hasOne(UserAdress::class);
     }
 
 }

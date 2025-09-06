@@ -9,6 +9,14 @@ export interface User {
     instagram?: string
     facebook?: string
     created_at: Date
+    address : string
+    date_of_birth : string,
+    gender :  "male" | "female"
+    city : string
+    province : string
+    district : string
+    sub_district : string
+    postal_code : string
 }
 
 export interface Notification {
@@ -45,7 +53,8 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     articles: number
     loanChartData: { date: string, count: number }[]
     filters?: LoanFilter,
-    highestRatedPublications: HighestRatedPublication[]
+    highestRatedPublications: HighestRatedPublication[],
+    address : UserAddress
 }
 
 

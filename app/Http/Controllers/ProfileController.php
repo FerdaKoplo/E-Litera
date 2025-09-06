@@ -16,9 +16,28 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function index() {
-        return Inertia::render('Member/Profile/Index');
-    }
+   public function index(Request $request) {
+    $user = $request->user()->load('address');
+
+    return Inertia::render('Member/Profile/Index', [
+        'auth' => [
+            'user' => $user,
+        ],
+          'address' => $user->address ? [
+            'id' => $user->address->id,
+            'full_address' => $user->address->full_address,
+            'province_id' => $user->address->province_id,
+            'province_name' => $user->address->province_name,
+            'city_id' => $user->address->city_id,
+            'city_name' => $user->address->city_name,
+            'district_id' => $user->address->district_id,
+            'district_name' => $user->address->district_name,
+            'sub_district_id' => $user->address->sub_district_id,
+            'sub_district_name' => $user->address->sub_district_name,
+            'postal_code' => $user->address->postal_code,
+        ] : null,
+    ]);
+}
 
     public function edit(Request $request): Response
     {

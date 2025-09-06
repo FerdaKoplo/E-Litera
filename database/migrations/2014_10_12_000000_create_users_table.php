@@ -19,8 +19,9 @@ return new class extends Migration {
             $table->string('phone_number')->nullable();
             $table->string('instagram')->nullable();
             $table->string('facebook')->nullable();
-            $table->string('label')->nullable();
             $table->string('avatar')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -29,27 +29,47 @@ export default function SearchBar<T>({
     renderResult
 }: SearchBarProps<T>) {
 
-    const searchRef = useRef<HTMLDivElement>(null);
-    const [open, setOpen] = useState(showLiveResults);
+    const searchRef = useRef<HTMLDivElement>(null)
+    const [open, setOpen] = useState(showLiveResults)
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-                setOpen(false);
+                setOpen(false)
             }
-        };
+        }
 
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+        document.addEventListener("mousedown", handleClickOutside)
+        return () => document.removeEventListener("mousedown", handleClickOutside)
+    }, [])
+
+
+       useEffect(() => {
+        const handleEscapeKey = (event : KeyboardEvent) => {
+            if (event.key === 'Escape' && open) {
+                setOpen(false)
+            }
+        }
+
+        if (open) {
+            document.addEventListener('keydown', handleEscapeKey)
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleEscapeKey)
+        }
+
+    }, [open])
+
 
     useEffect(() => {
         if (liveResults && liveResults.length > 0) {
-            setOpen(true);
+            setOpen(true)
         } else {
-            setOpen(false);
+            setOpen(false)
         }
-    }, [liveResults]);
+    }, [liveResults])
+
 
     return (
         <div ref={searchRef} className={`relative w-full max-w-lg ${className}`}>
