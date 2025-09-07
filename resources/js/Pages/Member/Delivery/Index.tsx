@@ -8,9 +8,20 @@ import { ToggleGroup, ToggleGroupItem } from '@/Components/ui/toggle-group'
 import { deliveryColumns, deliveryMemberColumns } from '@/Constant/columns'
 import { PageProps } from '@/types'
 import { useForm, usePage } from '@inertiajs/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdCancel, MdCheckCircle, MdError, MdLocalShipping, MdPendingActions } from 'react-icons/md'
 import { RxCross2 } from 'react-icons/rx'
+import axios from 'axios'
+
+type DeliverySearchResult = {
+    id: number
+    title: string
+    author: string
+    courier: string
+    status: 'pending' | 'shipped' | 'delivered' | 'cancelled'
+    tracking_number: string
+    created_at: string
+}
 
 const breadcrumbs = [
     { name: 'Delivery', href: '/member/delivery' },
@@ -21,15 +32,42 @@ const Index = () => {
         PageProps<{ deliveries: LaravelPagination<Delivery> }>
     >().props
 
-     const { data, setData, get } = useForm<{
-            search: string;
-            page: number;
-            status: string | null;
-        }>({
-            search: '',
-            page: 1,
-            status: null,
-        })
+    const { data, setData, get } = useForm<{
+        search: string;
+        page: number;
+        status: string | null;
+    }>({
+        search: '',
+        page: 1,
+        status: null,
+    })
+
+    const [liveQuery, setLiveQuery] = useState<string>('');
+    const [liveResults, setLiveResults] = useState<DeliverySearchResult[]>([])
+    const [showLiveResults, setShowLiveResults] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (liveQuery.length === 0) {
+            setLiveResults([]);
+            setShowLiveResults(false);
+            return
+        }
+
+        const timeout = setTimeout(() => {
+            axios
+                .get('/member/delivery/search', { params: { q: liveQuery } })
+                .then((res) => {
+                    setLiveResults(res.data);
+                    setShowLiveResults(true);
+                })
+                .catch(() => {
+                    setLiveResults([]);
+                    setShowLiveResults(false);
+                });
+        }, 300);
+
+        return () => clearTimeout(timeout);
+    }, [liveQuery])
 
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -87,11 +125,56 @@ const Index = () => {
                     {/* Search Bar */}
                     <div className="flex justify-between items-center">
                         <SearchBar
-                            onChange={(val) => setData("search", val)}
-                            value={data.search}
+                            value={liveQuery}
+                            onChange={(val) => {
+                                setLiveQuery(val)
+                                setData("search", val)
+                            }}
                             onSubmit={handleSearch}
-                            placeholder="Search by Courier Name..."
-                            buttonLabel="Search"
+                            liveResults={liveResults}
+                            showLiveResults={showLiveResults}
+                            onSelectLiveResult={(item) => {
+                                setData("search", item.title);
+                                get(route('member.delivery.search'), {
+                                    preserveState: true,
+                                    preserveScroll: true,
+                                    data: { search: item.title, page: 1 },
+                                });
+                                setLiveQuery('');
+                            }}
+                            renderResult={(item) => (
+                                <div className="flex flex-col gap-1 p-2 rounded-lg transition">
+                                    <div className="flex items-center gap-2">
+                                        <span className="font-medium text-gray-900">{item.title}</span>
+                                        {item.author && (
+                                            <span className="text-gray-500 text-sm italic">by {item.author}</span>
+                                        )}
+                                    </div>
+
+                                    <div className="flex items-center gap-2 text-sm">
+                                        <span
+                                            className={`px-3 py-1 rounded-full flex items-center gap-2 border-2 bg-white font-medium text-xs
+                                                  ${item.status === "cancelled"
+                                                    ? "border-red-500 text-red-500"
+                                                    : item.status === "pending"
+                                                        ? "border-yellow-500 text-yellow-500"
+                                                        : item.status === "shipped"
+                                                            ? "border-orange-400 text-orange-400"
+                                                            : "border-green-400 text-green-400"}`}
+                                        >
+                                            {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                                        </span>
+
+                                        {item.courier && (
+                                            <span className="text-gray-500">Courier: {item.courier}</span>
+                                        )}
+
+                                        {item.tracking_number && (
+                                            <span className="text-gray-500">#{item.tracking_number}</span>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
                         />
                     </div>
 

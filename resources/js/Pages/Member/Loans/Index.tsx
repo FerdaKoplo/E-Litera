@@ -8,7 +8,8 @@ import { loanMemberColumns } from '@/Constant/columns'
 import MemberLayout from '@/Layouts/MemberLayout'
 import { PageProps } from '@/types'
 import { useForm, usePage } from '@inertiajs/react'
-import React, { useEffect } from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import { MdCheckCircle, MdError, MdLibraryBooks, MdPending } from 'react-icons/md'
 import { RxCross2 } from 'react-icons/rx'
 
@@ -31,6 +32,33 @@ const Index = () => {
         page: 1,
         status: null,
     })
+
+    const [liveQuery, setLiveQuery] = useState<string>('');
+    const [liveResults, setLiveResults] = useState<{ id: number; title: string; author: string; status: string; due_date: string }[]>([]);
+    const [showLiveResults, setShowLiveResults] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (liveQuery.length === 0) {
+            setLiveResults([]);
+            setShowLiveResults(false);
+            return;
+        }
+
+        const timeout = setTimeout(() => {
+            axios
+                .get('/member/loans/search', { params: { q: liveQuery } })
+                .then((res) => {
+                    setLiveResults(res.data);
+                    setShowLiveResults(true);
+                })
+                .catch(() => {
+                    setLiveResults([]);
+                    setShowLiveResults(false);
+                });
+        }, 300);
+
+        return () => clearTimeout(timeout);
+    }, [liveQuery])
 
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -92,11 +120,52 @@ const Index = () => {
                     {/* Search Bar */}
                     <div className="flex justify-between items-center">
                         <SearchBar
-                            onChange={(val) => setData("search", val)}
-                            value={data.search}
+                            value={liveQuery}
+                            onChange={(val) => {
+                                setLiveQuery(val)
+                                setData("search", val)
+                            }}
                             onSubmit={handleSearch}
-                            placeholder="Search by Name or Publication..."
-                            buttonLabel="Search"
+                            liveResults={liveResults}
+                            showLiveResults={showLiveResults}
+                            onSelectLiveResult={(item) => {
+                                setData("search", item.title);
+                                get(route('member.loans.search'), {
+                                    preserveState: true,
+                                    preserveScroll: true,
+                                    data: { search: item.title, page: 1 },
+                                });
+                                setLiveQuery('');
+                            }}
+                            renderResult={(item) => (
+                                <div className="flex flex-col gap-1 p-2 rounded-lg transition">
+                                    <div className="flex items-center gap-2">
+                                        <span className="font-medium text-gray-900">{item.title}</span>
+                                        {item.author && (
+                                            <span className="text-gray-500 text-sm italic">by {item.author}</span>
+                                        )}
+                                    </div>
+
+                                    <div className="flex items-center gap-2 text-sm">
+                                        <span
+                                            className={`px-3 py-1 rounded-full flex items-center gap-2 border-2 bg-white font-medium text-xs
+                                              ${item.status === "overdue"
+                                                    ? "border-red-500 text-red-500"
+                                                    : item.status === "pending"
+                                                        ? "border-yellow-500 text-yellow-500"
+                                                        : item.status === "returned"
+                                                            ? "border-blue-400 text-blue-400"
+                                                            : "border-green-400 text-green-400"}`}
+                                        >
+                                            {item.status}
+                                        </span>
+
+                                        {item.due_date && (
+                                            <span className="text-gray-500">Due: {item.due_date}</span>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
                         />
                     </div>
 

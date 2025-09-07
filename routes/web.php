@@ -149,10 +149,14 @@ Route::middleware(['auth', 'role:member'])->group(function () {
     Route::get('/member/publication/{publication}', [\App\Http\Controllers\Member\PublicationController::class, 'publicationShow'])->name('publications.member.show');
 
     // loans
+     Route::get('/member/loans/search', [\App\Http\Controllers\Member\LoanController::class, 'loanSearch'])
+        ->name('member.loans.search');
     Route::get('/member/loans', [\App\Http\Controllers\Member\LoanController::class, 'viewLoan'])->name('member.loans.view');
     Route::post('/loans', [\App\Http\Controllers\Member\LoanController::class, 'storeLoan'])->name('member.loans.store');
 
     // delivery
+     Route::get('/member/delivery/search', [\App\Http\Controllers\Member\DeliveryController::class, 'deliverySearch'])
+        ->name('member.delivery.search');
     Route::get('/member/delivery', [\App\Http\Controllers\Member\DeliveryController::class, 'deliveryIndex'])->name('member.delivery.index');
 
     // feedback

@@ -12,6 +12,31 @@ use Notification;
 
 class LoanController extends Controller
 {
+    public function loanSearch(Request $request)
+    {
+        $search = $request->query('q');
+
+        $results = Loan::with(['publication:id,title,author'])
+            ->where('user_id', auth()->id())
+            ->whereHas('publication', function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('author', 'like', "%{$search}%");
+            })
+            ->limit(5)
+            ->get();
+
+        $formatted = $results->map(function ($loan) {
+            return [
+                'id' => $loan->id,
+                'title' => $loan->publication->title ?? '-',
+                'author' => $loan->publication->author ?? '-',
+                'status' => $loan->status,
+                'due_date' => $loan->due_date?->format('Y-m-d'),
+            ];
+        });
+
+        return response()->json($formatted);
+    }
     public function viewLoan(Request $request)
     {
 

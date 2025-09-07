@@ -20,6 +20,11 @@ class Loan extends Model
         'fine_amount'
     ];
 
+    protected $casts = [
+    'start_date' => 'date:Y-m-d',
+    'due_date' => 'date:Y-m-d',
+];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
