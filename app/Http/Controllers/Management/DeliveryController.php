@@ -10,6 +10,39 @@ use Inertia\Inertia;
 
 class DeliveryController extends Controller
 {
+    public function deliverySearch(Request $request)
+    {
+        $search = $request->query('q');
+
+        $results = Delivery::with([
+            'loan.user:id,name,email',
+            'loan.publication:id,title,author',
+        ])
+            ->whereHas('loan.user', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            })
+            ->orWhereHas('loan.publication', function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('author', 'like', "%{$search}%");
+            })
+            ->orWhere('courier', 'like', "%{$search}%")
+            ->limit(5)
+            ->get();
+
+        $formatted = $results->map(function ($delivery) {
+            return [
+                'id' => $delivery->id,
+                'courier' => $delivery->courier ?? '-',
+                'title' => $delivery->loan->publication->title ?? '-',
+                'author' => $delivery->loan->publication->author ?? '-',
+                'name' => $delivery->loan->user->name ?? '-',
+                'email' => $delivery->loan->user->email ?? '-',
+            ];
+        });
+
+        return response()->json($formatted);
+    }
     public function deliveryIndex(Request $request)
     {
         $this->authorize('view delivery');
@@ -48,7 +81,7 @@ class DeliveryController extends Controller
         $this->authorize('edit delivery');
 
         return Inertia::render('Dashboard/Delivery/Edit', [
-            'delivery' => $delivery->load(['loan.user', 'loan.publication']),
+            'delivery' => $delivery->load(['loan.user.address', 'loan.publication']),
         ]);
     }
 

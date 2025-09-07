@@ -8,7 +8,8 @@ import { deliveryColumns } from '@/Constant/columns'
 import DashboardLayout from '@/Layouts/DasboardLayout'
 import { PageProps } from '@/types'
 import { useForm, usePage } from '@inertiajs/react'
-import React, { useEffect } from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import { MdCancel, MdCheckCircle, MdError, MdLocalShipping, MdPendingActions } from 'react-icons/md'
 import { RxCross2 } from 'react-icons/rx'
 import { toast, Toaster } from 'sonner'
@@ -20,9 +21,9 @@ const breadcrumbs = [
 const Index = () => {
 
     const { deliveries } = usePage<
-        PageProps<{ deliveries: LaravelPagination<Delivery>}>
+        PageProps<{ deliveries: LaravelPagination<Delivery> }>
     >().props
-      const { flash } = usePage<PageProps<{ flash: { success?: string, error?: string } }>>().props
+    const { flash } = usePage<PageProps<{ flash: { success?: string, error?: string } }>>().props
 
     const { data, setData, get } = useForm<{
         search: string;
@@ -33,6 +34,33 @@ const Index = () => {
         page: 1,
         status: null,
     })
+
+    const [liveQuery, setLiveQuery] = useState<string>('');
+    const [liveResults, setLiveResults] = useState<{ id: number; title: string; author: string; name: string; email: string; courier: string }[]>([]);
+    const [showLiveResults, setShowLiveResults] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (liveQuery.length === 0) {
+            setLiveResults([]);
+            setShowLiveResults(false);
+            return;
+        }
+
+        const timeout = setTimeout(() => {
+            axios
+                .get('/delivery/search', { params: { q: liveQuery } })
+                .then((res) => {
+                    setLiveResults(res.data);
+                    setShowLiveResults(true);
+                })
+                .catch(() => {
+                    setLiveResults([]);
+                    setShowLiveResults(false);
+                });
+        }, 300);
+
+        return () => clearTimeout(timeout);
+    }, [liveQuery])
 
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -97,11 +125,46 @@ const Index = () => {
                     {/* Search Bar */}
                     <div className="flex justify-between items-center">
                         <SearchBar
-                            onChange={(val) => setData("search", val)}
-                            value={data.search}
+                            value={liveQuery}
+                            onChange={(val) => {
+                                setLiveQuery(val)
+                                setData("search", val)
+                            }}
                             onSubmit={handleSearch}
-                            placeholder="Search by Courier Name..."
-                            buttonLabel="Search"
+                            liveResults={liveResults}
+                            showLiveResults={showLiveResults}
+                            onSelectLiveResult={(item) => {
+                                setData("search", item.courier);
+                                get(route('delivery.index'), {
+                                    preserveState: true,
+                                    preserveScroll: true,
+                                    data: { search: item.courier, page: 1 },
+                                });
+                                setLiveQuery('');
+                            }}
+                            renderResult={(item) => (
+                                <div className="flex flex-col gap-1">
+                                    <div className="font-medium text-gray-900">
+                                        {item.title}
+                                        {item.author && (
+                                            <span className="text-gray-500 text-sm ml-2">by {item.author}</span>
+                                        )}
+                                    </div>
+
+                                    <div className="text-sm text-gray-800">
+                                        {item.name}
+                                        {item.email && (
+                                            <span className="text-gray-500 ml-2">({item.email})</span>
+                                        )}
+                                    </div>
+
+                                    {item.courier && (
+                                        <div className="text-xs text-gray-600 italic">
+                                            Courier: {item.courier}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         />
                     </div>
 
@@ -174,7 +237,7 @@ const Index = () => {
                         </div>
                     </Card>
                 </div>
-                <DataTable columns={deliveryColumns} data={deliveries} onPageChange={goToPage}/>
+                <DataTable columns={deliveryColumns} data={deliveries} onPageChange={goToPage} />
             </div>
         </DashboardLayout>
     )

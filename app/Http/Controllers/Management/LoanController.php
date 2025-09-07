@@ -13,6 +13,38 @@ use Inertia\Inertia;
 
 class LoanController extends Controller
 {
+    public function loanSearch(Request $request)
+    {
+        $search = $request->query('q');
+
+        $results = Loan::with(['publication:id,title,author', 'user:id,name,email'])
+            ->whereHas('publication', function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('author', 'like', "%{$search}%");
+            })
+            ->orWhereHas('user', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            })
+            ->limit(5)
+            ->get();
+
+        // Include publication & user info for the frontend
+        $results->load(['publication:id,title,author', 'user:id,name,email']);
+
+        // Format response
+        $formatted = $results->map(function ($loan) {
+            return [
+                'id' => $loan->id,
+                'title' => $loan->publication->title ?? '-',
+                'author' => $loan->publication->author ?? '-',
+                'name' => $loan->user->name ?? '-',
+                'email' => $loan->user->email ?? '-',
+            ];
+        });
+
+        return response()->json($formatted);
+    }
     public function loanIndex(Request $request)
     {
         $this->authorize('view loans');

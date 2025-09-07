@@ -9,6 +9,20 @@ use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
+
+     public function categorySearch(Request $request)
+    {
+        $search = $request->query('q');
+
+        $results = Category::query()
+            ->where('name', 'like', "%{$search}%")
+            ->orWhere('type', 'like', "%{$search}%")
+            ->limit(5)
+            ->get(['id', 'name', 'type']);
+
+        return response()->json($results);
+    }
+
      public function categoryIndex(Request $request)
     {
         $this->authorize('view categories');

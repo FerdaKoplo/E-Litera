@@ -5,12 +5,12 @@ import { locationColumns } from '@/Constant/columns'
 import DashboardLayout from '@/Layouts/DasboardLayout'
 import { PageProps } from '@/types'
 import { Link, useForm, usePage } from '@inertiajs/react'
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 
 const breadcrumbs = [
     { name: 'Locations', href: '/locations' },
 ]
-
 
 const Index = () => {
 
@@ -31,6 +31,33 @@ const Index = () => {
         })
     }
 
+    const [liveQuery, setLiveQuery] = useState<string>('');
+    const [liveResults, setLiveResults] = useState<{ id: number; name: string; }[]>([]);
+    const [showLiveResults, setShowLiveResults] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (liveQuery.length === 0) {
+            setLiveResults([]);
+            setShowLiveResults(false);
+            return;
+        }
+
+        const timeout = setTimeout(() => {
+            axios
+                .get('/locations/search', { params: { q: liveQuery } })
+                .then((res) => {
+                    setLiveResults(res.data);
+                    setShowLiveResults(true);
+                })
+                .catch(() => {
+                    setLiveResults([]);
+                    setShowLiveResults(false);
+                });
+        }, 300);
+
+        return () => clearTimeout(timeout);
+    }, [liveQuery])
+
     return (
         <DashboardLayout header={
             <div className="flex justify-between items-center">
@@ -44,12 +71,29 @@ const Index = () => {
         } breadcrumbs={breadcrumbs}>
             <div className='flex flex-col gap-10'>
                 <SearchBar
-                    onChange={(val) => setData("search", val)}
-                    value={data.search}
+                    value={liveQuery}
+                    onChange={(val) => {
+                        setLiveQuery(val)
+                        setData("search", val)
+                    }}
                     onSubmit={handleSearch}
-                    placeholder='Search Location...'
-                    className=''
-                    buttonLabel='Search' />
+                    liveResults={liveResults}
+                    showLiveResults={showLiveResults}
+                    onSelectLiveResult={(item) => {
+                        setData("search", item.name);
+                        get(route('locations.index'), {
+                            preserveState: true,
+                            preserveScroll: true,
+                            data: { search: item.name, page: 1 },
+                        });
+                        setLiveQuery('');
+                    }}
+                    renderResult={(item) => (
+                        <>
+                            {item.name}
+                        </>
+                    )}
+                />
                 <DataTable columns={locationColumns} data={locations} />
             </div>
         </DashboardLayout>

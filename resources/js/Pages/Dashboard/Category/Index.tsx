@@ -9,10 +9,11 @@ import { Card, CardTitle } from '@/Components/ui/card'
 import { ToggleGroup, ToggleGroupItem } from '@/Components/ui/toggle-group'
 import { FaTag } from 'react-icons/fa6'
 import { RxCross2 } from 'react-icons/rx'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { MdLibraryBooks } from 'react-icons/md'
 import { IoDocumentText } from 'react-icons/io5'
 import Label from '@/Components/Label'
+import axios from 'axios'
 
 const breadcrumbs = [
     { name: 'Categories', href: '/categories' },
@@ -40,6 +41,33 @@ const Index = () => {
             data: { search: data.search, page: 1 }
         })
     }
+
+    const [liveQuery, setLiveQuery] = useState<string>('');
+        const [liveResults, setLiveResults] = useState<{ id: number; name: string; type: string }[]>([]);
+        const [showLiveResults, setShowLiveResults] = useState<boolean>(false);
+
+        useEffect(() => {
+            if (liveQuery.length === 0) {
+                setLiveResults([]);
+                setShowLiveResults(false);
+                return;
+            }
+
+            const timeout = setTimeout(() => {
+                axios
+                    .get('/categories/search', { params: { q: liveQuery } })
+                    .then((res) => {
+                        setLiveResults(res.data);
+                        setShowLiveResults(true);
+                    })
+                    .catch(() => {
+                        setLiveResults([]);
+                        setShowLiveResults(false);
+                    });
+            }, 300);
+
+            return () => clearTimeout(timeout);
+        }, [liveQuery])
 
     const applyFilter = (overrideData?: typeof data) => {
         const payload = overrideData || data;
@@ -99,12 +127,29 @@ const Index = () => {
                 <div className='flex flex-col gap-10'>
                     <div className='flex flex-col gap-10'>
                         <SearchBar
-                            onChange={(val) => setData("search", val)}
-                            value={data.search}
+                              value={liveQuery}
+                            onChange={(val) => {
+                                setLiveQuery(val)
+                                setData("search", val)
+                            }}
                             onSubmit={handleSearch}
-                            placeholder='Search Category...'
-                            className=''
-                            buttonLabel='Search' />
+                            liveResults={liveResults}
+                            showLiveResults={showLiveResults}
+                            onSelectLiveResult={(item) => {
+                                setData("search", item.name);
+                                get(route('categories.index'), {
+                                    preserveState: true,
+                                    preserveScroll: true,
+                                    data: { search: item.name, page: 1 },
+                                });
+                                setLiveQuery('');
+                            }}
+                            renderResult={(item) => (
+                                <>
+                                    {item.name} <span className="text-gray-400 text-sm">type : {item.type}</span>
+                                </>
+                            )}
+                            />
                         {/* Active Filter Chips */}
                         {data.type && (
                             <div className="flex flex-wrap gap-2">

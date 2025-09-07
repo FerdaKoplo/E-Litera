@@ -26,6 +26,22 @@ interface Props {
                 id: number
                 name: string
                 email: string
+                address?: {
+                    full_address?: string
+
+                    province_name?: string
+
+                    city_name?: string
+
+                    district_name?: string
+
+                    sub_district_name?: string
+
+                    postal_code?: string
+
+                    created_at: string
+                    updated_at: string
+                }
             }
             publication: {
                 id: number
@@ -66,10 +82,10 @@ const Edit: React.FC<Props> = ({ delivery }) => {
                         </CardTitle>
                     </CardHeader>
                     <CardHeader>
-                        <div className=" grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div className=" grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
                             <CardDescription className='space-y-2'>
                                 <CardTitle>
-                                     <span className="font-medium text-gray-800">User:</span>
+                                    <span className="font-medium text-gray-800">User:</span>
                                 </CardTitle>
                                 <p className="">{delivery.loan.user.name}</p>
                                 <p className="">{delivery.loan.user.email}</p>
@@ -81,6 +97,15 @@ const Edit: React.FC<Props> = ({ delivery }) => {
                                 </CardTitle>
 
                                 <p className="">{delivery.loan.publication.title}</p>
+                            </CardDescription>
+
+                            <CardDescription className='space-y-2'>
+                                <CardTitle>
+                                    <span className="text-gray-800 font-medium">Address:</span>
+                                </CardTitle>
+                                <p>
+                                    {delivery.loan?.user?.address?.full_address ?? ''}, {delivery.loan?.user?.address?.district_name ?? ''}, {delivery.loan?.user?.address?.city_name ?? ''}, {delivery.loan?.user?.address?.province_name ?? ''}
+                                </p>
                             </CardDescription>
 
                         </div>

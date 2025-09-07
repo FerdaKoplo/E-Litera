@@ -46,6 +46,8 @@ Route::middleware(['auth', 'role:super-admin|librarian'])->group(function () {
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // category
+     Route::get('/categories/search', [\App\Http\Controllers\Management\CategoryController::class, 'categorySearch'])
+        ->name('categories.search');
     Route::get('/categories', [\App\Http\Controllers\Management\CategoryController::class, 'categoryIndex'])->name('categories.index');
     Route::get('/categories/create', [\App\Http\Controllers\Management\CategoryController::class, 'createCategory'])->name('categories.create');
     Route::post('/categories', [\App\Http\Controllers\Management\CategoryController::class, 'storeCategory'])->name('categories.store');
@@ -54,28 +56,34 @@ Route::middleware(['auth', 'role:super-admin|librarian'])->group(function () {
     Route::delete('/categories/{category}', [\App\Http\Controllers\Management\CategoryController::class, 'deleteCategory'])->name('categories.destroy');
 
     // publications
+    Route::get('/publications/search', [\App\Http\Controllers\Management\PublicationController::class, 'publicationSearch'])
+        ->name('publications.search');
     Route::get('/publications', [\App\Http\Controllers\Management\PublicationController::class, 'publicationIndex'])->name('publications.index');
     Route::get('/publications/create', [\App\Http\Controllers\Management\PublicationController::class, 'publicationCreate'])->name('publications.create');
     Route::post('/publications', [\App\Http\Controllers\Management\PublicationController::class, 'storePublication'])->name('publications.store');
-    Route::get('/publications/{publication}', [\App\Http\Controllers\Management\PublicationController::class, 'publicationShow'])->name('publications.show');
     Route::get('/publications/{publication}/edit', [\App\Http\Controllers\Management\PublicationController::class, 'editPublication'])->name('publications.edit');
     Route::patch('/publications/{publication}', [\App\Http\Controllers\Management\PublicationController::class, 'updatePublication'])->name('publications.update');
     Route::delete('/publications/{publication}', [\App\Http\Controllers\Management\PublicationController::class, 'deletePublication'])->name('publications.destroy');
 
     // location
+      Route::get('/locations/search', [\App\Http\Controllers\Management\LocationController::class, 'locationSearch'])
+        ->name('locations.search');
     Route::get('/locations', [\App\Http\Controllers\Management\LocationController::class, 'locationIndex'])->name('locations.index');
     Route::get('/locations/create', [\App\Http\Controllers\Management\LocationController::class, 'createLocation'])->name('locations.create');
     Route::post('/locations', [\App\Http\Controllers\Management\LocationController::class, 'storeLocation'])->name('locations.store');
-    Route::get('/locations/{location}', [\App\Http\Controllers\Management\LocationController::class, 'locationShow'])->name('locations.show');
     Route::get('/locations/{location}/edit', [\App\Http\Controllers\Management\LocationController::class, 'editLocation'])->name('locations.edit');
     Route::put('/locations/{location}', [\App\Http\Controllers\Management\LocationController::class, 'updateLocation'])->name('locations.update');
     Route::delete('/locations/{location}', [\App\Http\Controllers\Management\LocationController::class, 'deleteLocation'])->name('locations.destroy');
 
     // loan
+     Route::get('/loans/search', [\App\Http\Controllers\Management\LoanController::class, 'loanSearch'])
+        ->name('loans.search');
     Route::get('/loans', [\App\Http\Controllers\Management\LoanController::class, 'loanIndex'])->name('loans.index');
     Route::put('/loans/{loan}', [\App\Http\Controllers\Management\LoanController::class, 'updateLoan'])->name('loans.update');
 
     // feedback
+     Route::get('/feedbacks/search', [\App\Http\Controllers\Management\FeedbackController::class, 'feedbackSearch'])
+        ->name('feedbacks.search');
     Route::get('/feedbacks', [\App\Http\Controllers\Management\FeedbackController::class, 'feedbackIndex'])->name('feedback.index');
     // Route::get('/publications/{publication}/feedback/create', [FeedbackController::class, 'feedbackCreate'])->name('feedback.create');
     // Route::post('/feedback', [FeedbackController::class, 'storeFeedback'])->name('feedback.store');
@@ -85,12 +93,16 @@ Route::middleware(['auth', 'role:super-admin|librarian'])->group(function () {
     // Route::delete('/feedback/{feedback}', [FeedbackController::class, 'deleteFeedback'])->name('feedback.destroy');
 
     // delivery
+     Route::get('/delivery/search', [\App\Http\Controllers\Management\DeliveryController::class, 'deliverySearch'])
+        ->name('delivery.search');
     Route::get('/delivery', [\App\Http\Controllers\Management\DeliveryController::class, 'deliveryIndex'])->name('delivery.index');
     Route::get('/delivery/{delivery}/edit', [\App\Http\Controllers\Management\DeliveryController::class, 'editDelivery'])->name('delivery.edit');
     Route::put('/delivery/{delivery}/edit', [\App\Http\Controllers\Management\DeliveryController::class, 'updateDelivery'])->name('delivery.update');
 
 
     // Article
+     Route::get('/articles/search', [\App\Http\Controllers\Management\ArticleController::class, 'articleSearch'])
+        ->name('articles.search');
     Route::get('/articles', [\App\Http\Controllers\Management\ArticleController::class, 'articleIndex'])->name('articles.index');
     Route::get('/articles/create', [\App\Http\Controllers\Management\ArticleController::class, 'createArticle'])->name('articles.create');
     Route::post('/articles/image/upload', [\App\Http\Controllers\Management\ArticleController::class, 'uploadImage'])->name('articles.image.upload');

@@ -9,6 +9,17 @@ use Inertia\Inertia;
 
 class ArticleController extends Controller
 {
+    public function articleSearch(Request $request)
+    {
+        $search = $request->query('q');
+
+        $results = Article::query()
+            ->where('title_article', 'like', "%{$search}%")
+            ->limit(5)
+            ->get(['id', 'title_article']);
+
+        return response()->json($results);
+    }
     public function articleIndex(Request $request)
     {
         $this->authorize('view articles');

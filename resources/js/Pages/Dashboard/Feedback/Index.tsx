@@ -8,7 +8,8 @@ import { feedbackColumns } from '@/Constant/columns'
 import DashboardLayout from '@/Layouts/DasboardLayout'
 import { PageProps } from '@/types'
 import { useForm, usePage } from '@inertiajs/react'
-import React, { useEffect } from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import { FiClock } from 'react-icons/fi'
 import { TbClock24, TbClockExclamation } from 'react-icons/tb'
 
@@ -30,6 +31,34 @@ const Index = () => {
         page: 1,
         timeFilter: null,
     })
+
+
+    const [liveQuery, setLiveQuery] = useState<string>('');
+    const [liveResults, setLiveResults] = useState<{ id: number; title: string; author: string; name: string; email: string; review: string }[]>([]);
+    const [showLiveResults, setShowLiveResults] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (liveQuery.length === 0) {
+            setLiveResults([]);
+            setShowLiveResults(false);
+            return;
+        }
+
+        const timeout = setTimeout(() => {
+            axios
+                .get('/feedbacks/search', { params: { q: liveQuery } })
+                .then((res) => {
+                    setLiveResults(res.data);
+                    setShowLiveResults(true);
+                })
+                .catch(() => {
+                    setLiveResults([]);
+                    setShowLiveResults(false);
+                });
+        }, 300);
+
+        return () => clearTimeout(timeout);
+    }, [liveQuery])
 
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -77,11 +106,44 @@ const Index = () => {
         >
             <div className="flex flex-col gap-5">
                 <SearchBar
-                    onChange={(val) => setData('search', val)}
-                    value={data.search}
+                    value={liveQuery}
+                    onChange={(val) => {
+                        setLiveQuery(val)
+                        setData("search", val)
+                    }}
                     onSubmit={handleSearch}
-                    placeholder="Search Feedback..."
-                    buttonLabel="Search"
+                    liveResults={liveResults}
+                    showLiveResults={showLiveResults}
+                    onSelectLiveResult={(item) => {
+                        setData("search", item.title);
+                        get(route('loans.index'), {
+                            preserveState: true,
+                            preserveScroll: true,
+                            data: { search: item.title, page: 1 },
+                        });
+                        setLiveQuery('');
+                    }}
+                    renderResult={(item) => (
+                        <div className="flex flex-col gap-1">
+                            <div className="font-medium text-gray-900">
+                                {item.title}
+                                {item.author && (
+                                    <span className="text-gray-500 text-sm ml-2">by {item.author}</span>
+                                )}
+                            </div>
+
+                            <div className="text-sm text-gray-800">
+                                {item.name}
+                                {item.email && (
+                                    <span className="text-gray-500 ml-2">({item.email})</span>
+                                )}
+                            </div>
+
+                             <div className="text-xs italic text-gray-800">
+                                Review :  {item.review}
+                            </div>
+                        </div>
+                    )}
                 />
 
                 <Card className="p-4 bg-gradient-to-l from-violet-100 to-indigo-50 border shadow-sm rounded-xl">

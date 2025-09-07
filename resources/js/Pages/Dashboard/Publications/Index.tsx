@@ -9,10 +9,11 @@ import { FaMapMarkerAlt, FaTag } from 'react-icons/fa'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { ToggleGroup, ToggleGroupItem } from '@/Components/ui/toggle-group'
 import { IoBookSharp, IoDocumentText, IoLibrary } from 'react-icons/io5'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle } from '@/Components/ui/card'
 import Label from '@/Components/Label'
 import Button from '@/Components/Button'
+import axios from 'axios'
 
 
 const breadcrumbs = [
@@ -50,6 +51,33 @@ const Index = () => {
             data: { search: data.search, page: 1 }
         })
     }
+
+    const [liveQuery, setLiveQuery] = useState<string>('');
+    const [liveResults, setLiveResults] = useState<{ id: number; title: string; author: string }[]>([]);
+    const [showLiveResults, setShowLiveResults] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (liveQuery.length === 0) {
+            setLiveResults([]);
+            setShowLiveResults(false);
+            return;
+        }
+
+        const timeout = setTimeout(() => {
+            axios
+                .get('/publications/search', { params: { q: liveQuery } })
+                .then((res) => {
+                    setLiveResults(res.data);
+                    setShowLiveResults(true);
+                })
+                .catch(() => {
+                    setLiveResults([]);
+                    setShowLiveResults(false);
+                });
+        }, 300);
+
+        return () => clearTimeout(timeout);
+    }, [liveQuery])
 
 
     const goToPage = (url: string | null) => {
@@ -104,11 +132,28 @@ const Index = () => {
                     {/* Search Bar */}
                     <div className="flex justify-between items-center">
                         <SearchBar
-                            onChange={(val) => setData("search", val)}
-                            value={data.search}
+                            value={liveQuery}
+                            onChange={(val) => {
+                                setLiveQuery(val)
+                                setData("search", val)
+                            }}
                             onSubmit={handleSearch}
-                            placeholder="Search Publication..."
-                            buttonLabel="Search"
+                            liveResults={liveResults}
+                            showLiveResults={showLiveResults}
+                            onSelectLiveResult={(item) => {
+                                setData("search", item.title);
+                                get(route('publications.index'), {
+                                    preserveState: true,
+                                    preserveScroll: true,
+                                    data: { search: item.title, page: 1 },
+                                });
+                                setLiveQuery('');
+                            }}
+                            renderResult={(item) => (
+                                <>
+                                    {item.title} <span className="text-gray-400 text-sm">by {item.author}</span>
+                                </>
+                            )}
                         />
                     </div>
 

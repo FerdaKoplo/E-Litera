@@ -9,7 +9,19 @@ use Inertia\Inertia;
 
 class LocationController extends Controller
 {
-        public function locationIndex(Request $request)
+
+     public function locationSearch(Request $request)
+    {
+        $search = $request->query('q');
+
+        $results = Location::query()
+            ->where('name', 'like', "%{$search}%")
+            ->limit(5)
+            ->get(['id', 'name']);
+
+        return response()->json($results);
+    }
+    public function locationIndex(Request $request)
     {
         $this->authorize('view locations');
 
