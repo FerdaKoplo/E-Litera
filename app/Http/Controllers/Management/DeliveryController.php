@@ -38,6 +38,9 @@ class DeliveryController extends Controller
                 'author' => $delivery->loan->publication->author ?? '-',
                 'name' => $delivery->loan->user->name ?? '-',
                 'email' => $delivery->loan->user->email ?? '-',
+                'status' => $delivery->status,
+                'tracking_number' => $delivery->tracking_number ?? '-',
+                'created_at' => $delivery->created_at?->format('Y-m-d'),
             ];
         });
 

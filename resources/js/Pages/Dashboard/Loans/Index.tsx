@@ -43,7 +43,15 @@ const Index = () => {
     }
 
     const [liveQuery, setLiveQuery] = useState<string>('');
-    const [liveResults, setLiveResults] = useState<{ id: number; title: string; author: string; name: string; email: string }[]>([]);
+    const [liveResults, setLiveResults] = useState<{
+        id: number;
+        title: string;
+        author: string;
+        name: string;
+        email: string;
+        status: string;
+        due_date: string
+    }[]>([]);
     const [showLiveResults, setShowLiveResults] = useState<boolean>(false);
 
     useEffect(() => {
@@ -147,6 +155,25 @@ const Index = () => {
                                         {item.name}
                                         {item.email && (
                                             <span className="text-gray-500 ml-2">({item.email})</span>
+                                        )}
+                                    </div>
+
+                                          <div className="flex items-center gap-2 text-sm">
+                                        <span
+                                            className={`px-3 py-1 rounded-full flex items-center gap-2 border-2 bg-white font-medium text-xs
+                                              ${item.status === "overdue"
+                                                    ? "border-red-500 text-red-500"
+                                                    : item.status === "pending"
+                                                        ? "border-yellow-500 text-yellow-500"
+                                                        : item.status === "returned"
+                                                            ? "border-blue-400 text-blue-400"
+                                                            : "border-green-400 text-green-400"}`}
+                                        >
+                                            {item.status}
+                                        </span>
+
+                                        {item.due_date && (
+                                            <span className="text-gray-500">Due: {item.due_date}</span>
                                         )}
                                     </div>
                                 </div>

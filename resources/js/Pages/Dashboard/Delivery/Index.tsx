@@ -36,7 +36,17 @@ const Index = () => {
     })
 
     const [liveQuery, setLiveQuery] = useState<string>('');
-    const [liveResults, setLiveResults] = useState<{ id: number; title: string; author: string; name: string; email: string; courier: string }[]>([]);
+    const [liveResults, setLiveResults] = useState<{
+        id: number;
+        title: string;
+        author: string;
+        name: string;
+        email: string;
+        courier: string
+        status: 'pending' | 'shipped' | 'delivered' | 'cancelled'
+        tracking_number: string
+        created_at: string
+    }[]>([]);
     const [showLiveResults, setShowLiveResults] = useState<boolean>(false);
 
     useEffect(() => {
@@ -158,11 +168,28 @@ const Index = () => {
                                         )}
                                     </div>
 
-                                    {item.courier && (
-                                        <div className="text-xs text-gray-600 italic">
-                                            Courier: {item.courier}
-                                        </div>
-                                    )}
+                                    <div className="flex items-center gap-2 text-sm">
+                                        <span
+                                            className={`px-3 py-1 rounded-full flex items-center gap-2 border-2 bg-white font-medium text-xs
+                                                  ${item.status === "cancelled"
+                                                    ? "border-red-500 text-red-500"
+                                                    : item.status === "pending"
+                                                        ? "border-yellow-500 text-yellow-500"
+                                                        : item.status === "shipped"
+                                                            ? "border-orange-400 text-orange-400"
+                                                            : "border-green-400 text-green-400"}`}
+                                        >
+                                            {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                                        </span>
+
+                                        {item.courier && (
+                                            <span className="text-gray-500">Courier: {item.courier}</span>
+                                        )}
+
+                                        {item.tracking_number && (
+                                            <span className="text-gray-500">#{item.tracking_number}</span>
+                                        )}
+                                    </div>
                                 </div>
                             )}
                         />

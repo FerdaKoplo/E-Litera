@@ -40,6 +40,8 @@ class LoanController extends Controller
                 'author' => $loan->publication->author ?? '-',
                 'name' => $loan->user->name ?? '-',
                 'email' => $loan->user->email ?? '-',
+                'status' => $loan->status,
+                'due_date' => $loan->due_date?->format('Y-m-d'),
             ];
         });
 
