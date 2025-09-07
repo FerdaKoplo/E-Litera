@@ -5,6 +5,7 @@ import TogglePassword from '@/Components/TogglePassword'
 import VisitorLayout from '@/Layouts/VisitorLayout'
 import { Link, useForm } from '@inertiajs/react'
 import React, { useEffect, useState } from 'react'
+import { FaGoogle } from 'react-icons/fa6'
 import { toast } from 'sonner'
 
 const Register = () => {
@@ -26,7 +27,7 @@ const Register = () => {
 
     const submit = (e: React.SyntheticEvent) => {
         e.preventDefault()
-        post(route('register'),{
+        post(route('register'), {
             onSuccess: (success) => {
                 Object.values(success).forEach(s => toast.success(s))
 
@@ -88,7 +89,7 @@ const Register = () => {
                             onChange={e => setData('password_confirmation', e.target.value)}
                         />
                         <div className="absolute right-1 top-1/2  -translate-y-1/2">
-                                <TogglePassword showPassword={showPassword} setShowPassword={setShowPassword} />
+                            <TogglePassword showPassword={showPassword} setShowPassword={setShowPassword} />
                         </div>
                     </div>
                 </div>
@@ -105,6 +106,17 @@ const Register = () => {
                 <Button type='submit' process={processing} className='text-white bg-gradient-to-r from-violet-400 to-fuchsia-400'>
                     Submit
                 </Button>
+
+                <div className=" flex flex-col items-center gap-4">
+                    <span className="text-gray-500">Or Continue with</span>
+                    <a
+                        href={route('google.redirect')}
+                        className="w-full bg-gradient-to-r text-white from-violet-400 to-fuchsia-400  flex justify-center items-center gap-2 px-4 py-2 border rounded-lg   "
+                    >
+                        <FaGoogle className='text-white' />
+                        Google
+                    </a>
+                </div>
             </form>
         </VisitorLayout>
     )

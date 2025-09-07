@@ -5,6 +5,7 @@ import TogglePassword from '@/Components/TogglePassword'
 import VisitorLayout from '@/Layouts/VisitorLayout'
 import { Link, useForm, usePage } from '@inertiajs/react'
 import React, { useEffect, useState } from 'react'
+import { FaGoogle } from 'react-icons/fa6'
 import { toast } from 'sonner'
 
 const Login = () => {
@@ -79,14 +80,14 @@ const Login = () => {
                     Login
                 </Button>
 
-                <div className="mt-6 flex flex-col items-center gap-4">
-                    <span className="text-gray-500">Or login with</span>
+                <div className=" flex flex-col items-center gap-4">
+                    <span className="text-gray-500">Or Continue with</span>
                     <a
                         href={route('google.redirect')}
-                        className="w-full flex justify-center items-center gap-2 px-4 py-2 border rounded-lg text-gray-700 bg-white hover:bg-gray-100 transition"
+                        className="w-full bg-gradient-to-r text-white from-violet-400 to-fuchsia-400  flex justify-center items-center gap-2 px-4 py-2 border rounded-lg   "
                     >
-                        <img src="/icons/google.svg" alt="Google" className="w-5 h-5" />
-                        Continue with Google
+                        <FaGoogle className='text-white' />
+                        Google
                     </a>
                 </div>
             </form>

@@ -12,7 +12,8 @@ use Notification;
 
 class LoanController extends Controller
 {
-    public function viewLoan(Request $request){
+    public function viewLoan(Request $request)
+    {
 
         $this->authorize('view loans');
 
@@ -43,6 +44,21 @@ class LoanController extends Controller
     public function storeLoan(Request $request)
     {
         $this->authorize('create loans');
+
+        $user = auth()->user();
+
+        $address = $user->address;
+        if (
+            !$address ||
+            !$address->province_id ||
+            !$address->city_id ||
+            !$address->district_id ||
+            !$address->sub_district_id ||
+            !$address->postal_code ||
+            !$address->full_address
+        ) {
+            return back()->with('error', 'You must complete your address before requesting a loan.');
+        }
 
         $validated = $request->validate([
             'publication_id' => 'required|exists:publications,id',
