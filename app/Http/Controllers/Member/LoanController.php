@@ -47,17 +47,18 @@ class LoanController extends Controller
 
         $user = auth()->user();
 
-        $address = $user->address;
+        $userAddress = auth()->user()->address;
+
         if (
-            !$address ||
-            !$address->province_id ||
-            !$address->city_id ||
-            !$address->district_id ||
-            !$address->sub_district_id ||
-            !$address->postal_code ||
-            !$address->full_address
+            !$userAddress ||
+            !$userAddress->province_id ||
+            !$userAddress->city_id ||
+            !$userAddress->district_id ||
+            !$userAddress->sub_district_id ||
+            !$userAddress->postal_code ||
+            !$userAddress->full_address
         ) {
-            return back()->with('error', 'You must complete your address before requesting a loan.');
+            return back()->with('error', 'Please complete your address before requesting a loan.');
         }
 
         $validated = $request->validate([

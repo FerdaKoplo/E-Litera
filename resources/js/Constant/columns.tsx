@@ -159,6 +159,7 @@ export const deliveryColumns = [
     { header: "Member Loan Status", accessor: (row: Delivery) => row.loan?.status },
     { header: "Publication Name", accessor: (row: Delivery) => row.loan?.publication?.title },
     { header: "Tracking Number", accessor: (row: Delivery) => row.tracking_number },
+    { header: "Member Address", accessor: (row: Delivery) => `${row.loan?.user?.address?.full_address ?? ''}, ${row.loan?.user?.address?.district_name ?? ''}, ${row.loan?.user?.address?.city_name ?? ''}, ${row.loan?.user?.address?.province_name ?? ''}` },
     { header: "Courier", accessor: (row: Delivery) => row.courier ?? "-" },
     {
         header: "Status", accessor: (row: Delivery) => <StatusCell
@@ -187,6 +188,7 @@ export const deliveryMemberColumns = [
     { header: "Publication Name", accessor: (row: Delivery) => row.loan?.publication?.title },
     { header: "Member Loan Status", accessor: (row: Delivery) => row.loan?.status },
     { header: "Tracking Number", accessor: (row: Delivery) => row.tracking_number },
+    { header: "Member Address", accessor: (row: Delivery) => `${row.loan?.user?.address?.full_address ?? ''}, ${row.loan?.user?.address?.district_name ?? ''}, ${row.loan?.user?.address?.city_name ?? ''}, ${row.loan?.user?.address?.province_name ?? ''}` },
     { header: "Courier", accessor: (row: Delivery) => row.courier ?? "-" },
     {
         header: "Status", accessor: (row: Delivery) => <StatusCell

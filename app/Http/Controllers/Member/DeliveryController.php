@@ -17,7 +17,7 @@ class DeliveryController extends Controller
         $search = $request->search;
         $status = $request->status;
 
-         $query = Delivery::with(['loan.user', 'loan.publication'])
+         $query = Delivery::with(['loan.user.address', 'loan.publication'])
             ->whereHas('loan', function ($q) {
                 $q->where('user_id', auth()->id());
             });

@@ -35,8 +35,5 @@ class Loan extends Model
         return $this->hasMany(Delivery::class);
     }
 
-    public function address()
-    {
-        return $this->hasOne(UserAdress::class);
-    }
+
 }
