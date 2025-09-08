@@ -120,14 +120,11 @@ Route::post('/notifications/{id}/read', function ($id) {
     $user = auth()->user();
     /** @var \Illuminate\Notifications\DatabaseNotification|null $notification */
     $notification = $user->unreadNotifications()->find($id);
-
     if ($notification) {
         $notification->markAsRead();
     }
-
     return redirect()->back();
 })->name('notifications.read');
-
 
 
 Route::middleware(['auth', 'role:member'])->group(function () {

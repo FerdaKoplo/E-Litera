@@ -34,7 +34,6 @@ const Index = () => {
         page: 1,
         status: null,
     })
-
     const [liveQuery, setLiveQuery] = useState<string>('');
     const [liveResults, setLiveResults] = useState<{
         id: number;
