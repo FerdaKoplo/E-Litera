@@ -49,7 +49,6 @@ export const Facts = [
     },
 ]
 
-
 export const Testimonials = [
     {
         id: 1,
@@ -70,3 +69,37 @@ export const Testimonials = [
         role: "Designer"
     },
 ]
+
+export const FAQ = [
+    {
+        id: 1,
+        question: "What is E-Litera?",
+        answer:
+            "E-Litera is a digital library platform where you can explore, read, and download books across various topics to support your learning journey.",
+    },
+    {
+        id: 2,
+        question: "Is E-Litera free to use?",
+        answer:
+            "Yes! You can access a wide collection of free books. However, premium content or features may require a subscription in the future.",
+    },
+    {
+        id: 3,
+        question: "Can I download books offline?",
+        answer:
+            "Absolutely. Once downloaded, books can be accessed offline so you can continue learning anytime, anywhere.",
+    },
+    {
+        id: 4,
+        question: "Who can use E-Litera?",
+        answer:
+            "E-Litera is designed for students, professionals, and lifelong learners who want quick and easy access to knowledge.",
+    },
+    {
+        id: 5,
+        question: "How often is the library updated?",
+        answer:
+            "Our library is updated regularly with new resources, ensuring fresh content is always available for your learning needs.",
+    },
+]
+

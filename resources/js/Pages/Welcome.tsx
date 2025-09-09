@@ -6,6 +6,7 @@ import { NavConstant } from '@/Constant/landing';
 import Hero from './Landing/Hero';
 import About from './Landing/About';
 import Testimoni from './Landing/Testimoni';
+import Faq from './Landing/Faq';
 
 export default function Welcome() {
 
@@ -49,6 +50,9 @@ export default function Welcome() {
                 </div>
                 <div ref={sectionRefs['testimoni']}>
                     <Testimoni />
+                </div>
+                <div ref={sectionRefs['faq']}>
+                    <Faq />
                 </div>
             </div>
         </div>
