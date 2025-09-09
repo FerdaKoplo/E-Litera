@@ -8,16 +8,17 @@ import Button from '@/Components/Button'
 interface NavProps {
     navlist: Array<{ label: string, key: string }>,
     onNavClick: (sectionKey: string) => void
+    onHomeClick: () => void
 }
 
 
-const Nav: React.FC<NavProps> = ({ navlist, onNavClick }) => {
+const Nav: React.FC<NavProps> = ({ navlist, onNavClick, onHomeClick }) => {
 
     return (
         <div className="sticky  top-0 bg-white z-50">
             <nav className="px-32 p-10 ">
-                <div className="flex justify-between font-medium items-center  gap-6 ">
-                    <Link href={'/'} className='flex items-center gap-1 text-sm'>
+                <div className="cursor-pointer flex justify-between font-medium items-center  gap-6 ">
+                    <div  onClick={onHomeClick} className='flex items-center gap-1 text-sm'>
                         <h1 className='font-bold p-1 px-2 rounded-lg bg-fuchsia-400 text-white'>E</h1>
                         <div className="px-1 py-1 rounded-lg bg-indigo-400 text-white text-xs">
                             <IoBookSharp />
@@ -25,7 +26,7 @@ const Nav: React.FC<NavProps> = ({ navlist, onNavClick }) => {
                         <h2 className='font-semibold bg-violet-400 p-1 px-2 rounded-lg text-white text-base'>
                             Litera
                         </h2>
-                    </Link>
+                    </div>
                     <ul className="hidden lg:flex justify-center text-sm items-center gap-8  ">
                         {NavConstant.map((i) => (
                             <li key={i.key} className='flex items-center gap-5 cursor-pointer' onClick={() => onNavClick(i.key)}>

@@ -39,7 +39,7 @@ export default function Welcome() {
 
     return (
         <div className='flex flex-col'>
-            <Nav onNavClick={scrollToSection} navlist={NavConstant} />
+            <Nav onNavClick={scrollToSection} navlist={NavConstant} onHomeClick={() => scrollToSection('home')} />
             <div className='px-32'>
                 <div ref={sectionRefs['home']}>
                     <Hero onLearnMore={() => scrollToSection('about')} />
