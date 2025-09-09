@@ -2,7 +2,13 @@ import Button from '@/Components/Button'
 import { Link } from '@inertiajs/react'
 import React from 'react'
 
-const Hero = () => {
+
+type HeroProps = {
+    onLearnMore: () => void
+}
+
+
+const Hero = ( { onLearnMore } : HeroProps ) => {
     return (
         <div className='flex items-center gap-12 justify-center min-h-screen'>
             <div className='flex flex-col gap-10'>
@@ -15,7 +21,7 @@ const Hero = () => {
                     Unlock endless resources, explore a world of knowledge designed to help you grow smarter, faster, and stronger in your journey of learning.
                 </p>
                 <div className='flex items-center gap-7'>
-                    <Button className='px-4 py-3 bg-white text-purple-400 border-2 border-violet-400'>
+                    <Button     onClick={onLearnMore} className='px-4 py-3 bg-white text-purple-400 border-2 border-violet-400'>
                         Learn More
                     </Button>
 

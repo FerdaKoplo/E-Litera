@@ -5,6 +5,7 @@ import { useSectionRefs } from '@/hook/useSection';
 import { NavConstant } from '@/Constant/landing';
 import Hero from './Landing/Hero';
 import About from './Landing/About';
+import Testimoni from './Landing/Testimoni';
 
 export default function Welcome() {
 
@@ -41,10 +42,13 @@ export default function Welcome() {
             <Nav onNavClick={scrollToSection} navlist={NavConstant} />
             <div className='px-32'>
                 <div ref={sectionRefs['home']}>
-                    <Hero />
+                    <Hero onLearnMore={() => scrollToSection('about')} />
                 </div>
                 <div ref={sectionRefs['about']}>
                     <About />
+                </div>
+                <div ref={sectionRefs['testimoni']}>
+                    <Testimoni />
                 </div>
             </div>
         </div>
