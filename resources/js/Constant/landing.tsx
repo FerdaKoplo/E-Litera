@@ -1,4 +1,6 @@
 import { FaHome, FaInfoCircle, FaCommentDots, FaQuestionCircle, FaEnvelope } from "react-icons/fa";
+import { FiMail } from "react-icons/fi"
+import { FaWhatsapp, FaInstagram, FaXTwitter } from "react-icons/fa6"
 
 export const NavConstant = [
     {
@@ -103,3 +105,34 @@ export const FAQ = [
     },
 ]
 
+
+export const ContactConstant = [
+    {
+        id: 1,
+        label: "Email",
+        value: "support@elitera.com",
+        link: "mailto:support@elitera.com",
+        icon: <FiMail />,
+    },
+    {
+        id: 2,
+        label: "WhatsApp",
+        value: "+62 812-3456-7890",
+        link: "https://wa.me/6281234567890",
+        icon: <FaWhatsapp />,
+    },
+    {
+        id: 3,
+        label: "Instagram",
+        value: "@elitera.app",
+        link: "https://instagram.com/elitera.app",
+        icon: <FaInstagram />,
+    },
+    {
+        id: 4,
+        label: "X (Twitter)",
+        value: "@elitera_app",
+        link: "https://x.com/elitera_app",
+        icon: <FaXTwitter />,
+    },
+]

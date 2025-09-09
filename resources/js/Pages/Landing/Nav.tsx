@@ -41,13 +41,13 @@ const Nav: React.FC<NavProps> = ({ navlist, onNavClick, onHomeClick }) => {
                     </ul>
 
                     <div className='flex gap-5'>
-                        <Link href=''>
+                        <Link href='/login'>
                             <Button className='px-4 py-2 rounded-full bg-white text-violet-400 border-violet-400 border-2 font-semibold'>
                                 Login
                             </Button>
                         </Link>
 
-                        <Link href=''>
+                        <Link href='/register'>
                             <Button className='px-4 py-2 rounded-full bg-violet-400 border-2 border-violet-400   font-semibold'>
                                 Sign Up
                             </Button>
